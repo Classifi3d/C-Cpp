@@ -1,0 +1,7 @@
+﻿  Lab10_1_6.cpp
+E:\Programming\C - C++\Lab10_1_6\Lab10_1_6.cpp(18,19): warning C4101: 'mb': unreferenced local variable
+E:\Programming\C - C++\Lab10_1_6\Lab10_1_6.cpp(18,15): warning C4101: 'nb': unreferenced local variable
+Lab10_1_6.obj : error LNK2019: unresolved external symbol "void __cdecl readMatrix(int (* const)[100],int &,int &)" (?readMatrix@@YAXQAY0GE@HAAH1@Z) referenced in function _main
+    Hint on symbols that are defined and could potentially match:
+      "void __cdecl readMatrix(int *,int &,int &)" (?readMatrix@@YAXPAHAAH1@Z)
+E:\Programming\C - C++\Lab10_1_6\Debug\Lab10_1_6.exe : fatal error LNK1120: 1 unresolved externals

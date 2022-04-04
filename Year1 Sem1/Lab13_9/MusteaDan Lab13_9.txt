@@ -1,0 +1,61 @@
+/*
+Nume: Mustea Dumitru Dan
+Grupa: 2013
+Seria: ENG
+*/
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+
+#define _CRT_SECURE_NO_WARNINGS 
+
+using namespace std;
+
+#define max 1000
+
+int arrayLength(char array[max]);
+
+int main() {
+
+	char fileName[max];
+	printf("Insert a filename\n");
+	//scanf_s("%s", fileName);
+	cin >> fileName;
+
+	//adds a ".txt" extension to the file name that was read from the keyboard
+	int i = arrayLength(fileName);
+	fileName[i] = '.';
+	fileName[i + 1] = 't';
+	fileName[i + 2] = 'x';
+	fileName[i + 3] = 't';
+	fileName[i + 4] = '\0';
+
+
+
+
+	FILE* fPointer = fopen(fileName, "r+");
+	char array[max];
+	while (!(feof(fPointer))) {
+		fgets(array, max, fPointer);
+		for (int i = 0; i < arrayLength(array); i++) {
+			if (array[0] >= 'a' && array[0] <= 'z') array[0] += 'A' - 'a';
+			if (array[i] == ' ' && (array[i + 1] >= 'a' && array[i + 1] <= 'z')) {
+				array[i+1]+='A'-'a';
+			}
+		}
+		puts(array);
+	}
+
+	fclose(fPointer);
+}
+
+
+
+int arrayLength(char array[max]) {//returns the length of an array
+	int i = 0;
+	while (array[i] != '\0') {
+		i++;
+	}
+	return i;
+}
+

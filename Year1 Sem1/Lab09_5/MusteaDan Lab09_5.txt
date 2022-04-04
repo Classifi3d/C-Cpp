@@ -1,0 +1,49 @@
+
+
+#include  <iostream>
+
+using  namespace  std;
+
+#define  MAX  200
+
+float*  copyAboveAvg(float*  p,  int  n,  int&  newdim);
+
+int  main()
+{
+        printf("Write  a  C/C++  program  that  fills-up  a  float-type,  one-dimensional  array  with  values  read  from  the  keyboard.Write  a  function  that  copies  into  another  array  the  values  greater  than  the  average  of  all  elements  from  the  array,  by  using  pointers.Both  arrays  should  be  displayed  in  the  main()  function.  \n");
+        
+        float  v[MAX];
+        int  n,m;
+        float*  p  =  v;;
+        scanf_s("%d",  &n);
+        for  (int  i  =  0;i  <  n;i++)  {
+                scanf_s("%f",  &p[i]);
+        }
+
+        float*  P  =  copyAboveAvg(p,  n,  m);
+        for  (int  i  =  0;i  <  m;i++)  {
+                printf("%.3f  ",  P[i]);
+        }
+
+
+}
+
+float*  copyAboveAvg(float  *p,int  n,int  &newdim)  {
+        float  avg  =  0;
+        float*  P=p;
+        for  (int  i  =  0;i  <  n;i++)  {
+                avg  +=  p[i];
+        }
+        avg  /=  n;
+        cout  <<  avg  <<  endl;//--
+
+        int  k  =  0;
+        for  (int  i  =  0;i  <  n;i++)  {
+                if  (p[i]  >  avg)  {
+                        P[k++]  =  p[i];
+                }
+        }
+        newdim  =  k;
+
+        return  P;
+}

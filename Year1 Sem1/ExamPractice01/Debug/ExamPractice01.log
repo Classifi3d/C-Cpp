@@ -1,0 +1,4 @@
+﻿  ExamPractice01.cpp
+E:\Programming\C - C++\ExamPractice01\ExamPractice01.cpp(1,1): warning C4005: '_CRT_SECURE_NO_WARNINGS': macro redefinition
+E:\Programming\C - C++\ExamPractice01\ExamPractice01.cpp : message : see previous definition of '_CRT_SECURE_NO_WARNINGS'
+  ExamPractice01.vcxproj -> E:\Programming\C - C++\ExamPractice01\Debug\ExamPractice01.exe

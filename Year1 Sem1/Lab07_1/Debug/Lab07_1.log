@@ -1,0 +1,3 @@
+﻿  Source.cpp
+E:\Programming\C - C++\Lab07_1\Source.cpp(12,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+  Lab07_1.vcxproj -> E:\Programming\C - C++\Lab07_1\Debug\Lab07_1.exe

@@ -1,0 +1,767 @@
+//MusteaDan Lab07 Grupa 2013
+const int dim_sir = 20;
+class CPunctText
+{
+    int x;
+    int y;
+    int lungime_sir;
+    char *sNume;
+
+public:
+    //constructor explicit vid
+    CPunctText();
+    //constructor cu parametri
+    CPunctText(int ix, int iy, const char *sText = "Punct");
+    //constructor de copiere
+    CPunctText(const CPunctText &pct);
+    //destructor:
+    ~CPunctText();
+    void Afis()
+    {
+        cout << "\nObiectul are x= " << x;
+        cout << "\nObiectul are y= " << y;
+        cout << "\nObiectul are sirul = " << sNume;
+    } //afis
+    CPunctText(const CPunctText &num1,const CPunctText &num2);
+};
+CPunctText::CPunctText()
+{
+    cout << "\n constructor explicit vid";
+    lungime_sir = dim_sir;
+    sNume = new char[lungime_sir];
+}
+CPunctText::CPunctText(int ix, int iy, const char *sText)
+{
+    cout << "\n constructor cu parametri";
+    lungime_sir = strlen(sText) + 1;
+    sNume = new char[lungime_sir];
+    x = ix;
+    y = iy;
+    strcpy(sNume, sText);
+}
+CPunctText::CPunctText(const CPunctText &pct)
+{
+    cout << "\n constructor de copiere";
+    sNume = new char[pct.lungime_sir];
+    x = pct.x;
+    y = pct.y;
+    lungime_sir = pct.lungime_sir;
+    strcpy(sNume, pct.sNume);
+}
+CPunctText::~CPunctText()
+{
+    cout << "\n destructor";
+    delete[] sNume;
+}
+
+CPunctText::CPunctText(const CPunctText &num1,const CPunctText &num2){
+    cout<<endl<<"constructor prin imbinare de puncte";
+    this->sNume = new char[num1.lungime_sir+num2.lungime_sir];
+    this->x = num1.x+num2.x;
+    this->y = num1.y+num2.y;
+    this->lungime_sir = num1.lungime_sir+num2.lungime_sir;
+    strcpy(sNume, strcat(num1.sNume,num2.sNume));
+
+}
+
+//MusteaDan Lab07 Grupa 2013
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <cstring>
+using namespace std;
+#include "CPunctText.h"
+int main( ) {
+CPunctText cpt1(1, 2, "Punct1");
+CPunctText cpt2(4, 5, "Punct2");
+cpt1.Afis();
+cpt2.Afis();
+cout<<endl;
+cout<<"=======================";//<<endl;
+CPunctText cpt3(cp1,cp2);
+cpt3.Afis();
+
+return 0;
+} #include <iostream>
+#include <cstring>
+
+using namespace std;
+
+#define MAX 100000
+
+class RealNumbers{
+    private:
+        double pointerArray[MAX];
+        int dim;
+    public:
+        void Set(double array[MAX],int dim){
+            this->dim=dim;
+            for(int i=0;i<dim;i++){
+                pointerArray[i]=array[i];
+            }
+        }
+        void GetArray(){
+            for(int i=0;i<this->dim;i++){
+                cout<<this->pointerArray[i]<<" ";
+            }
+        }
+        int GetDim(){
+            return this->dim;
+        }
+        double GetArrayElement(int index){
+            return pointerArray[index];
+        }
+        void Substract(RealNumbers rn1,RealNumbers rn2){
+            int min_dim=rn1.GetDim();
+            if(min_dim>rn2.GetDim()){
+                min_dim=rn2.GetDim();
+            }
+            this->dim=min_dim;
+            for(int i=0;i<min_dim;i++){
+                this->pointerArray[i]=rn1.GetArrayElement(i)-rn2.GetArrayElement(i);
+            }
+        }
+};
+
+void SetArray(double array[MAX],int &n){
+    cin>>n;
+    for(int i=0;i<n;i++){
+        cin>>array[i];
+    }
+}
+
+int main(){
+    RealNumbers r1,r2,r3;
+    int n,m,k;
+    double ar1[MAX],ar2[MAX],ar3[MAX];
+    SetArray(ar1,n);
+    SetArray(ar2,m);
+
+    r1.Set(ar1,n);
+    //cout<<r1.GetArrayElement(2);
+    //cout<<r1.GetDim();
+    //r1.GetArray();
+    r2.Set(ar2,m);
+    r3.Substract(r1,r2);
+    r3.GetArray();
+
+    return 0;
+}//MusteaDan Lab07 Grupa 2013
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+#define MAX 500
+
+class Student{
+	private:
+	char firstName[MAX], lastName[MAX];
+	int marks;
+	public://,char* lastName,int *marks){
+	void SetStudent(char* firstName,char * lastName,int marks){
+		if(firstName!=NULL){
+			strncpy(this->firstName,firstName,MAX-1);
+		}else{
+			strcpy(this->firstName,"REDACTED");
+		}
+		if(lastName!=NULL){
+			strncpy(this->lastName,lastName,MAX-1);
+		}else{
+			strcpy(this->lastName,"REDACTED");
+		}
+		this->marks=marks;
+	}
+	void GetStudentAll(){
+		cout<<this->firstName<<" "<<this->lastName<<" "<<marks<<endl;
+	}
+	int GetMark(){
+		return this->marks;
+	}
+
+};
+
+void HighestThree(Student studentList[MAX],int n){
+	int high[3]={0};
+	int ind[3]={0};
+	int aux=0;
+	for(int i=0;i<n;i++){
+		aux=studentList[i].GetMark();
+		if(aux>high[2]){
+			high[0]=high[1];
+			high[1]=high[2];
+			high[2]=aux;
+			ind[0]=ind[1];
+			ind[1]=ind[2];
+			ind[2]=i;
+		}else if(aux>high[1]){
+			high[0]=high[1];
+			high[1]=aux;
+			ind[0]=ind[1];
+			ind[1]=i;
+		}else if(aux>high[0]){
+			high[0]=aux;
+			ind[0]=i;
+		}
+	}
+	cout<<"First place: ";studentList[ind[2]].GetStudentAll();
+	cout<<"Second place: ";studentList[ind[1]].GetStudentAll();
+	cout<<"Third place: ";studentList[ind[0]].GetStudentAll();
+}
+
+void FailedExam(Student studentList[MAX],int n){
+	for(int i=0;i<n;i++){	
+		if(studentList[i].GetMark()<5){
+			studentList[i].GetStudentAll();
+		}
+	}
+}
+
+
+int main(){
+	Student studentList[1024];
+	char firstName[MAX],lastName[MAX];
+	int n,marks;
+	cout<<"Insert the number of students in the group"<<endl;
+	cin>>n;
+	for(int i=0;i<n;i++){
+		cout<<"Insert the first name"<<endl;
+		cin>>firstName;
+		cout<<"Insert the last name"<<endl;
+		cin>>lastName;
+		cout<<"Insert the mark"<<endl;
+		cin>>marks;
+		studentList[i].SetStudent(firstName,lastName,marks);
+	}
+	cout<<"======== Highest Students ========"<<endl;
+	HighestThree(studentList,n);
+	cout<<"======== Failed Students ========="<<endl;
+	FailedExam(studentList,n);
+    return 0;
+}//MusteaDan Lab07 Grupa 2013
+#include <iostream>
+#include <math.h>
+using namespace std;
+
+class Points{
+    private:
+		float x,y,z;
+		float GetDistance(float x1,float y1,float z1,float x2,float y2,float z2){
+			return pow((pow((x2 - x1),2) + pow((y2 - y1),2) + pow((z2 - z1),2)) , (float)1/2);
+		}
+	public:
+		void SetPoint(float x,float y,float z){
+			this->x=x;
+			this->y=y;
+			this->z=z;
+		}
+		float GetPoint(float &x, float &y, float &z){
+			x=this->x;
+			y=this->y;
+			z=this->z;
+		}
+		float DisplayPoint(){
+			cout<<this->x<<" "<<this->y<<" "<<this->z<<endl;
+		}
+		bool IsPointInLineBetweeenTwoPoints(Points a,Points b){
+			float x1,x2,x3,y1,y2,y3,z1,z2,z3;
+			x3=this->x;
+			y3=this->y;
+			z3=this->z;
+			a.GetPoint(x1,y1,z1);
+			b.GetPoint(x2,y2,z2);
+			float d1,d2,d3;
+			d1=GetDistance(x1,y1,z1,x2,y2,z2);
+			d2=GetDistance(x1,y1,z1,x3,y3,z3);
+			d3=GetDistance(x2,y2,z2,x3,y3,z3);
+			if(d1==d2+d3){
+				return true;
+			}else{
+				return false;
+			}
+		}
+		void MovePoint(float &x, float y, float z){
+			this->x+=x;
+			this->y+=y;
+			this->z+=z;
+
+		}
+};
+
+void ReadCoordinates(float &x,float &y,float &z){
+	cout<<"Insert the x/y/x coordinates for the point"<<endl;
+	cin>>x>>y>>z;
+}
+
+int main(){
+	Points a,b,c;
+
+	float x,y,z;
+	ReadCoordinates(x,y,z);
+	a.SetPoint(x,y,z);
+	ReadCoordinates(x,y,z);
+	b.SetPoint(x,y,z);
+	ReadCoordinates(x,y,z);
+	c.SetPoint(x,y,z);
+	cout<<"The point is/not colliniar and in between the 2 points: "<<c.IsPointInLineBetweeenTwoPoints(a,b)<<endl;
+	c.DisplayPoint();
+	ReadCoordinates(x,y,z);
+	c.MovePoint(x,y,z);
+	c.DisplayPoint();
+
+
+    return 0;
+}//MusteaDan Lab07 Grupa 2013
+#include <iostream>
+#include <stdio.h>
+#include <cstring>
+
+using namespace std;
+
+#define MAX 64
+#define MAX_INT 21
+
+class Student{
+	private:
+	char firstName[MAX], lastName[MAX],marks[MAX_INT];
+    int group=0;
+    float avgMark=0;
+	public://,char* lastName,int *marks){
+    ~Student(){
+        cout<<"Memeory Dealocated"<<endl;
+        delete[] firstName;
+        delete[] lastName;
+        delete[] marks;
+    }
+	void SetStudent(char* firstName,char * lastName,char * marks,int group){
+		if(firstName!=NULL){
+			strncpy(this->firstName,firstName,MAX-1);
+		}else{
+			strcpy(this->firstName,"REDACTED");
+		}
+		if(lastName!=NULL){
+			strncpy(this->lastName,lastName,MAX-1);
+		}else{
+			strcpy(this->lastName,"REDACTED");
+		}
+        if(marks!=NULL){
+			strncpy(this->marks,marks,MAX_INT-1);
+		}else{
+			strcpy(this->marks,"0");
+		}
+        this->group=group;
+
+		SetAvgMark();
+	}
+    void SetAvgMark(){
+        int n=strlen(this->marks);
+        int sum=0;
+        for(int i=0;i<n;i++){
+            if(marks[i]>='a' && marks[i]<='z'){
+                sum+=this->marks[i]-48;
+            }
+        }
+        this->avgMark=(float)((float)sum/n);
+    }
+	void DisplayStudentAll(){
+		cout<<this->firstName<<" "<<this->lastName<<" "<<this->avgMark<<" "<<this->group<<endl;
+	}
+	int GetAvgMark(){
+		return this->avgMark;
+	}
+};
+
+void ReadMarks(int n,char marks[MAX_INT]){
+    int x;
+    char MARK[MAX_INT]="";
+    for(int i=0;i<n;i++){
+        char ar[3];
+        cin>>x;
+        if(x>=10){
+            ar[0]='1';
+            ar[2]='0';
+            ar[3]='\0';
+        }else{
+            ar[0]=(char)x;
+            ar[1]='\0';
+        }
+        strcat(MARK,ar);
+    }   
+    strcpy(marks,MARK);
+}
+
+int partition(int order[MAX_INT],float mark[MAX_INT],int l,int h){
+    float pivot=mark[h];
+    int i=l-1;
+    for(int j=l;j<=h-1;j++){
+        if(mark[j]<pivot){
+            i++;
+            swap(mark[i],mark[j]);
+            swap(order[i],order[j]);
+        }
+    }
+    swap(mark[i+1],mark[h]);
+    swap(order[i+1],order[h]);
+    return (i+1);
+}
+
+void quickSort(int order[MAX_INT],float mark[MAX_INT],int l,int h){
+    int pi;
+    if(l<h){
+        pi=partition(order,mark,l,h);
+    }
+    quickSort(order,mark,l,pi-1);
+    quickSort(order,mark,pi+1,h);
+}
+
+int main(){
+    Student* p;
+    int n,order[MAX_INT];
+    float mark[MAX_INT];
+    cout<<"Insert the number of students you want to insert"<<endl;
+    cin>>n;
+    
+    p=(Student*)malloc(n*sizeof(Student));
+    if(p==NULL) exit(1);//terminates the program and returns 1 for error
+    for(int i=0;i<n;i++){
+        char firstName[MAX],lastName[MAX],marks[MAX_INT];
+        int group,numOfMakrs=0;
+        cout<<"Insert the information (firstname/lastname/num of mark/marks/group) for student "<<i+1<<": "<<endl;
+        cin>>firstName;
+        cin>>lastName;
+        cin>>numOfMakrs;
+        ReadMarks(numOfMakrs,marks);
+        cin>>group;
+        p[i].SetStudent(firstName,lastName,marks,group);
+        p[i].DisplayStudentAll();
+        order[i]=i;
+        mark[i]=p[i].GetAvgMark();
+    }
+    
+    quickSort(order,mark,0,n-1);
+    for(int i=0;i<n;i++){
+        p[order[i]].DisplayStudentAll();
+    }
+
+    free(p);
+
+    return 0;
+}
+
+// 4 a b 4 9 8 7 8 2013 c d 3 9 10 10 2013 e f 4 2 1 5 6 2013 g h 3 6 5 6 2014//MusteaDan Lab07 Grupa 2013
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+class Complex{
+    private:
+    double real,imag;
+    char* name;
+    int nameLength=7;
+    public:
+    Complex(){
+        cout<<"Explicit"<<endl;
+        this->real=1.0;
+        this->imag=1.0;
+        this->name=new char[7];
+        //this->name=(char*) malloc(7);
+    }
+    Complex(double real,double imag,char Name[7]){
+        cout<<"Parameters"<<endl;
+        nameLength=strlen(Name)+1;
+        this->name=new char[nameLength];
+        this->real=real;
+        this->imag=imag;
+        strcpy(this->name,Name);
+    }
+    Complex(const Complex &num){
+        cout<<"Copy"<<endl;
+        this->name=new char[nameLength];
+        this->real=num.real;
+        this->imag=num.imag;
+        strcpy(this->name,num.name);
+    }
+    ~Complex(){
+        cout<<"Destructor"<<endl;
+        delete[] name;
+    }
+    void SetImag(int imag){
+        this->imag=imag;
+    }
+    void SetReal(int real){
+        this->real=real;
+    }
+    void SetName(char name[7]){
+        nameLength=strlen(name)+1;
+        strcpy(this->name,name);
+    }
+    int GetImag(){
+        return this->imag;
+    }
+    int GetReal(){
+        return this->real;
+    }
+    char* GetName(){
+        return this->name;
+    }
+    void Addition(const Complex &num){
+        this->real+=num.real;
+        this->imag+=num.imag;
+    }
+    void Substraction(const Complex &num){
+        this->real-=num.real;
+        this->imag-=num.imag;
+    }
+    void Multiply(const Complex &num){
+        int rl,im;
+        rl=(-1)*(this->imag*num.imag + this->real*num.real);
+        im=this->imag*num.real+num.imag*this->real;
+        this->imag=im;
+        this->real=rl;
+    }
+    void Differentiate(const Complex &num){
+        int rl,im;
+        rl=(-1)*(this->imag/num.imag + this->real/num.real);
+        im=this->imag/num.real+this->real/num.imag;
+        this->imag=im;
+        this->real=rl;
+    }
+};
+
+int main(){
+    Complex num[10];
+    Complex complex_sum(0,0,"sum"),complex_sub(0,0,"sub"),complex_mul(1,1,"mul"),complex_dif(1,1,"dif");
+    srand(NULL);
+    for(int i=0;i<10;i++){
+        num[i].SetImag(rand()%10);
+        num[i].SetReal(rand()%10);
+        char ch[4]; 
+        ch[0]='a'+rand()%26;
+        ch[1]='a'+rand()%26;
+        ch[2]=rand()%9;
+        ch[3]= '\0';
+        num[i].SetName(ch);
+        cout<<num[i].GetReal()<<" "<<num[i].GetImag()<<" "<<num[i].GetName()<<endl;
+        complex_sum.Addition(num[i]);
+        complex_sub.Substraction(num[i]);
+        complex_mul.Multiply(num[i]);
+        complex_dif.Differentiate(num[i]);
+    }
+    cout<<complex_sum.GetReal()<<" "<<complex_sum.GetImag()<<" "<<complex_sum.GetName()<<endl;
+    cout<<complex_sub.GetReal()<<" "<<complex_sub.GetImag()<<" "<<complex_sub.GetName()<<endl;
+    cout<<complex_mul.GetReal()<<" "<<complex_mul.GetImag()<<" "<<complex_mul.GetName()<<endl;
+    cout<<complex_dif.GetReal()<<" "<<complex_dif.GetImag()<<" "<<complex_dif.GetName()<<endl;
+
+    return 0;
+}//MusteaDan Lab07 Grupa 2013
+#include <iostream>
+
+using namespace std;
+
+class Fraction{
+    private:
+        int a,b;
+    public:
+        Fraction(){
+            this->a=0;
+            this->b=1;
+        }
+        Fraction(int x,int y){
+            if(y!=0){
+                this->a=x;
+                this->b=y;
+            }
+        }
+        Fraction(const Fraction &f){
+            this->a=f.a;
+            this->b=f.b;
+        }
+        Fraction AddFraction(Fraction f){
+            Fraction F;
+            F.a=f.a+this->a;
+            F.b=f.b+this->b;
+            return F;
+        }
+        Fraction SubFraction(Fraction f){
+            Fraction F;
+            F.a=f.a-this->a;
+            F.b=f.b-this->b;
+            return F;
+        }
+        Fraction MulFraction(Fraction f){
+            Fraction F;
+            F.a=f.a*this->a;
+            F.b=f.b*this->b;
+            return F;
+        }
+        Fraction DivFraction(Fraction f){
+            Fraction F;
+            F.a=f.a*this->b;
+            F.b=f.b*this->a;
+            return F;
+        }
+        void Set(int a,int b){
+            this->a=a;
+            this->b=b;
+        }
+        int GetA(){
+            return this->a;
+        }
+        int GetB(){
+            return this->b;
+        }
+        void Display(){
+            cout<<this->a<<"/"<<this->b<<endl;
+        }
+        int CMMDC(int x,int y){
+            while(x!=y){
+                if(x>y){
+                    x-=y;
+                }
+                if(y>x){
+                    y-=x;
+                }
+            }
+            return x;
+        }
+        void Simplifiy(){
+            int x=this->a,y=this->b,res=CMMDC(x,y);
+            while(res!=1){
+                x/=res;
+                y/=res;
+                res=CMMDC(x,y);
+            }
+        }
+
+
+};
+
+int main(){
+    Fraction f1,f2,f3,f4,f5,f6;
+    int a,b;
+    cout<<"Insert the values of the fraction: "<<endl;
+    cin>>a>>b;
+    f1.Set(a,b);
+    f1.Display();
+    cout<<"Insert the values of the fraction: "<<endl;
+    cin>>a>>b;
+    f2.Set(a,b);
+    f2.Display();
+    cout<<"-----"<<endl;
+    f3=f1.AddFraction(f2);
+    f4=f1.SubFraction(f2);
+    f5=f1.MulFraction(f2);
+    f6=f1.DivFraction(f2);
+    f1.Simplifiy();
+    f2.Simplifiy();
+    f1.Display();
+    f2.Display();
+    f3.Display();
+    f4.Display();
+    f5.Display();
+    f6.Display();
+
+
+    return 0;
+}//MusteaDan Lab07 Grupa 2013
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+class Fraction{
+    private:
+        int a,b,nameLength=40;
+        char* name;
+    public:
+        Fraction(){
+            //cout<<"Explicit"<<endl;
+            this->a=0;
+            this->b=1;
+            this->name=new char[20];
+        }
+        Fraction(int x,int y,char unknown[40]){
+            //cout<<"Paramters"<<endl;
+            if(y!=0){
+                this->a=x;
+                this->b=y;
+                strcpy(this->name,unknown);
+            }
+        }
+        Fraction(const Fraction &f){
+            //cout<<"Copy"<<endl;
+            this->name = new char[f.nameLength];
+            this->a=f.a;
+            this->b=f.b;
+            nameLength=f.nameLength;
+            strcpy(this->name,f.name);
+        }
+        ~Fraction(){
+            //cout<<"Destructor"<<endl;
+            delete[] this->name;
+        }
+        Fraction AddFraction(Fraction f){
+            Fraction F;
+            F.a=f.a+this->a;
+            F.b=f.b+this->b;
+            return F;
+        }
+        Fraction SubFraction(Fraction f){
+            Fraction F;
+            F.a=f.a-this->a;
+            F.b=f.b-this->b;
+            return F;
+        }
+        Fraction MulFraction(Fraction f){
+            Fraction F;
+            F.a=f.a*this->a;
+            F.b=f.b*this->b;
+            return F;
+        }
+        Fraction DivFraction(Fraction f){
+            Fraction F;
+            F.a=f.a*this->b;
+            F.b=f.b*this->a;
+            return F;
+        }
+        void SetAll(int a,int b,char name[20]){
+            nameLength=strlen(name)+1;
+            this->name=new char[nameLength];
+            this->a=a;
+            this->b=b;
+            strcpy(this->name,name);
+        }
+        void SetName(char name[20]){
+            nameLength=strlen(name)+1;
+            strcpy(this->name,name);
+        }
+        char* GetName(){
+            return this->name;
+        }
+        int GetA(){
+            return this->a;
+        }
+        int GetB(){
+            return this->b;
+        }
+        void Display(){
+            cout<<this->a<<"/"<<this->b<<" "<<this->name<<endl;
+        }
+};
+
+int main(){
+    Fraction a,b;
+    int x,y;
+    char name[40];
+    cout<<"Insert the divisor and the divident number and the name for the fraction: ";
+    cin>>x>>y>>name;
+    a.SetAll(x,y,name);
+    cout<<a.GetA()<<"/"<<a.GetB()<<" "<<a.GetName()<<endl;
+    Fraction c(a);
+    b.Display();
+    //c.Display();
+    cout<<c.GetA()<<"/"<<c.GetB()<<" "<<c.GetName()<<endl;
+
+
+
+    return 0;
+}

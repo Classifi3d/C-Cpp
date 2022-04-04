@@ -1,0 +1,410 @@
+//MusteaDan Lab05 Grupa 2013
+#include <iostream>
+#include <math.h>
+
+using namespace std;
+
+struct CircleStruct{
+    int radius;
+};
+
+class CircleClass{
+    private: 
+        int radius;
+    public:
+        CircleClass(int a){
+            radius=a;
+        }
+        int getRadius(){
+            return radius;
+        }
+
+        int area(){
+            return M_PI*radius*radius;
+        }
+        int circumference(){
+            return M_PI*2*radius;
+        }
+        ~CircleClass(){
+            //delete &radius;
+            radius=0;
+        };
+};
+
+int main(){
+    struct CircleStruct c1,c2;
+    cout<<"Input the values for the struct circle c1 and c2"<<endl;
+    cin>>c1.radius>>c2.radius;
+    cout<<"Circle one's area and circumference are "<<(M_PI*c1.radius*c1.radius)<<" and "<<(2*M_PI*c1.radius)<<endl;
+    int c2Diameter=(2*c2.radius);
+    cout<<"Circlwe two's area and circumfere6nce are "<<(M_PI/4)*c2Diameter*c2Diameter<<" and "<<c2Diameter*M_PI<<endl;
+
+    int x;
+    cout<<"Input the value of the radius for circle class"<<endl;
+    cin>>x;
+    CircleClass C1(x),C2();
+    cout<<"radius: "<<C1.getRadius()<<endl;
+    cout<<"circumference: "<<C1.circumference()<<endl;
+    cout<<"area: "<<C1.area()<<endl;
+    cout<<"Insert an area to redefine a circle's area: ";
+    //int y,*yp; cin>>y;
+
+    //cout<<"The modified area is "<<C2.area<<endl;
+
+
+    return 0;
+}class String{
+    private:
+        char* array;
+        char arrayCp[];
+    public:
+        String(){
+            array="";
+        };//no parameters passed
+        String(char* array){
+            this->array=array;
+        };
+
+       void setString(char* array){
+            this->array=array;
+        }
+        char* getString(){
+            return array;
+        }
+        int getLength(){
+            int i=0,maxFailsafe=10000;
+            while(array[i]!='\0'&&i<maxFailsafe){
+                i++;
+            }
+            return i;
+        }
+        int getLastOccurance(char a){
+            int dim=getLength(),lastOccuranceIndex=-1;
+            for(int i=0;i<dim;i++){
+                if(array[i]==a){
+                    lastOccuranceIndex=i;
+                }
+            }
+            return lastOccuranceIndex;
+        }
+        char* getStringUpper(){
+            int dim=getLength();
+            for(int i=0;i<dim;i++){
+               if(array[i]>='a' && array[i]<='z'){
+                    this->arrayCp[i]=array[i]-32;
+                }else{
+                    this->arrayCp[i]=array[i];
+                }
+            }this->arrayCp[dim]='\0';
+            return arrayCp;
+        };
+        int getLastOccuranceUpper(char a){
+            getStringUpper();
+            int dim=getLength(),lastOccuranceIndex=-1;
+            for(int i=0;i<dim;i++){
+                if(this->arrayCp[i]==a){
+                    lastOccuranceIndex=i;
+                }
+            }
+            return lastOccuranceIndex;
+        }
+
+};//MusteaDan Lab05 Grupa 2013
+#include <iostream>
+#include "strClass.h"
+
+using namespace std;
+
+#define MAX 10
+
+int main(){
+    char array[MAX];
+    cin.get(array,MAX);
+    cin.get();
+    char target;
+    cin>>target;
+    cout<<"";
+
+    String str;
+    str.setString(array);
+    cout<<"========================="<<endl;
+    cout<<"length: "<<str.getLength()<<endl;
+    cout<<"last occurance: "<<str.getLastOccurance(target)<<endl;
+    cout<<"upper:"<<str.getStringUpper()<<endl;
+    cout<<"upper last occurance: "<<str.getLastOccuranceUpper(target)<<endl;
+    return 0;
+}//MusteaDan Lab05 Grupa 2013
+#include <iostream>
+
+using namespace std;
+
+class Number{
+    private:
+    public:
+        int val=0;
+        int sum(int externalNum){
+            return val+externalNum;
+        }
+        int sumExt(int externalNum);
+};
+
+int Number::sumExt(int externalNum){
+return val+externalNum;
+};
+
+int main(){
+
+    Number n1,n2;
+    Number* p=&n1;
+    cout<<"Insert the values for the two numbers: ";
+    cin>>p->val>>n2.val;
+    cout<<"The numbers are: "<<p->val<<" and "<<n2.val<<", and their sum is "<<n2.sum(p->val)<<" (or with the 2nd method "<<n2.sumExt(p->val)<<")"<<endl;
+
+    return 0;
+}//MusteaDan Lab05 Grupa 2013
+#include <iostream>
+
+using namespace std;
+
+class Operations{
+    private:
+    public:
+        int x,y;
+        int plus(){
+            return this->x+this->y;
+        }
+        int minus(){
+            int minus=this->x-this->y;
+            if(minus<0){
+                return (-1)*minus;
+            }else{
+                return minus;
+            }
+        }
+        int multiplication(){
+            return this->x*this->y;
+        }
+        float divison(){
+            if(y!=0){
+                return (float)this->x/this->y;
+            }else{
+                try{
+                    return this->x/this->y;
+                }
+                catch(int e){
+                    return e;
+                }
+            }
+        }
+};
+
+
+int main(){
+    Operations a;
+    cin>>a.x>>a.y;
+    cout<<a.plus()<<endl;
+    cout<<a.minus()<<endl;
+    cout<<a.multiplication()<<endl;
+    cout<<a.divison()<<endl;
+
+
+    return 0;
+}//MusteaDan Lab05 Grupa 2013
+#include <iostream>
+
+using namespace std;
+
+class complexNumbers{
+    private:
+        int real,imag;
+    public:
+        void SetComplexNumber(int a,int b){
+            this->real=a;
+            this->imag=b;
+        }
+        void GetComplexNumber(){
+            cout<<"real part: "<<this->real<<" | imaginary part: "<<this->imag<<endl;
+        }
+};
+
+int main(){
+
+    complexNumbers a,b;
+    cout<<"Insert the set of values of 2 complex numbers: ";
+    int a1,a2,b1,b2;
+    cin>>a1>>a2>>b1>>b2;
+    a.SetComplexNumber(a1,a2);
+    b.SetComplexNumber(b1,b2);
+    a.GetComplexNumber();
+    b.GetComplexNumber();
+
+
+    return 0;
+}//MusteaDan Lab05 Grupa 2013
+#include <iostream>
+
+using namespace std;
+
+class Arithmetics{
+    private:
+        int a;
+        float b;
+    public:
+        void SetArithmetics(int a,float b){
+            this->a=a;
+            this->b=b;
+        }
+        int GetArithmeticsA(){
+            return this->a;
+        }
+        float GetArithmeticsB(){
+            return this->b;
+        }
+        float Sum(){
+            return this->a+this->b;
+        }
+        float Difference();
+};
+
+float Arithmetics::Difference(){
+    int minus=this->a-this->b;
+    if(minus<0){
+          return (-1)*minus;
+        }else{
+           return minus;
+    }
+};
+
+int main(){
+
+    Arithmetics a,b,c;
+    int x; float y;
+    cin>>x>>y;  a.SetArithmetics(x,y);
+    cin>>x>>y;  b.SetArithmetics(x,y);
+    cin>>x>>y;  c.SetArithmetics(x,y);
+
+    cout<<a.GetArithmeticsA()<<" "<<a.GetArithmeticsB()<<" - sum: "<<a.Sum()<<endl;
+    cout<<b.GetArithmeticsA()<<" "<<b.GetArithmeticsB()<<" - difference: "<<b.Difference()<<endl;
+    cout<<c.GetArithmeticsA()<<" "<<c.GetArithmeticsB()<<" - difference: "<<c.Difference()<<endl;
+
+    return 0;
+}//MusteaDan Lab05 Grupa 2013
+#include <iostream>
+
+using namespace std;
+
+class Complex{
+    class complexNumbers{
+        private:
+            int real,imag;
+        public:
+            void SetComplexNumber(int a,int b){
+                this->real=a;
+                this->imag=b;
+            }
+			int GetReal(){
+				return real;
+			}
+            int GetImag(){
+                return imag;
+            }
+    };
+	private:
+		complexNumbers x,y;
+    public:
+		void Set(int a,int b,int c,int d){
+			this->x.SetComplexNumber(a,b);
+			this->y.SetComplexNumber(c,d);
+		}
+		void Sum(){
+			int SumR=x.GetReal()+y.GetReal();
+			int SumI=x.GetImag()+y.GetImag();
+			cout<<"sum result is real: "<<SumR<<" | imag: "<<SumI<<endl;
+		}
+		int Difference(){
+			int minusR=this->x.GetReal()-this->y.GetReal();
+			int minusI=this->x.GetImag()-this->x.GetImag();
+			cout<<"diffrenece result is real: "<<minusR<<" | imag: "<<minusI<<endl;
+
+		}
+		int Multiplication(){
+			int multi1=this->x.GetReal()*this->y.GetReal();
+			int multi2=(this->x.GetReal()*this->y.GetImag())+(this->x.GetImag()*this->y.GetReal());
+			int multi3=this->x.GetImag()*this->x.GetImag();
+			multi3*=(-1);
+			cout<<"multiplication result is real: "<<multi1+multi3<<" | imag: "<<multi2<<endl;
+		}
+		float Division(){
+			float div1=((float)this->x.GetReal()/this->y.GetReal() )+ ((float)this->x.GetImag()/this->x.GetImag());
+			float div2=((float)this->x.GetReal()/this->y.GetImag())+((float)this->x.GetImag()/this->y.GetReal());
+			cout<<"division result is real: "<<div1<<" | imag: "<<div2<<endl;
+    	}
+};
+
+
+int main(){
+    cout<<"Insert the set of values of 2 complex numbers: ";
+    int a1,a2,b1,b2;
+    cin>>a1>>a2>>b1>>b2;
+	Complex pair;
+	pair.Set(a1,a2,b1,b2);
+	pair.Sum();
+	pair.Difference();
+	pair.Multiplication();
+	pair.Division();
+
+    return 0;
+}//MusteaDan Lab05 Grupa 2013
+#include <iostream>
+
+using namespace std;
+
+class Fraction{
+    private:
+        int a=0,b=0;
+    public:
+        void SetTop(int a){
+            this->a=a;
+        }
+        void SetBottom(int b){
+            this->b=b;
+        }
+        int GetTop(){
+            return this->a;
+        }
+        int GetBottom(){
+            return this->b;
+        }
+        double Simplify(){
+            return ((double)this->a/this->b);
+        }
+
+
+
+};
+
+int main(){
+    Fraction x,y;
+    int a,b,c,d;
+    cin>>a>>b>>c>>d;
+    //getters before setters
+    cout<<" ===getters before setters ==="<<endl;
+    cout<<x.GetTop()<<"/"<<x.GetBottom()<<endl;
+    cout<<y.GetTop()<<"/"<<y.GetBottom()<<endl;
+    //the setters
+    x.SetTop(a);
+    x.SetBottom(b);
+    y.SetTop(c);
+    y.SetBottom(d);
+    //the getters after the setters
+    cout<<" === the getters after the setters ==="<<endl;
+    cout<<x.GetTop()<<"/"<<x.GetBottom()<<endl;
+    cout<<y.GetTop()<<"/"<<y.GetBottom()<<endl;
+    //simplified
+    cout<<" === simplified ==="<<endl;
+    cout<<x.Simplify()<<endl;
+    cout<<y.Simplify()<<endl;
+
+    
+    return 0;
+}

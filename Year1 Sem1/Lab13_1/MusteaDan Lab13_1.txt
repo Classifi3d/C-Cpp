@@ -1,0 +1,59 @@
+/*
+Nume: Mustea Dumitru Dan
+Grupa: 2013
+Seria: ENG
+*/
+#include <iostream>
+
+using namespace std;
+
+union group {
+	int a;
+	char c;
+	double d;
+};
+
+struct struct_group {
+	int a;
+	char c;
+	double d;
+};
+
+int main()
+{
+	group g1;
+	struct_group g2;
+	
+	char* c1,*c2;
+	int* a1,*a2;
+
+	//Answer: No we cannot display all the fields, since the union structure allows only one field to be stored in memory
+
+	c1 = &(g1.c);
+	a1 = &(g1.a);
+	c2 = &(g2.c);
+	a2 = &(g2.a);
+
+	int A;
+	printf("insert a integ value to be stored\n");
+	scanf_s("%d", &A);
+
+	char C;
+	printf("insert a character value to be stored\n");
+	//scanf_s("%c ", &C);
+	cin >> C;
+
+	*a1 = A;
+	*a2 = A;
+	printf("--num values:\nunion: %d\nstruct: %d\n", *a1,*a2);
+
+	*c1 = C;
+	*c2 = C;
+	printf("--char values:\nunion: %c\nstruct: %c\n", *c1, *c2);
+
+	printf("--num values:\nunion: %d\nstruct: %d\n", *a1, *a2);
+
+	printf("As you can see the value numerical stored in the union was lost because in was overwriten by the char value, and that is because the share the same storage space.\n");
+	printf("in this example, as a result of the pervious steps, trying to read the num value while a char character is stored in memory, the probram will return the ascii value of the character");
+
+}

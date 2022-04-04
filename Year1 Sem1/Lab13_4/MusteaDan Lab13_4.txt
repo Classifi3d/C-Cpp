@@ -1,0 +1,106 @@
+/*
+Nume: Mustea Dumitru Dan
+Grupa: 2013
+Seria: ENG
+*/
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+
+#define _CRT_SECURE_NO_WARNINGS 
+
+using namespace std;
+
+#define max 1000
+
+
+
+int fileExists(char fileName[max]);
+int arrayLength(char array[max]);
+
+int main() {
+
+	char fileName[max];
+	printf("Insert a filename\n");
+	//scanf_s("%s", fileName);
+	cin >> fileName;
+
+	//adds a ".txt" extension to the file name that was read from the keyboard
+	int i = arrayLength(fileName);
+	fileName[i] = '.';
+	fileName[i + 1] = 't';
+	fileName[i + 2] = 'x';
+	fileName[i + 3] = 't';
+	fileName[i + 4] = '\0';
+
+
+
+	if (fileExists(fileName) == NULL) {
+		printf("File does not exist\n");
+		printf("The file was supposed to be created already and therefor the program will not let you creat a new one\n");
+	}
+	else {
+		printf("File does exist\n");
+	}
+
+
+	FILE* fPointer = fopen(fileName, "r");
+	char array[max];
+	int numArray[11],dim=0;
+	while (!(feof(fPointer))) {
+		fgets(array, max, fPointer);
+		for (int i = 0; i < arrayLength(array); i++) {
+			if (array[i] >= '0' && array[i] <= '9') {//if a number exists
+				int num = array[i] - '0';
+				while ((array[i + 1] != ' ' && array[i + 1] != '\0')&&(array[i+1] >= '0' && array[i+1] <= '9')) {//if its precedeed by another number and it's valid
+					num *= 10;																					 //creats multiple digit numbers
+					num += array[i+1] - '0';
+					i++;
+				}
+				numArray[dim++] = num;//adds the number to the array
+				
+			}
+		}
+		puts(array);
+	}
+
+	for (int i = 0; i < dim; i++) {//sorting the num array
+		for (int j = i + 1; j < dim; j++) {
+			if (numArray[i] > numArray[j]) {
+				int aux = numArray[j];
+				numArray[j] = numArray[i];
+				numArray[i] = aux;
+			}
+		}
+	}
+
+	int evenNumbers = 0;
+	for (int i = 0; i < dim; i++) {//display and even numbers count
+		printf("%d ", numArray[i]);
+		if (numArray[i] % 2 == 0) {
+			evenNumbers++;
+		}
+	}printf("\n");
+
+	printf("%d\n", evenNumbers);
+
+	fclose(fPointer);
+}
+
+int arrayLength(char array[max]) {//returns the length of an array
+	int i = 0;
+	while (array[i] != '\0') {
+		i++;
+	}
+	return i;
+}
+
+
+int fileExists(char fileName[max]) {//checks if the file exists
+	if (fopen(fileName, "r") == NULL) {
+
+		return 0;
+	}
+
+	return 1;
+}

@@ -1,0 +1,1062 @@
+//MusteaDan Lab11 Grupa 2013
+#include <iostream>
+
+using namespace std;
+
+class Pozitie
+{
+protected:
+    int x, y;
+
+public:
+    Pozitie(int = 0, int = 0);
+    Pozitie(const Pozitie &);
+    ~Pozitie();
+    //void afisare();
+    //void deplasare(int, int);
+    virtual void afisare();
+    virtual void deplasare(int, int);
+}; //CB
+// constructor
+Pozitie::Pozitie(int abs, int ord)
+{
+    x = abs;
+    y = ord;
+    cout << "Constructor CB \"Pozitie\", ";
+    afisare();
+}
+//constructor de copiere
+Pozitie::Pozitie(const Pozitie &p)
+{
+    x = p.x;
+    y = p.y;
+    cout << "Constructor de copiere CB \"Pozitie\", ";
+    afisare();
+}
+// destructor
+Pozitie::~Pozitie()
+{
+    cout << "Destructor CB \"Pozitie \", ";
+    afisare();
+}
+void Pozitie::afisare()
+{
+    cout << " CB afisare: coordonate: x = " << x << ", y = " << y << "\n";
+}
+void Pozitie::deplasare(int dx, int dy)
+{
+    cout << "CB: deplasare" << endl;
+    x += dx;
+    y += dy;
+}
+// clasa derivata
+class Punct : public Pozitie
+{
+    int vizibil;
+    char culoare;
+
+public:
+    Punct(int = 0, int = 0, char = 'A');    
+    Punct(const Punct &);
+    ~Punct();
+    void arata()
+    {
+        vizibil = 1;
+    }
+    void ascunde()
+    {
+        vizibil = 0;
+    }
+    void coloreaza(char c)
+    {
+        culoare = c;
+    }
+    void deplasare(int, int);
+    void afisare();
+}; //CD
+// constructor
+Punct::Punct(int abs, int ord, char c) : Pozitie(abs, ord)
+{
+    vizibil = 0;
+    culoare = c;
+    cout << "Constructor CD \"Punct\", ";
+    afisare(); //CD
+}
+// constructor de copiere
+Punct::Punct(const Punct &p) : Pozitie(p.x, p.y)
+{
+    vizibil = p.vizibil;
+    culoare = p.culoare;
+    cout << "Constructor de copiere CD \"Punct\", ";
+    afisare(); //CD
+}
+// destructor
+Punct::~Punct()
+{
+    cout << "Destructor CD \"Punct\", ";
+    afisare(); //CD
+}
+// redefinire functie de deplasare in clasa derivata
+void Punct::deplasare(int dx, int dy)
+{
+    if (vizibil)
+    {
+        cout << " CD: Deplasare afisare CD\n";
+        x += dx;
+        y += dy;
+        afisare(); //CD
+    }
+    else
+    {
+        x += dx;
+        y += dy;
+        cout << "Deplasare prin CD afisare din CB\n";
+        Pozitie::afisare();
+    }
+}
+// redefinire metoda de afisare in clasa derivata
+void Punct::afisare()
+{
+    cout << "Pozitie: x = " << x << ", y = " << y;
+    cout << ", culoare: " << culoare;
+    if (vizibil)
+        cout << ", vizibil \n";
+    else
+        cout << ", invizibil \n";
+}
+
+class Cerc : public Pozitie{
+public:
+    Cerc(){
+        cout<<"Constructor Cerc!"<<endl;
+    }
+    Cerc(const Cerc &a){
+        cout<<"Constructor Cerc!"<<endl;
+        this->x=a.x;
+        this->y=a.y;
+    }
+    Cerc(int x,int y){
+        cout<<"Constructor Cerc!"<<endl;
+        this->x=x;
+        this->y=y;
+    }
+    ~Cerc(){
+        cout<<"Deconstructor Cerc!"<<endl;
+    }
+
+};
+
+int main()
+{
+    //order of the constructors and deconstructors is construct pozitie then constructor punct then the respective destructors in reverse: punct then pozitie
+    Pozitie a(1,2);
+    Punct aux(3,10);
+    a.afisare();
+    a.deplasare(3,-4);
+    a.afisare();
+    Punct b(aux);
+    b.afisare();
+    b.ascunde();
+    b.afisare();
+    b.coloreaza('r');
+    b.deplasare(3,0);
+    b.arata();
+    b.afisare();
+    Cerc c(0,0);
+    c.afisare();
+
+
+    return 0;
+}
+//MusteaDan Lab11 Grupa 2013
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+//header_1.h
+class Baza
+{
+protected:
+    int x;
+
+public:
+    Baza()
+    {
+        cout << "Apel la constructorul clasei de baza\n";
+        x = 10;
+    }
+}; // clasa de baza
+class Derivata1 : virtual public Baza
+{
+public:
+    Derivata1()
+    {
+        cout << "Apel la constructorul clasei Derivata1\n";
+    }
+};
+class Derivata2 : virtual public Baza
+{
+public:
+    Derivata2()
+    {
+        cout << "Apel la constructorul clasei Derivata2\n";
+    }
+};
+class Derivata1si2 : public Derivata1, public Derivata2
+{
+public:
+    Derivata1si2()
+    {
+        cout << "Apel la constructorul clasei Derivata1si2\n";
+    }
+};
+
+//header_2.h
+enum Color
+{
+    Co_red,
+    Co_green,
+    Co_blue
+};
+// clasa de baza abstracta
+class Shape
+{
+protected:
+    int xorig;
+    int yorig;
+    Color co;
+
+public:
+    Shape(int x, int y, Color c) : xorig(x), yorig(y), co(c) {}
+    virtual ~Shape() {}      // destructor virtual
+    virtual void draw() = 0; // metoda virtuala pura
+};
+// O metoda virtuala pura face clasa in care apare ca fiind clasa abstracta.
+// Metoda virtuala pura trebuie definita in clasele derivate sau redeclarata ca
+//metoda virtuala pura in clasele derivate.
+// clasa Line (intre origine si un punct destinatie)
+class Line : public Shape
+{
+    int xdest;
+    int ydest;
+
+public:
+    Line(int x, int y, Color c, int xd, int yd) : xdest(xd), ydest(yd), Shape(x, y, c) {}
+    ~Line() { cout << "~Linie\n"; } // destructor virtual
+    void draw()                     // metoda virtuala
+    {
+        cout << "Linie"
+             << "(";
+        cout << xorig << ", " << yorig << ", " << int(co);
+        cout << ", " << xdest << ", " << ydest;
+        cout << ")\n";
+    }
+};
+// Clasa Circle : cerc cu raza
+class Circle : public Shape
+{
+    int raza;
+
+public:
+    Circle(int x, int y, Color c, int r) : raza(r), Shape(x, y, c) {}
+    ~Circle() { cout << "~Cerc\n"; } // destructor virtual
+    void draw()                      // metoda virtuala
+    {
+        cout << "Cerc"
+             << "(";
+        cout << xorig << ", " << yorig << ", " << int(co);
+        cout << ", " << raza;
+        cout << ")\n";
+    }
+};
+// Clasa Text : text
+class Text : public Shape
+{
+    char *str;
+
+public:
+    Text(int x, int y, Color c, const char *s) : Shape(x, y, c)
+    {
+        str = new char[strlen(s) + 1];
+        strcpy(str, s);
+    }
+    ~Text()
+    {
+        delete[] str;
+        cout << "~Text\n";
+    }           // destructor virtual
+    void draw() // metoda virtuala
+    {
+        cout << "Text"
+             << "(";
+        cout << xorig << ", " << yorig << ", " << int(co);
+        cout << ", " << str;
+        cout << ")\n";
+    }
+};
+
+//header_3.h
+class Vehicul
+{
+    int roti;
+    float greutate;
+
+public:
+    virtual void mesaj()
+    {
+        cout << "Mesaj din clasa Vehicul\n";
+    }
+};
+class Automobil : public Vehicul
+{
+    int incarcatura_pasageri;
+
+public:
+    void mesaj()
+    {
+        cout << "Mesaj din clasa Automobil\n";
+    }
+};
+class Camion : public Vehicul
+{
+    int incarcatura_pasageri;
+    float incarcatura_utila;
+
+public:
+    int pasageri()
+    {
+        return incarcatura_pasageri;
+    }
+};
+class Barca : public Vehicul
+{
+    int incarcatura_pasageri;
+
+public:
+    int pasegeri()
+    {
+        return incarcatura_pasageri;
+    }
+    void mesaj()
+    {
+        cout << "Mesaj din clasa Barca\n";
+    }
+};
+
+//#include <header_1.h>
+//#include <header_2.h>
+//#include <header_3.h>
+
+//main_file.cpp
+int main()
+{
+    Barca a;
+    a.mesaj();
+    Derivata1 b;
+    Text c(1,2,Co_red,"Cerc1");
+    c.draw();
+    
+    return 0;
+}
+#include <iostream>
+using namespace std;
+
+class Vehicul
+{
+    int roti;
+    float greutate;
+
+public:
+    void SetGreutate(float greutate){
+        this->greutate=greutate;
+    }
+    float GetGreutate(){
+        return this->greutate;
+    }
+    void SetRoti(int roti){
+        this->roti=roti;
+    }
+    int GetRoti(){
+        return this->roti;
+    }
+    virtual void mesaj()
+    {
+        cout << "Mesaj din clasa Vehicul\n";
+    }
+};
+class Automobil : public Vehicul
+{
+    int incarcatura_pasageri;
+
+public:
+    void mesaj()
+    {
+        cout << "Mesaj din clasa Automobil\n";
+    }
+};
+class Camion : public Vehicul
+{
+    int incarcatura_pasageri;
+    float incarcatura_utila;
+
+public:
+    int pasageri()
+    {
+        return incarcatura_pasageri;
+    }
+};
+class Barca : public Vehicul
+{
+    int incarcatura_pasageri;
+
+public:
+    int pasegeri()
+    {
+        return incarcatura_pasageri;
+    }
+    void mesaj()
+    {
+        cout << "Mesaj din clasa Barca\n";
+    }
+};
+
+int main()
+{
+    // apel direct, prin intermediul unor obiecte specifice
+    Vehicul monocicleta;
+    Automobil ford;
+    Camion semi;
+    Barca barca_de_pescuit;
+    monocicleta.mesaj();
+    ford.mesaj();
+    semi.mesaj(); //din Vehicul ca si CB
+    barca_de_pescuit.mesaj();
+    // apel prin intermediul unui pointer specific
+    Vehicul *pmonocicleta;
+    Automobil *pford;
+    Camion *psemi;
+    Barca *pbarca_de_pescuit;
+    cout << "\n";
+    pmonocicleta = &monocicleta;
+    pmonocicleta->mesaj();
+    pford = &ford;
+    pford->mesaj();
+    psemi = &semi;
+    psemi->mesaj(); //din CB
+    pbarca_de_pescuit = &barca_de_pescuit;
+    pbarca_de_pescuit->mesaj();
+    // apel prin intermediul unui pointer catre un obiect al clasei de baza
+    cout << "\n";
+    pmonocicleta = &monocicleta;
+    pmonocicleta->mesaj();            //Vehicul
+    pmonocicleta = &ford;             //upcasting
+    pmonocicleta->mesaj();            //Automobil
+    pmonocicleta = &semi;             //upcasting
+    pmonocicleta->mesaj();            //Vehicul
+    pmonocicleta = &barca_de_pescuit; //upcasting
+    pmonocicleta->mesaj();
+    
+    Camion *OptimusPrime;
+    OptimusPrime->SetRoti(10);
+    OptimusPrime->SetGreutate(15000);
+    cout<<OptimusPrime->GetRoti()<<" "<<OptimusPrime->GetGreutate()<<endl;
+
+    return 0;
+}
+//MusteaDan Lab11 Grupa 2013
+#include <iostream>
+
+using namespace std;
+
+class Military{
+private:
+public:
+    virtual void sunt_milirtar(){
+        cout<<"I'm in the military"<<endl;
+    }
+};
+
+class Soldier : public Military{
+public:
+    void sunt_milirtar(){
+        cout<<"I'm a soldier"<<endl;
+    }
+};
+
+class Officer : public Military{
+public:
+    void sunt_milirtar(){
+        cout<<"I'm a officer"<<endl;
+    }
+};
+
+class Lieutenant : public Officer{
+public:
+    void sunt_milirtar(){
+        cout<<"I'm a lieutenant"<<endl;
+    }
+};
+
+class Colonel : public Officer{
+public:
+    void sunt_milirtar(){
+        cout<<"I'm a colonel"<<endl;
+    }
+};
+
+class Captain : public Officer{
+public:
+    void sunt_milirtar(){
+        cout<<"I'm a captain"<<endl;
+    }
+};
+
+class General : public Officer{
+public:
+    void sunt_milirtar(){
+        cout<<"I'm a general"<<endl;
+    } 
+};
+
+
+int main(){
+
+Military a;
+Soldier b;
+Officer c;
+Lieutenant d;
+Captain e;
+General f;
+
+a.sunt_milirtar();
+b.sunt_milirtar();
+c.sunt_milirtar();
+d.sunt_milirtar();
+e.sunt_milirtar();
+f.sunt_milirtar();
+
+    return 0;
+}
+//MusteaDan Lab11 Grupa 2013
+#include <iostream>
+
+using namespace std;
+
+class Animal{
+public:
+    virtual void breath()=0;
+    virtual void eat(){
+        cout<<"EAT"<<endl;
+    };
+    virtual void sleep(){
+        cout<<"SLEEP"<<endl;
+    }
+};
+
+class Dog : public Animal{
+public:
+    void breath(){
+        cout<<"DOG BREATH"<<endl;
+    }
+    void eat(){
+        cout<<"DOG EAT"<<endl;
+    }
+};
+
+class Fish : public Animal{
+public:
+    void breath(){
+        cout<<"FISH BREATH"<<endl;
+    }
+    void sleep(){
+        cout<<"FISH SLEEP"<<endl;
+    }
+};
+
+int main(){
+    Animal* a[3];
+    a[0] = new Dog();
+    a[1] = new Fish();
+    a[2] = new Dog();
+    a[0]->breath();
+    a[1]->eat();
+    a[2]->sleep();
+    cout<<"==========="<<endl;
+    Dog b;
+    b.breath();
+    b.eat();
+    b.sleep();
+    Fish c;
+    c.breath();
+    c.eat();
+    c.sleep();
+
+    return 0;
+}
+//MusteaDan Lab11 Grupa 2013
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+#define MAX 1000
+
+class Combine{
+protected:
+    char ar1[MAX];
+    char ar2[MAX];
+public:
+    virtual char* Concat()=0;
+    virtual char* Interlace()=0;
+    virtual char* Revert()=0;
+};
+
+class Methods : public Combine{
+private:
+    char* strrev(char* array){
+        int n=strlen(array);
+        char rev[MAX];
+        for(int i=0;i<n;i++){
+            rev[n-i-1]=array[i];
+        }
+        rev[n+1]='\0';
+        //cout<<rev<<endl;
+        return rev;
+    }
+    char* interweave(char* array1,char* array2){
+        int count[64]={0};
+        int n=strlen(array1);
+
+        for(int i=0;i<n;i++){
+            if((array1[i]>='A' && array1[i]<='Z')||(array1[i]>='a' && array1[i]<='z')){
+                count[array1[i]-'A']++;
+            }
+        }
+        
+        int m=strlen(array2);
+        for(int i=0;i<m;i++){
+            if((array2[i]>='A' && array2[i]<='Z')||(array2[i]>='a' && array2[i]<='z')){
+                count[array2[i]-'A']++;
+            }
+        }
+        /*for(int i=0;i<64;i++){
+            cout<<(char)(i+'A')<<" "<<count[i]<<endl;
+        }*/
+        //cout<<n<<" "<<m<<endl;
+        char combine[n+m+2];
+        int k=0;
+        for(int i=0;i<64;i++){
+            while(count[i]>0){
+                combine[k++]=(char)(i+'A');
+                count[i]--;
+            }
+        }
+        combine[n+m]='\0';
+        //cout<<combine<<endl;
+        return combine;
+    }
+public:
+    Methods(char *a,char *b){
+        strcpy(ar1,a);
+        strcpy(ar2,b);
+    }
+    char* Concat(){
+        return strcat(ar1,ar2);
+    }
+    char * Interlace(){
+        return interweave(ar1,ar2);
+    }
+    char * Revert(){
+        return strrev(ar1);
+    }
+
+};
+
+
+
+int main(){
+    char a[MAX],b[MAX];
+    cout<<"Insert two character arrays you wish to modify: ";
+    cin.get(a,MAX);
+    cin.get();
+    cin.get(b,MAX);
+    cin.get();
+    Methods x(a,b);
+    cout<<x.Concat()<<endl;
+    cout<<x.Revert()<<endl;
+    cout<<x.Interlace()<<endl;
+
+    return 0;
+}
+//MusteaDan Lab11 Grupa 2013
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+#define MAX 1000
+
+class Record{
+public:
+    char artist[MAX];
+    char title[MAX];
+    int duration; // in secounds
+};
+
+class Playlist{
+private:
+    Record *p;
+protected:
+    int n;
+public:
+    Playlist(){
+        cout<<"Insert the number of songs in the playlist: ";
+        int n;
+        cin>>n;
+        cout<<endl;
+        p=(Record *)malloc((n+1)*sizeof(Record));
+        if (p==NULL) exit (1);
+        this->n=n;
+    }
+    ~Playlist(){
+        //cout<<"Deconstructed!";
+        free(p);
+    }
+    void SetAll(){
+        cout<<"Insert the "<<n<<" songs you wish to be in the playlist following this formula (artist, title and then duration)"<<endl;
+        char aux[MAX];
+        for(int i=0;i<n;i++){
+            cin>>aux;
+            strcpy(p[i].artist,aux);
+            cin>>aux;
+            strcpy(p[i].title,aux);
+            int duration;
+            cin>>duration;
+            p[i].duration=duration;
+        }
+    }
+    void Set(Record &aux,int index){
+        p[index]=aux;
+    }
+    Record Get(int index){
+        return p[index];
+    }
+    void Display(){
+        for(int i=0;i<n;i++){
+            cout<<p[i].artist<<" "<<p[i].title<<" "<<p[i].duration<<endl;
+        }
+        cout<<endl;
+    }
+    virtual void Sort(int n)=0;//1-title 2-artist 3-duration
+};
+
+class PlaylistImplementation : public Playlist{
+public:
+    //using Playlist::Playlist;
+    PlaylistImplementation():Playlist(){
+    }
+    void Sort(int c){
+        if(c==1){
+            Record a,b;
+            for(int i=0;i<n-i-1;i++){
+                for(int j=0;j<n-i-1;j++){
+                    a=Get(j);
+                    b=Get(j+1);
+                    if(strcmp(a.title,b.title)){
+                        Set(b,j);
+                        Set(a,j+1);
+                    }
+                }
+            }
+        }else if(c==2){
+            Record a,b;
+            for(int i=0;i<n-i-1;i++){
+                for(int j=0;j<n-i-1;j++){
+                    a=Get(j);
+                    b=Get(j+1);
+                    if(strcmp(a.artist,b.artist)){
+                        Set(b,j);
+                        Set(a,j+1);
+                    }
+                }
+            }
+        }else if(c==3){
+            Record a,b;
+            for(int i=0;i<n-i-1;i++){
+                for(int j=0;j<n-i-1;j++){
+                    a=Get(j);
+                    b=Get(j+1);
+                    if(a.duration>b.duration){
+                        Set(b,j);
+                        Set(a,j+1);
+                    }
+                }
+            }
+        }
+        
+
+    }
+};
+
+
+
+int main(){
+    //Playlist x(n);
+    PlaylistImplementation a;
+    a.SetAll();
+    cout<<endl;
+    a.Display();
+    int c;
+    cout<<"Choose one of three sorting methods to be applied to the playlist (1-title 2-artist 3-duration): ";
+    cin>>c;
+    a.Sort(c);
+    a.Display();
+
+
+    return 0;
+}
+//MusteaDan Lab11 Grupa 2013
+#include <iostream>
+#include <math.h>
+
+using namespace std;
+
+class Point{
+public:
+    int x,y;
+    void Set(int x,int y){
+        this->x=x;
+        this->y=y;
+    }
+    int GetX(){
+        return this->x;
+    }
+    int GetY(){
+        return this->y;
+    }
+    void Display(){
+        cout<<x<<" "<<y<<endl;
+    }
+};
+
+class AbstractQuadrilateral{
+protected:
+    Point a,b,c,d;
+public:
+    AbstractQuadrilateral(){
+        cout<<"Insert the coordinates of the 4 points that make the quadrilateral (following the x,y format): ";
+        int x,y;
+        cin>>x>>y;
+        a.Set(x,y);
+        cin>>x>>y;
+        b.Set(x,y);
+        cin>>x>>y;
+        c.Set(x,y);
+        cin>>x>>y;
+        d.Set(x,y);
+    }
+    virtual double Area()=0;
+    virtual double Perimeter()=0;
+    double distance(Point a, Point b){
+        return abs(sqrt((a.x-b.x)*(a.x-b.x)-(a.y-b.y)*(a.y-b.y)));  
+    }
+};
+
+class ActualQuadrilateral : public AbstractQuadrilateral{
+public:
+    double Area(){
+        return (1/2) * ((a.x*b.y + b.x*c.y + c.x*d.y + d.x*a.y)- (b.x*a.y + c.x*b.y + d.x*c.y + a.x*d.y));
+    }
+    double Perimeter(){   
+        return distance(a,b)+distance(b,c)+distance(c,d)+distance(d,a);
+    }
+    bool DetermineShape(){
+        double x,y,z,t;
+        x=distance(a,b);
+        y=distance(c,b);
+        z=distance(c,d);
+        t=distance(a,d);
+        if (x==y==z==t){
+            cout<<"Square!"<<endl;
+        }else if(x==y && z==t){
+            cout<<"Rectangle!"<<endl;
+        }else if(x==t && z==y){
+            cout<<"Rectangle!"<<endl;
+        }else if(x==z && t==y){
+            cout<<"Rectangle!"<<endl;
+        }else{
+            cout<<"Irregularr Convex Quadrilateral!"<<endl;
+        }
+    }
+};
+
+
+int main(){
+    ActualQuadrilateral a;
+    cout<<a.Perimeter();
+    cout<<a.Area();
+
+    return 0;
+}
+
+//MusteaDan Lab10 Grupa 2013
+#include <iostream>
+#include <math.h>  
+using namespace std;
+
+class fraction{
+    private:
+    protected:
+        int a,b;
+    public:
+        void SetFraction(int a, int b){
+            this->a=a;
+            this->b=b;
+        }
+        double GetA(){
+            return a;
+        }
+        double GetB(){
+            return b;
+        }
+        void Display(){
+            cout<<a<<'/'<<b<<endl;
+        }
+        virtual void Simplify(){};
+        fraction(){
+            a=0;
+            b=1;
+        }
+        fraction(int a,int b){
+            if(b!=0){
+                this->a=a;
+                this->b=b;
+            }else{
+                cout<<"Invalid input!"<<endl;
+            }
+        }
+        fraction operator+(const fraction &x){
+            fraction aux;
+            aux.a=this->a+x.a;
+            aux.b=this->b+x.b;
+            return aux;
+        }
+        fraction operator-(const fraction &x){
+            fraction aux;
+            aux.a=this->a-x.a;
+            aux.b=this->b-x.b;
+            return aux;
+        }
+        fraction operator*(const fraction &x){
+            fraction aux;
+            aux.a=this->a*x.a;
+            aux.b=this->b*x.b;
+            return aux;
+        }
+        fraction operator/(const fraction &x){
+            fraction aux;
+            aux.a=this->a*x.b;
+            aux.b=this->b*x.a;
+            return aux;
+        }
+};
+
+class fraction_ext: public fraction{
+    private:
+        int gcd(int a, int b) { 
+            if (a == 0)
+            return b; 
+            if (b == 0) 
+            return a; 
+            if (a == b) 
+                return a; 
+            if (a > b) 
+                return gcd(a-b, b); 
+            return gcd(a, b-a); 
+        } 
+    public:
+    void Simplify(){
+            int div=gcd(a,b);
+            a/=div;
+            b/=div;
+            cout<<"== Simplified =="<<endl;
+    }
+    fraction_ext(int a,int b){
+        fraction(a,b);
+    }
+    fraction_ext(){
+        fraction();
+    }
+    fraction_ext operator++(){
+        this->a+=this->b;
+        this->b+=this->b;
+    }
+    fraction_ext operator--(){
+        this->a-=this->b;
+        this->b-=this->b;
+    }
+    void operator+=(const fraction_ext &x){
+        this->a+=x.a;
+        this->b+=x.b;
+    }
+    void operator-=(const fraction_ext &x){
+        this->a-=x.a;
+        this->b-=x.b;
+    }
+    void operator*=(const fraction_ext &x){
+        this->a*=x.a;
+        this->b*=x.b;
+    }
+    void operator/=(const fraction_ext &x){
+        this->a/=x.a;
+        this->b/=x.b;
+    }
+
+};
+
+
+int main(){
+    int a,b;
+    cout<<"Insert the values of a fraction: ";
+    cin>>a>>b;
+    fraction x;
+    x.SetFraction(a,b);
+    x.Display();
+    cout<<"Insert the values of a fraction: ";
+    cin>>a>>b;
+    fraction y;
+    y.SetFraction(a,b);
+    y.Display();
+    cout<<"==== Operations ===="<<endl;
+    fraction z;
+    z=x+y;
+    z.Display();
+    z=x-y;
+    z.Display();
+    z=x*y;
+    z.Display();
+    z=x/y;
+    z.Display();
+    cout<<"Insert the values of a fraction: ";
+    cin>>a>>b;
+    fraction_ext n(a,b);
+    cout<<"Insert the values of a fraction: ";
+    cin>>a>>b;
+    fraction_ext m(a,b);
+    cout<<"==== Operations Extended ===="<<endl;
+    ++n;
+    n.Display();
+    --m;
+    m.Display();
+    n+=m;
+    n.Display();
+    m-=n;
+    m.Display();
+    n*=m;
+    n.Display();
+    m/=n;
+    m.Display();
+
+
+    return 0;
+}

@@ -1,0 +1,3 @@
+﻿  Source.cpp
+E:\Programming\C - C++\Lab07_16\Source.cpp(26,13): warning C4101: 'e': unreferenced local variable
+  Lab07_16.vcxproj -> E:\Programming\C - C++\Lab07_16\Debug\Lab07_16.exe

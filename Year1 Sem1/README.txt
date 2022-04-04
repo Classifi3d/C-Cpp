@@ -1,0 +1,1 @@
+Applications ranging from the basics of C/C++, algorithms to memory management. 

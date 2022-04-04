@@ -1,0 +1,4 @@
+﻿  Source.cpp
+E:\Programming\C - C++\Lab08_3\Source.cpp(11,9): warning C4101: 'smallestValue': unreferenced local variable
+E:\Programming\C - C++\Lab08_3\Source.cpp(11,24): warning C4101: 'highestValue': unreferenced local variable
+  Lab08_3.vcxproj -> E:\Programming\C - C++\Lab08_3\Debug\Lab08_3.exe

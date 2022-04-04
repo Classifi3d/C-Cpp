@@ -1,0 +1,777 @@
+//Mustea Dan Lab03 Grupa 2013 
+#include <iostream>
+
+using namespace std;
+
+#define MAX 100
+
+void readArray(int array[MAX],int n){
+    for(int i=0;i<n;i++){
+        cin>>array[i];
+    }
+}
+
+int binarySearchAscending(int array[MAX],int start,int end,int x){
+    if(end>=start){
+        int mid=start + (end-start)/2;
+        if(array[mid]==x){
+            return mid;
+        }
+        if(array[mid]>x){
+            return binarySearchAscending(array,start,mid-start,x);
+        }
+        return binarySearchAscending(array,mid+start,end,x);
+    }
+    return -1;
+
+}
+
+int main(){
+    int array[MAX],n=5,a;
+    readArray(array,n);
+    cin>>a;
+    if(binarySearchAscending(array,0,n+1,a)!=-1){
+        cout<<"The prime factors of "<<a<<" are: ";
+        for (int i=2;i<= a/2;i++) { 
+            if(a%i==0){
+                cout<<i<<" ";
+                while(a%i == 0){ 
+                    a/=i; 
+                } 
+            }
+        } 
+    }
+
+
+    return 0;
+}   //Mustea Dan Lab03 Grupa 2013 
+#include <iostream>
+#include <fstream>
+#include <cmath>
+
+using namespace std;
+
+#define MAX 100
+
+ifstream fin ("MusteaDan Lab03_11.txt");
+
+void readArrayFromFile(float array[MAX],int &n){
+
+    float x;
+    int counter=0;
+    while(fin>>x){
+        array[counter++]=x;
+    }
+    n=counter;
+}
+
+int binarySearchAscending(float array[MAX],int start,int end,float x){
+    if(end>=start){
+        int mid=start + (end-start)/2;
+        if(array[mid]==x){
+            return mid;
+        }
+        if(array[mid]>x){
+            return binarySearchAscending(array,start,mid-start,x);
+        }
+        return binarySearchAscending(array,mid+start,end,x);
+    }
+    return -1;
+}
+
+int cmpfunc(const void * a, const void * b) {
+    if(*(float*)a == *(float*)b) return 1;
+    else return 0;
+    // return *(float*)a-*(float*)b;
+
+}
+
+
+int main(){
+    float target;
+    cin>>target;
+    int n=0;
+    float array[MAX];
+    readArrayFromFile(array,n);
+    for(int i=0;i<n;i++){
+        cout<<array[i]<<endl;
+    }
+    //my method
+    //int index=binarySearchAscending(array,0,n+1,target);
+    // cout<<"the element is: "<<(float)array[index]<<" and it has the position: "<<index<<endl;
+
+    //bsearch
+    float *item = (float*) bsearch (&target, array, n, sizeof (float), cmpfunc);
+    if( item != NULL ) {
+        cout<<"Found target "<<*item<<endl;
+    } else {
+        cout<<"Target could not be found"<<*item<<endl;
+    }
+
+
+    return 0;
+}//Mustea Dan Lab03 Grupa 2013 
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+
+# define DIM 20
+
+int posibil(int, int & );
+void afis_sol(int);
+int x[DIM], n;
+
+int main(void) {
+  int k, sum; //sum se transmite la o referinta avind acces la suma returnata
+  //printf("\nIntrodu numarul care urmeaza sa fie descompus( <DIM=20)\n");
+  scanf("%d", & n);
+  k = 0;
+  x[k] = 0;
+  do {
+    while (x[k] < n) {
+      x[k]++;
+      if (posibil(k, sum))
+        if (sum == n) afis_sol(k);
+        else {
+          k++;
+          x[k] = 0;
+        }
+    } //while
+    k--;
+  } while (!(k < 0));
+} //main
+int posibil(int k, int & s) {
+  s = 0;
+  if (k == 0) return 1; //initial e posibil ori ce
+  //sa am valori crescatoare doar
+  if (x[k] >= x[k - 1]) {
+    for (int i = 0; i <= k; i++) s += x[i]; //calculez suma
+    if (s <= n) return 1;
+  }
+  return 0;
+} //posibil
+void afis_sol(int k) {
+  for (int i = 0; i <= k; i++)
+    printf("%d ", x[i]);
+  printf(" \n");
+} //afis_sol //Mustea Dan Lab03 Grupa 2013 
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+#define MAX 100
+
+void display(int array[MAX],int N);
+void backtrack(int k,int array[MAX],int N,int graph[MAX][MAX],int dim);
+int costIfAvailable(int graph[MAX][MAX], int i, int j);
+bool checkIfChainIsCorrect(int k,int array[MAX],int N,int graph[MAX][MAX]);
+void readGraph(int graph[MAX][MAX],int &N);
+void displayGraph(int graph[MAX][MAX],int N);
+bool valid(int k,int array[MAX]);
+
+ifstream fin ("MusteaDan Lab03_3.txt");
+
+int main(){
+    int array[MAX],N;
+    int graph[MAX][MAX];
+
+    readGraph(graph,N);
+    //cout<<N<<endl;
+    //displayGraph(graph,N);
+
+
+    array[0]=0;
+    backtrack(1,array,N,graph,1);
+    for(int dim=0;dim<=N;dim++){
+        backtrack(0,array,N,graph,dim);
+    }
+
+
+    return 0;
+}
+
+void displayGraph(int graph[MAX][MAX],int N){
+    for(int i=0;i<N;i++){
+        for(int j=0;j<N;j++){
+            cout<<graph[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+}
+
+
+void readGraph(int graph[MAX][MAX],int &N){
+    fin>>N;
+
+    //cout<<"Insert the cost of connections between 2 subsiduaries, if the connection doesn't exist insert '-1'"<<endl;
+    for(int i=0;i<N;i++){
+        for(int j=0;j<N;j++){
+            //cout<<"Insert the cost between "<<i<<" "<<j<<endl;
+            fin>>graph[i][j];
+        }
+    }
+}
+
+int costIfAvailable(int graph[MAX][MAX], int i, int j){
+    if(graph[i][j]!=-1){
+        return graph[i][j];
+    }else{
+        return -1;
+    }
+}
+
+bool checkIfChainIsCorrect(int k,int array[MAX],int N,int graph[MAX][MAX]){
+    for(int i=1;i<N;i++){
+        if(costIfAvailable(graph,array[i-1],array[i])==-1){
+            return false;
+        }
+    }
+    return true;
+}
+
+//!<----------------------------
+void display(int array[MAX],int N){
+    cout<<"D: ";
+    for (int j=0;j<=N;j++){
+        cout<<array[j]<<" ";
+    }
+    cout<<endl;
+}
+//!<----------------------------
+bool valid(int k,int array[MAX]){
+    for(int j=0;j<=k;j++){
+        if (array[j]==array[k]){
+            return false;
+        }
+    }
+    return true;
+}
+
+void backtrack(int k,int array[MAX],int N,int graph[MAX][MAX],int dim){//k=1
+    for(int i=0;i<N;i++){//elements [0;N)
+        array[k]=i;
+        cout<<k<<" "<<i<<endl;
+        if(k==dim){//TODO dim=1
+            if(valid(k,array)==true){//!no
+                display(array,N);//!no  
+            }
+            else{
+                backtrack(k+1,array,N,graph,dim);
+            }
+        }
+    }
+}
+
+/*
+void readGraph(int n,int in[MAX],int out[MAX],int cost[MAX],int length){
+    cout<<"Insert the number of subsidieries: ";
+    fin>>n;
+    cout<<"Do not reintroduce connections previously added!"<<endl;
+    int con=0;
+    for(int i=0;i<=n;i++){
+        cout<<"Insert the number of connections of this subsidierie "<<i<<endl;
+        fin>>con;
+        
+        for(int j=0;j<con;j++){
+            cout<<"Insert the connection of subsidierie "<<i<<": ";
+            int pos=i+j+1;
+            cout<<pos<<" - "<<endl;
+            in[pos]=i;
+            fin>>out[pos];
+            cout<<"Insert the cost of this connection"<<endl;
+            fin>>cost[pos];
+            length=pos;
+        }
+    }
+}*/
+
+/*
+void backtrack(int k,int array[MAX],int N,int graph[MAX][MAX]){
+    //for(int dim=2;dim<N;dim++)
+    array[0]=0;
+    for(int i=1;i<=N;i++){//elements
+        array[k]=i;
+        if(valid(k,array)==true){
+            if (k==N-1){
+                //if (checkIfChainIsCorrect(k,array,dim,graph)==true){
+                    display(array,N);
+               // }
+            }else{
+                backtrack(k+1,array,N,graph);
+            }
+        }
+    }
+}*/
+
+/*
+int recursiveSearch(int graph[MAX][MAX],int N,int visited[MAX],int k,int target){
+    if(visited[k]==target){//* found target  
+        return 0;
+    }
+    for(int i=0;i<N;i++){//search on the last element in 'visited' array
+        if(costIfAvailable(graph,visited[k],i)!=-1){//if available
+            int ok=1;
+            for(int v=0;v<=k;v++){//check that it has not been visited before
+                if(visited[v]==i){
+                    ok=0;
+                    //return INT32_MIN;//! loop or invalid
+                }
+            }
+            if(ok==1){//TODO found another node
+            visited[k+1]=i;cout<<"p: "<<i<<" ";
+            return costIfAvailable(graph,visited[k],visited[k+1])+recursiveSearch(graph,N,visited,k+1,target);
+            }
+        }
+        //else return INT32_MIN;//! loop or invalid
+    }
+}
+*/
+
+//Mustea Dan Lab03 Grupa 2013 
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+#define MAX 100
+
+void display(int array[MAX],int N,int a[MAX],int b[MAX]);
+bool valid(int k,int array[MAX],int N);
+void backtrack(int k,int array[MAX],int N,int a[MAX],int b[MAX],int &highestProfit);
+int associationsProfit(int link[MAX],int N,int a[MAX],int b[MAX]);
+
+int main(){
+    int array[MAX],N;
+    int b[MAX],f[MAX];
+    int highestProfit=0;
+    cin>>N;
+    for(int i=0;i<N;i++){
+        cin>>b[i];
+    }
+    for(int i=0;i<N;i++){
+        cin>>f[i];
+    }
+    backtrack(0,array,N,b,f,highestProfit);
+    int profitLen=0;
+
+    int highestProfitCp=highestProfit;
+    while(highestProfitCp!=0){
+        profitLen++;
+        highestProfitCp/=10;
+    }
+    for(int i=0;i<N*2+3+profitLen;i++){
+        cout<<"_";
+    }
+    cout<<endl;
+    cout<<highestProfit<<endl;
+    return 0;
+}
+
+int associationsProfit(int link[MAX],int N,int a[MAX],int b[MAX]){
+    int profit=0;
+    for(int i=0;i<N;i++){
+        profit+=a[i]*b[link[i]];
+    }
+    return profit;
+}
+
+
+void display(int array[MAX],int N,int a[MAX],int b[MAX]){
+    for (int j=0;j<N;j++){
+        cout<<array[j]<<" ";
+    }
+    cout<<" | ";
+    cout<<associationsProfit(array,N,a,b);
+    cout<<endl;
+}
+
+bool valid(int k,int array[MAX]){
+    for(int j=0;j<k;j++){
+        if (array[j]==array[k]){
+            return false;
+        }
+    }
+    return true;
+}
+
+void backtrack(int k,int array[MAX],int N,int a[MAX],int b[MAX],int &highestProfit){
+    for(int i=0;i<N;i++){//elements 
+        array[k]=i;
+        if(valid(k,array)==true){
+            if (k==N-1){
+                display(array,N,a,b);
+                int profit=associationsProfit(array,N,a,b);
+                if(profit>highestProfit){
+                    highestProfit=profit;
+                }
+            } else{
+                backtrack(k+1,array,N,a,b,highestProfit);
+            }
+        }
+    }
+}
+//Mustea Dan Lab03 Grupa 2013 
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+#define MAX 100000
+
+ifstream fin ("MusteaDan Lab03_5.txt");
+ofstream fout ("MusteaDan Lab03_5.txt");
+
+void generateFile(int N);
+void readFile(int N,int array[MAX]);
+int divEtImpMax(int N,int array[MAX],int start, int finish);
+int divEtImpMin(int N,int array[MAX],int start, int finish);
+
+int main(){
+    int n,array[MAX];
+    cin>>n;
+    generateFile(n);
+    readFile(n,array);
+    int intDivEtImpMax,intDivEtImpMin;
+    intDivEtImpMax=divEtImpMax(n,array,0,n-1);
+    intDivEtImpMin=divEtImpMin(n,array,0,n-1);
+    //cout<<divEtImpMax(n,array,0,n-1)<<endl;
+    //cout<<divEtImpMin(n,array,0,n-1)<<endl;
+    fout<<intDivEtImpMax<<endl<<intDivEtImpMin;
+
+    return 0;
+}
+
+void generateFile(int N){
+    srand (time(NULL));
+    for(int i=0;i<N;i++){
+    fout<<rand()<<endl;
+    }
+}
+
+void readFile(int N,int array[MAX]){
+    int x,k=0;
+    while(fin>>x){
+        array[k++]=x;
+    }
+}
+
+int divEtImpMax(int N,int array[MAX],int start, int finish){
+    int a, b, mid;
+    if (start==finish){
+        return array[start];
+    }else{
+        mid = (start+finish)/2;
+        a = divEtImpMax(N,array,start, mid);
+        b = divEtImpMax(N,array,mid+1, finish);
+        if(a>b){
+            return a;
+        }else{
+            return b;
+        }
+    }
+}
+
+int divEtImpMin(int N,int array[MAX],int start, int finish){
+    int a, b, mid;
+    if (start==finish){
+        return array[start];
+    }else{
+        mid = (start+finish)/2;
+        a = divEtImpMin(N,array,start, mid);
+        b = divEtImpMin(N,array,mid+1, finish);
+        if (a<b){
+            return a;
+        }else{
+            return b;
+        } 
+    }
+}
+
+//Mustea Dan Lab03 Grupa 2013 
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+#define MAX 2000
+
+ifstream fin ("MusteaDan Lab03_6.txt");
+ofstream fout ("MusteaDan Lab03_6.txt");
+
+void generateFile(int N);
+void readFile(int N,int array[MAX]);
+int greatestCommonDivider(int start, int finish, int array[MAX]);
+
+int main(){
+    int n,array[MAX];
+    cin>>n;
+    generateFile(n);
+    readFile(n,array);
+    cout<<array[greatestCommonDivider(0,n-1,array)]<<endl;
+
+    return 0;
+}
+
+void generateFile(int N){
+    srand (time(NULL));
+    for(int i=0;i<N;i++){
+    fout<<rand()<<endl;
+    }
+}
+
+void readFile(int N,int array[MAX]){
+    int x,k=0;
+    while(fin>>x){
+        array[k++]=x;
+    }
+}
+
+int greatestCommonDivider(int start, int finish, int array[MAX]){
+    int mid,m1,m2,rest;
+    if(start==finish){
+        return array[finish];
+    }else{
+        mid=(start+finish)/2;
+        m1=greatestCommonDivider(start,mid,array);
+        m2=greatestCommonDivider(mid+1,finish,array);
+        rest=m1%m2;
+        while(rest!=0){
+            m1=m2;
+            m2=rest;
+            rest=m1%m2;
+        }
+        return m2;
+    }
+}//Mustea Dan Lab03 Grupa 2013 
+#include <iostream>
+
+using namespace std;
+
+#define MAX 1000
+
+
+//! a_|^b 1/(1+x 2 )dx
+//! UNDER CONSTRUCTION
+int divEtImp(int N,int array[MAX],int start, int finish){
+    int a, b, mid;
+    if (start==finish){
+        return array[start];
+    }else{
+        mid = (start+finish)/2;
+        a = divEtImp(N,array,start, mid);
+        b = divEtImp(N,array,mid+1, finish);
+        if(a>b){
+            return a;
+        }else{
+            return b;
+        }
+    }
+}
+
+
+int main(){
+    int n,array[MAX];
+    cin>>n;
+    for(int i=0;i<n;i++){
+        cin>>array[i];
+    }
+
+
+    return 0;
+}
+//Mustea Dan Lab03 Grupa 2013 
+#include <iostream>
+#include <search.h>
+
+using namespace std;
+
+#define MAX 10000
+
+void generateArray(int N,int array[MAX]);
+int compare(int *x, int *y);
+void display(int N,int array[MAX]);
+
+int main(){
+    int n=10,array[MAX],target;
+    generateArray(n,array);
+    display(n,array);
+    target=rand();
+    cout<<"Generated number:"<<target<<endl;
+    size_t N=n;
+    int *result=(int*)lsearch(&target,array,&N,sizeof(int),(int(*) (const void *,const void *))compare);
+    display(n+1,array);
+
+    return 0;
+}
+
+void generateArray(int N,int array[MAX]){
+    srand (time(NULL));
+    for(int i=0;i<N;i++){
+        array[i]=rand();
+    }
+}
+
+void display(int N,int array[MAX]){
+    cout<<"Array: ";
+    for(int i=0;i<N;i++){
+        cout<<array[i]<<" ";
+    }
+    cout<<endl;
+}
+
+int compare(int *x, int *y){   
+   return (*x - *y); 
+} //Mustea Dan Lab03 Grupa 2013 
+#include <iostream>
+#include <fstream>
+#include <cstring>
+
+using namespace std;
+
+#define MAX 1000
+
+struct searchKey{
+    char name[MAX];
+    char path[MAX];
+    int resolution;
+    int bytes;
+};
+
+float similaritySystemStrings(char a[MAX],char b[MAX]){
+    int lenA=strlen(a);
+    int lenB=strlen(b);
+    int maxLen=0;
+
+    if(lenA>lenB){
+        maxLen=lenA;
+    }else{
+        maxLen=lenB;
+    }
+
+    int differenceCounter=0;
+    for(int i=0;i<maxLen;i++){
+        if(a[i]!=b[i]){
+            differenceCounter++;
+        }
+    }
+
+    float similarityProcentile;
+    similarityProcentile=((float)maxLen/(float)differenceCounter);
+    return similarityProcentile;
+}
+
+float similaritySystemIntegers(int a,int b){
+    int smallNum,highNum;
+    if(a<b){
+        smallNum=a;
+        highNum=b;
+    }else{
+        smallNum=b;
+        highNum=a;
+    }
+
+    float similiarityProcentile;
+    similiarityProcentile=((float)smallNum/(float)highNum);
+    return similiarityProcentile;
+}
+
+float similaritySystemSerachKey(searchKey A,searchKey B){
+    float similarityOverall;
+    similarityOverall=(float)((similaritySystemStrings(A.name,B.name)+
+                               similaritySystemStrings(A.path,B.path)+
+                               similaritySystemIntegers(A.bytes,B.bytes)+
+                               similaritySystemIntegers(A.resolution,B.resolution)
+                              )/4
+                             );
+    return similarityOverall;
+}
+
+void insertImages(char library[MAX][MAX],int &length){
+    bool ok=true;
+    cout<<"Insert the image name: ";
+    char image[MAX];
+    int counter=-1;
+    while(ok==true){
+        cin>>image;
+        counter++;
+        strcpy(library[counter],image);
+        cout<<"Do you want to add another image?"<<endl;
+        cin>>ok;
+    }
+    length=counter;
+}
+
+void insertImageCompareCritiria(searchKey A){
+    cout<<"Insert the search parameters for the image you want to find"<<endl;
+    //name
+    cout<<"Insert a name: ";
+    cin>>A.name;
+    //path
+    cout<<"Insert a path: ";
+    cin>>A.path;
+    //resolution
+    cout<<"Insert a resolution: ";
+    cin>>A.resolution;
+    //bytes
+    cout<<"Insert a number of bytes: ";
+    cin>>A.bytes;
+}
+
+int length(char str[MAX]){
+    int i=0;
+    while(str[i]!='.' || str[i]!='\0'){
+        i++;
+    }
+    return i;
+}
+
+char* transform(char nameOriginal[MAX]){
+    char name[MAX];
+    strcpy(name,nameOriginal);
+    int dotPosition=length(name);
+    name[dotPosition]='.';
+    name[dotPosition+1]='t';
+    name[dotPosition+2]='x';
+    name[dotPosition+3]='t';
+    name[dotPosition+4]='\0';
+    return name;
+}
+
+
+int main(){
+    searchKey A;
+    char library[MAX][MAX],image[MAX];
+    int length;
+    insertImages(library,length);
+    insertImageCompareCritiria(A);//search parameters
+    length++;
+
+    char nameSave[MAX];
+    float procentileSave=0.1f;
+    for(int i=0;i<length;i++){
+        searchKey B;
+        char currentImgFile[MAX];
+        strcpy(currentImgFile,transform(library[i]));
+        //!cout<<"Before fin"<<endl;
+        ifstream fin (currentImgFile);
+        //!cout<<"After fin"<<endl;
+        fin>>B.name;
+        fin>>B.path;
+        fin>>B.resolution;
+        fin>>B.bytes;
+        float procentileCurrent;
+        //!cout<<"Before similiratiy search"<<endl;
+        procentileCurrent=similaritySystemSerachKey(A,B);
+        if(procentileCurrent>procentileSave){
+            procentileSave=procentileCurrent;
+            strcpy(nameSave,library[i]);
+        }
+        fin.close();
+    }
+
+    cout<<"With the closest proximity score of: "<<procentileSave<<endl;
+    ifstream imageOpen;
+    imageOpen.open(nameSave);
+
+    return 0;
+}

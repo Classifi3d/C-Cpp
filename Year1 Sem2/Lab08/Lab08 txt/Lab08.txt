@@ -1,0 +1,394 @@
+//MusteaDan Lab08 Grupa 2013
+#include <iostream>
+
+using namespace std;
+
+class CurrentHour{
+    private:
+    int hour,minute,second;
+    public:
+    void Set(int hour,int minute,int second){
+        this->hour=hour;
+        this->minute=minute;
+        this->second=second;
+    }
+    int GetHour(){
+        return this->hour;
+    }
+    int GetMinute(){
+        return this->minute;
+    }
+    int GetSecond(){
+        return this->second;
+    }
+    void Display(){
+        cout<<this->hour<<" "<<this->minute<<" "<<this->second<<endl;
+    }
+    friend CurrentHour Copy(const CurrentHour &TIME);
+};
+
+CurrentHour Copy(const CurrentHour &TIME){
+        CurrentHour NEW;
+        time_t now = time(0);
+        tm *ltm = localtime(&now);
+        NEW.hour=ltm->tm_hour-3;//local time minus the time difference
+        NEW.minute=TIME.minute;
+        NEW.second=TIME.second;
+        return NEW;
+}
+
+int main(){
+    CurrentHour a,b,aux;
+    int hour,minute,second;
+    cout<<"Insert the hour/minute/secound: ";
+    cin>>hour>>minute>>second;
+    a.Set(hour,minute,second);
+    b=Copy(a);
+    a.Display();
+    b.Display();
+    
+    
+    return 0;
+}
+//MusteaDan Lab08 Grupa 2013
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+class Motherboard{
+    private:
+    char processorName[128];
+    public:
+    class Calculator{
+        private:
+        int RAM_memory;
+        public:
+        void Set(int amount){
+            this->RAM_memory=amount;
+        }
+        int Get(){
+            return this->RAM_memory;
+        }
+        friend void ServiceTechnician(int amountOfRam,char procName);
+    };
+    void ServiceTechnician(int amountOfRam,char* procName,Calculator &C){
+        strcpy(this->processorName,procName);
+        C.Set(amountOfRam);
+    }
+    void Display(Calculator C){
+        cout<<this->processorName<<" "<<C.Get()<<endl;
+    }
+};
+
+int main(){
+    Motherboard M;
+    Motherboard::Calculator C;
+    M.Display(C);
+    M.ServiceTechnician(16,"AMD RYZEN 7",C);
+    M.Display(C);
+    return 0;
+}
+//MusteaDan Lab08 Grupa 2013
+#include <iostream>
+
+using namespace std;
+
+class Repository{
+    private:
+    int a,b;
+    public:
+    Repository(){
+        a=0;
+        b=0;
+    }
+    Repository(int a,int b){
+        this->a=a;
+        this->b=b;
+    }
+    void Get(){
+        cout<<this->a<<" "<<this->b<<endl;
+    }
+    friend class Mathematics;
+};
+
+class Mathematics{
+    public:
+    Repository Sum(Repository x,Repository y){
+        Repository aux;
+        aux.a=x.a+y.a;
+        aux.b=x.b+y.b;
+        return aux;
+    }
+    Repository Substract(Repository x,Repository y){
+        Repository aux;
+        aux.a=x.a-y.a;
+        aux.b=x.b-y.b;
+        return aux;
+    }
+    Repository Multiply(Repository x,Repository y){
+        Repository aux;
+        aux.a=x.a*y.a;
+        aux.b=x.b*y.b;
+        return aux;
+    }
+    Repository Differentiate(Repository x,Repository y){
+        Repository aux;
+        aux.a=x.a/y.a;
+        aux.b=x.b/y.b;
+        return aux;
+    }
+};
+
+int main(){
+    Repository c,a(7,4),b(3,9);
+    Mathematics r1;
+    c=r1.Sum(a,b);
+    c.Get();
+    c=r1.Substract(a,b);
+    c.Get();
+    c=r1.Multiply(a,b);
+    c.Get();
+    c=r1.Differentiate(a,b);
+    c.Get();
+    
+    return 0;
+}
+//MusteaDan Lab08 Grupa 2013
+#include <iostream>
+
+using namespace std;
+
+class Count{
+    public:
+    int var;
+    static int var_stat;
+    Count(){
+        this->var_stat++;
+    }
+    void GetVarStat(){
+        cout<<this->var_stat<<endl;
+    }
+
+};
+
+int Count::var_stat;
+
+int main(){
+    Count c1,c2,c3;
+    c3.GetVarStat();
+
+    return 0;
+}
+//MusteaDan Lab08 Grupa 2013
+#include <iostream>
+
+using namespace std;
+
+class Count{
+    private:
+        static int var_stat;
+    public:
+    Count(){
+        this->var_stat++;
+    }
+    void GetVarStat(){
+        cout<<this->var_stat<<endl;
+    }
+    int GetPrivateVarStat(){
+        return this->var_stat;
+    }
+
+};
+
+int Count::var_stat;
+
+int main(){
+    Count c1,c2,c3;
+    c3.GetVarStat();//original
+    cout<<c3.GetPrivateVarStat()<<endl;//private
+
+    return 0;
+}
+//MusteaDan Lab08 Grupa 2013
+#include <iostream>
+#include <math.h>
+
+using namespace std;
+
+class Point{
+    private:
+        int x,y;
+    public:
+        int GetX(){
+            return this->x;
+        }
+        int GetY(){
+            return this->y;
+        }
+        void Set(int x,int y){
+            this->x=x;
+            this->y=y;
+        }
+        friend void Output(Point p1,Point p2);
+
+};
+void Output(Point p1,Point p2,int shapeType){
+    float distanceBetweenTwoPoints=sqrt(pow(p1.GetX()-p2.GetX(),2)+pow(p1.GetY()-p2.GetY(),2));
+    if(shapeType==1){//Circle
+        cout<<"Area: "<<M_PI*distanceBetweenTwoPoints/2<<endl;
+        cout<<"Perimeter: "<<M_PI*distanceBetweenTwoPoints<<endl;
+    }
+    if(shapeType==2){//Right Triangle
+        int p3x=p1.GetX(),p3y=p2.GetY();
+        cout<<"Area: "<<fabsf(((float)(p1.GetX()*p2.GetY()+p2.GetX()*p3y+p3x*p1.GetY()-p1.GetX()*p3y-p2.GetX()*p1.GetX()-p3x*p3x*p2.GetY())/2))<<endl;
+        cout<<"Perimeter: "<<fabsf(sqrt(pow(p1.GetX()-p3x,2)+pow(p1.GetY()-p3y,2))+sqrt(pow(p3x-p2.GetX(),2)+pow(p3y-p2.GetY(),2))+distanceBetweenTwoPoints)<<endl;
+    }
+}
+
+int main(){
+
+    int x1,y1,x2,y2,shape;
+    cout<<"Insert the coordinates of a point: "<<endl;
+    cin>>x1>>y1;
+    cout<<"Insert the coordinates of a point: "<<endl;
+    cin>>x2>>y2;
+    cout<<"Insert the shape 1=circle/2=right_triangle: "<<endl;
+    cin>>shape;
+    Point p1,p2;
+    p1.Set(x1,y1);
+    p2.Set(x2,y2);
+    Output(p1,p2,shape);
+
+    return 0;
+}
+//MusteaDan Lab07 Grupa 2013
+#include <iostream>
+
+using namespace std;
+
+
+int CMMDC(int x,int y){
+    while(x!=y){
+        if(x>y){
+            x-=y;
+        }    
+        if(y>x){
+            y-=x;
+        }
+    }
+    return x;
+}
+
+class Fraction{
+    private:
+        int a,b;
+        static int icount;
+    public:
+        Fraction(){
+            icount++;
+            this->a=0;
+            this->b=1;
+        }
+        Fraction(int x,int y){
+            icount++;
+            if(y!=0){
+                this->a=x;
+                this->b=y;
+            }
+        }
+        Fraction(const Fraction &f){
+            icount++;
+            this->a=f.a;
+            this->b=f.b;
+        }
+        ~Fraction(){
+            cout<<"icount: "<<icount<<endl;
+            icount--;
+        }
+        
+        void Set(int a,int b){
+            this->a=a;
+            this->b=b;
+        }
+        int GetA(){
+            return this->a;
+        }
+        int GetB(){
+            return this->b;
+        }
+        void Display(){
+            cout<<this->a<<"/"<<this->b<<endl;
+        }
+
+        friend Fraction f_add_fraction(Fraction f1,Fraction f2){
+            Fraction f3;
+            f3.b=0;
+            f3.a=0;
+            f3.a=f1.a+f2.a;
+            f3.b=f1.b+f2.b;
+            return f3;
+        }
+        friend Fraction f_sub_fraction(Fraction f1,Fraction f2){
+            Fraction f3;
+            f3.b=0;
+            f3.a=f1.a-f2.a;
+            f3.b=f1.b-f2.b;
+            return f3;
+        }
+        friend Fraction f_mul_fraction(Fraction f1,Fraction f2){
+            Fraction f3;
+            f3.b=0;
+            f3.a=f1.a*f2.a;
+            f3.b=f1.b*f2.b;
+            return f3;
+        }
+        friend Fraction f_dif_fraction(Fraction f1,Fraction f2){
+            Fraction f3;
+            f3.b=0;
+            f3.a=f1.a/f2.a;
+            f3.b=f1.b/f2.b;
+            return f3;
+        }
+        friend void Simplifiy(Fraction fr){
+            int x=fr.a,y=fr.b,res,copa=fr.a,copb=fr.b;
+            res=CMMDC(x,y);
+            while(res!=1){
+                x/=res;
+                y/=res;
+                res=CMMDC(x,y);
+            }
+            fr.a=copa;
+            fr.b=copb;
+
+        }
+
+
+};
+
+int Fraction::icount=0;
+
+
+int main(){
+    Fraction f1,f2,f3,f4,f5,f6;
+    int a,b;
+    cout<<"Insert the values of the fraction: "<<endl;
+    cin>>a>>b;
+    f1.Set(a,b);
+    f1.Display();
+    cout<<"Insert the values of the fraction: "<<endl;
+    cin>>a>>b;
+    f2.Set(a,b);
+    f2.Display();
+    cout<<"-----"<<endl;
+    f3=f_add_fraction(f1,f2);
+    f4=f_sub_fraction(f1,f2);
+    f5=f_mul_fraction(f1,f2);
+    f5=f_dif_fraction(f1,f2);
+    f3.Display();
+    f4.Display();
+    f5.Display();
+    f6.Display();
+
+    return 0;
+}

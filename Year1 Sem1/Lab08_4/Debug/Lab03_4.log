@@ -1,0 +1,3 @@
+﻿  Source.cpp
+E:\Programming\C - C++\Lab03_4\Source.cpp(54): warning C4715: 'dimension': not all control paths return a value
+  Lab03_4.vcxproj -> E:\Programming\C - C++\Lab03_4\Debug\Lab03_4.exe

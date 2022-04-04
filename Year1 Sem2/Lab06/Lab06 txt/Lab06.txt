@@ -1,0 +1,980 @@
+//MusteaDan Lab06 Grupa 2013
+#include <iostream>
+
+using namespace std;
+
+class F1Pilot{
+    private:
+        char name[2048];
+        char team[2048];
+        int age;
+        int best_time;
+        int pole_postion_nr;
+    public:
+        void SetAll(){
+            cin>>this->name;
+            cin>>this->team;
+            cin>>this->age;
+            cin>>this->best_time;
+            cin>>this->pole_postion_nr;
+        }
+        char* GetName(){
+            return this->name;
+        }
+        char* GetTeam(){
+            return this->team;
+        }
+        int GetAge(){
+            return this->age;
+        }
+        int GetBestTime(){
+            return this->best_time;
+        }
+        int PolePostionNrGet(){
+            return this->pole_postion_nr;
+        }
+};
+
+int main(){
+    F1Pilot a,b,c;
+    F1Pilot* p1=&a,*p2=&b,*p3=&c;
+    a.SetAll();
+    b.SetAll();
+    c.SetAll();
+    if(p1->GetBestTime()<p2->GetBestTime() && p1->GetBestTime()<p3->GetBestTime()){
+        cout<<p1->GetName()<<" "<<p1->GetTeam()<<" "<<p1->GetAge()<<" "<<p1->GetBestTime()<<" "<<p1->PolePostionNrGet()<<endl;
+    }
+    if(p2->GetBestTime()<p1->GetBestTime() && p2->GetBestTime()<p3->GetBestTime()){
+        cout<<p2->GetName()<<" "<<p2->GetTeam()<<" "<<p2->GetAge()<<" "<<p2->GetBestTime()<<" "<<p2->PolePostionNrGet()<<endl;
+    }
+    if(p3->GetBestTime()<p2->GetBestTime() && p3->GetBestTime()<p1->GetBestTime()){
+        cout<<p3->GetName()<<" "<<p3->GetTeam()<<" "<<p3->GetAge()<<" "<<p3->GetBestTime()<<" "<<p3->PolePostionNrGet()<<endl;
+    }
+
+
+    return 0;
+}
+//MusteaDan Lab06 Grupa 2013
+#include <iostream>
+
+using namespace std;
+
+class Test2{
+    private:
+    int x;
+    Test2( ){
+    cout<<"Apel constructor explicit vid."<<endl;
+    }
+    Test2(int x){
+        this->x=x;
+        cout<<"Contructor called with variable"<<endl;
+    }
+    public:
+    static Test2 Constructor(int);
+    static Test2* PointerConstructor(int);
+
+};
+
+Test2 Test2::Constructor(int x){
+    return Test2(x);
+}
+
+Test2* Test2::PointerConstructor(int x){
+    cout<<"POINTER!!!"<<endl;
+    return new Test2(x);//!REMBER THIS!!!
+}
+
+int main(){
+    int a;
+    cout<<"Introduceti valoarea variabilei de tip \"int\" din clasa: "<<endl;
+    cin>>a;
+    Test2 A = Test2::Constructor(a);
+    Test2* p = Test2::PointerConstructor(a) ;
+
+
+
+    return 0;
+}#include <iostream>
+
+using namespace std;
+
+const int Max1 = 10;
+const int Max2 = 10;
+
+class Matrix{
+private:
+    //atribute
+    int matrix[Max1][Max2], dim1, dim2;
+    //declararea metodei de afisare a unui element
+    int returnElement(int row, int column);
+public:
+    //constructor explicit cu parametri – recomandat a folosi o metoda diferita a citi valorile
+    Matrix(int dim1, int dim2){
+        //variabile locale
+        int i, j;
+        this->dim1 = dim1;
+        this->dim2 = dim2;
+        cout << "\nIntroduceti elementele matricii: ";
+        for (i = 0; i < dim1; i++){
+            for (j = 0; j < dim2; j++){
+                cout << "\nmatrix[" << i << "][" << j << "] = ";
+                cin >> matrix[i][j];
+            }
+        }
+    }
+    //metoda de afisare a matricii din clasa; implementare in cadrul clasei
+    void displayMatrix(){
+        //variabile locale
+        int i, j;
+        cout << "\nElementele matricii: ";
+        for (i = 0; i < dim1; i++){
+            cout << "\n";
+            for (j = 0; j < dim2; j++){
+                //apelul metodei private care returneaza valoarea unui element din matrice
+                cout << returnElement(i, j) << " ";
+            }
+        }
+        cout << endl;
+    }
+   
+    void MainDiag(){
+        if(this->dim1==this->dim2){
+            for(int i=0;i<this->dim1;i++){
+                for(int j=0;j<this->dim2;j++){
+                    if(i==j){
+                        cout << returnElement(i, j) << " ";
+                    }
+                }
+            }
+        }else{
+            cout<<"this is not a square matix"<<endl;
+        }
+    }
+
+    void BelowSecoundDiag(){
+        if(this->dim1==this->dim2){
+            for(int i=0;i<this->dim1;i++){
+                for(int j=0;j<this->dim2;j++){
+                    if(i+j>this->dim1-1){
+                        cout << returnElement(i, j) << " ";
+                    }
+                }
+            }
+        }else{
+            cout<<"this is not a square matix"<<endl;
+        }
+        
+    }
+
+    void HeatMap(int treshold){
+        if(this->dim1==this->dim2){
+            for(int i=0;i<this->dim1;i++){
+                for(int j=0;j<this->dim2;j++){
+                    if(returnElement(i, j)>treshold){
+                        cout<<'1'<<" ";
+                    }else cout<<'0'<<" ";
+                }
+                cout<<endl;
+            }
+        }else{
+            cout<<"this is not a square matix"<<endl;
+        }
+    }
+
+    
+
+    void displayColumn(int col);
+};
+
+//implementarea externa a metodelor (publice sau private) declarate in clasa
+void Matrix::displayColumn(int col){
+    if (col < 0 || col >= dim2){
+        cout << "\nColoana cu numarul " << col << " nu exista in matricea din clasa!\n";
+    }
+    else{
+        cout << "\nElementele coloanei " << col << ": ";
+        for (int i = 0; i < dim1; i++){
+            cout << returnElement(i, col) << " ";
+        }
+    }
+}
+
+int Matrix::returnElement(int row, int column){
+    return matrix[row][column];
+}
+
+int main()
+{
+    int dim1, dim2;
+    cout << "Introduceti dimensiunile 1 si 2 ale matricii: (<=10):\n";
+    cin >> dim1;
+    cin >> dim2;
+    Matrix m1(dim1, dim2); //instantiere cu citire valori
+    Matrix* p = &m1;
+    p->displayMatrix();
+    int c;
+    cout << "Insert a number to compare it the matrix's elements: ";
+    cin>>c;
+    p->MainDiag();
+    cout<<endl<<"========================="<<endl;
+    p->BelowSecoundDiag();
+    cout<<endl<<"========================="<<endl;
+    p->HeatMap(c);
+}
+//MusteaDan Lab06 Grupa 2013
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+ofstream fout ("MusteaDan Lab06_4.txt");
+
+struct date{
+    int day;
+    int month;
+    int year;
+};
+
+class DateClass{
+    private:
+        date dt;
+    public:
+        void SetAll(int day,int month,int year){
+            this->dt.day=day;
+            this->dt.month=month;
+            this->dt.year=year;
+        }
+
+        void GetAll(){
+            cout<<this->dt.day<<" "<<this->dt.month<<" "<<this->dt.year<<endl;
+        }
+
+        bool Valid(){
+            if(this->dt.year>2020){
+                return false;
+            }
+            if(this->dt.month>12){
+                return false;
+            }
+            if(this->dt.day>31){
+                return false;
+            }
+            return true;
+        }
+
+        void FileWrite(){
+            if(Valid()==true){
+                cout<<dt.month<<" "<<dt.day;
+                for(int i=1;i<=this->dt.month;i++){//month
+                    if(i==this->dt.month){
+                        for(int j=1;j<this->dt.day;j++){
+                            fout<<this->dt.year<<" "<<i<<" "<<j<<endl;      
+                        }
+                    }else{
+                        for(int j=1;j<=31;j++){//day
+                            fout<<this->dt.year<<" "<<i<<" "<<j<<endl;
+                        }
+                    }
+                }
+            }else{
+                cout<<"INVALID DATE!"<<endl;
+            }
+        }
+};
+
+int main(){
+    DateClass dt;
+    DateClass* p=&dt;
+    int day,month,year;
+    cout<<"Insert the day/month/year: ";
+    cin>>day>>month>>year;
+    p->SetAll(day,month,year);
+    p->GetAll();
+    cout<<p->Valid()<<endl;
+    p->FileWrite();
+    cout<<endl;
+    return 0;
+}//MusteaDan Lab06 Grupa 2013
+#include <iostream>
+
+using namespace std;
+
+class F1Pilot{
+    private:
+        char name[2048];
+        char team[2048];
+        int age;
+        int best_time;
+        int pole_postion_nr;
+    public:
+        void SetAll(){
+            cin>>this->name;
+            cin>>this->team;
+            cin>>this->age;
+            cin>>this->best_time;
+            cin>>this->pole_postion_nr;
+        }
+        char* GetName(){
+            return this->name;
+        }
+        char* GetTeam(){
+            return this->team;
+        }
+        int GetAge(){
+            return this->age;
+        }
+        int GetBestTime(){
+            return this->best_time;
+        }
+        int PolePostionNrGet(){
+            return this->pole_postion_nr;
+        }
+};
+
+int main(){
+    F1Pilot a,b,c;
+    a.SetAll();
+    b.SetAll();
+    c.SetAll();
+    if(a.GetBestTime()<b.GetBestTime() && a.GetBestTime()<c.GetBestTime()){
+        cout<<a.GetName()<<" "<<a.GetTeam()<<" "<<a.GetAge()<<" "<<a.GetBestTime()<<" "<<a.PolePostionNrGet()<<endl;
+    }
+    if(b.GetBestTime()<a.GetBestTime() && b.GetBestTime()<c.GetBestTime()){
+        cout<<b.GetName()<<" "<<b.GetTeam()<<" "<<b.GetAge()<<" "<<b.GetBestTime()<<" "<<b.PolePostionNrGet()<<endl;
+    }
+    if(c.GetBestTime()<b.GetBestTime() && c.GetBestTime()<a.GetBestTime()){
+        cout<<c.GetName()<<" "<<c.GetTeam()<<" "<<c.GetAge()<<" "<<c.GetBestTime()<<" "<<c.PolePostionNrGet()<<endl;
+    }
+
+
+    return 0;
+}
+//MusteaDan Lab06 Grupa 2013
+#include <iostream>
+
+using namespace std;
+
+class Test2{
+    private:
+    int x;
+    Test2( ){
+    cout<<"\nApel constructor explicit vid.";
+    }
+    Test2(int x){
+        this->x=x;
+        cout<<"Contructor called with variable";
+    }
+    public:
+    static Test2 Constructor(int);
+
+};
+
+Test2 Test2::Constructor(int x){
+    return Test2(x);
+}
+
+
+int main(){
+    int a;
+    cout<<"Introduceti valoarea variabilei de tip \"int\" din clasa: "<<endl;
+    cin>>a;
+    Test2 A = Test2::Constructor(a);
+
+
+
+    return 0;
+}#include <iostream>
+
+using namespace std;
+
+const int Max1 = 10;
+const int Max2 = 10;
+
+class Matrix{
+private:
+    //atribute
+    int matrix[Max1][Max2], dim1, dim2;
+    //declararea metodei de afisare a unui element
+    int returnElement(int row, int column);
+public:
+    //constructor explicit cu parametri – recomandat a folosi o metoda diferita a citi valorile
+    Matrix(int dim1, int dim2){
+        //variabile locale
+        int i, j;
+        this->dim1 = dim1;
+        this->dim2 = dim2;
+        cout << "\nIntroduceti elementele matricii: ";
+        for (i = 0; i < dim1; i++){
+            for (j = 0; j < dim2; j++){
+                cout << "\nmatrix[" << i << "][" << j << "] = ";
+                cin >> matrix[i][j];
+            }
+        }
+    }
+    //metoda de afisare a matricii din clasa; implementare in cadrul clasei
+    void displayMatrix(){
+        //variabile locale
+        int i, j;
+        cout << "\nElementele matricii: ";
+        for (i = 0; i < dim1; i++){
+            cout << "\n";
+            for (j = 0; j < dim2; j++){
+                //apelul metodei private care returneaza valoarea unui element din matrice
+                cout << returnElement(i, j) << " ";
+            }
+        }
+        cout << endl;
+    }
+   
+    void MainDiag(){
+        if(this->dim1==this->dim2){
+            for(int i=0;i<this->dim1;i++){
+                for(int j=0;j<this->dim2;j++){
+                    if(i==j){
+                        cout << returnElement(i, j) << " ";
+                    }
+                }
+            }
+        }else{
+            cout<<"this is not a square matix"<<endl;
+        }
+    }
+
+    void BelowSecoundDiag(){
+        if(this->dim1==this->dim2){
+            for(int i=0;i<this->dim1;i++){
+                for(int j=0;j<this->dim2;j++){
+                    if(i+j>this->dim1-1){
+                        cout << returnElement(i, j) << " ";
+                    }
+                }
+            }
+        }else{
+            cout<<"this is not a square matix"<<endl;
+        }
+        
+    }
+
+    void HeatMap(int treshold){
+        if(this->dim1==this->dim2){
+            for(int i=0;i<this->dim1;i++){
+                for(int j=0;j<this->dim2;j++){
+                    if(returnElement(i, j)>treshold){
+                        cout<<'1'<<" ";
+                    }else cout<<'0'<<" ";
+                }
+                cout<<endl;
+            }
+        }else{
+            cout<<"this is not a square matix"<<endl;
+        }
+    }
+
+    
+
+    void displayColumn(int col);
+};
+
+//implementarea externa a metodelor (publice sau private) declarate in clasa
+void Matrix::displayColumn(int col){
+    if (col < 0 || col >= dim2){
+        cout << "\nColoana cu numarul " << col << " nu exista in matricea din clasa!\n";
+    }
+    else{
+        cout << "\nElementele coloanei " << col << ": ";
+        for (int i = 0; i < dim1; i++){
+            cout << returnElement(i, col) << " ";
+        }
+    }
+}
+
+int Matrix::returnElement(int row, int column){
+    return matrix[row][column];
+}
+
+int main()
+{
+    int dim1, dim2;
+    cout << "Introduceti dimensiunile 1 si 2 ale matricii: (<=10):\n";
+    cin >> dim1;
+    cin >> dim2;
+    Matrix m1(dim1, dim2); //instantiere cu citire valori
+    m1.displayMatrix();
+    int c;
+    cout << "Insert a number to compare it the matrix's elements: ";
+    cin>>c;
+    m1.MainDiag();
+    cout<<endl<<"========================="<<endl;
+    m1.BelowSecoundDiag();
+    cout<<endl<<"========================="<<endl;
+    m1.HeatMap(c);
+}
+
+//MusteaDan Lab06 Grupa 2013
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+ofstream fout ("MusteaDan Lab06_4.txt");
+
+struct date{
+    int day;
+    int month;
+    int year;
+};
+
+class DateClass{
+    private:
+        date dt;
+    public:
+        void SetAll(int day,int month,int year){
+            this->dt.day=day;
+            this->dt.month=month;
+            this->dt.year=year;
+        }
+
+        void GetAll(){
+            cout<<this->dt.day<<" "<<this->dt.month<<" "<<this->dt.year<<endl;
+        }
+
+        bool Valid(){
+            if(this->dt.year>2020){
+                return false;
+            }
+            if(this->dt.month>12){
+                return false;
+            }
+            if(this->dt.day>31){
+                return false;
+            }
+            return true;
+        }
+
+        void FileWrite(){
+            if(Valid()==true){
+                cout<<dt.month<<" "<<dt.day;
+                for(int i=1;i<=this->dt.month;i++){//month
+                    if(i==this->dt.month){
+                        for(int j=1;j<this->dt.day;j++){
+                            fout<<this->dt.year<<" "<<i<<" "<<j<<endl;      
+                        }
+                    }else{
+                        for(int j=1;j<=31;j++){//day
+                            fout<<this->dt.year<<" "<<i<<" "<<j<<endl;
+                        }
+                    }
+                }
+            }else{
+                cout<<"INVALID DATE!"<<endl;
+            }
+        }
+};
+
+int main(){
+    DateClass dt;
+    int day,month,year;
+    cout<<"Insert the day/month/year: ";
+    cin>>day>>month>>year;
+    dt.SetAll(day,month,year);
+    dt.GetAll();
+    cout<<dt.Valid()<<endl;
+    dt.FileWrite();
+    cout<<endl;
+
+    return 0;
+}//MusteaDan Lab06 Grupa 2013
+#include <iostream>
+#include <math.h>
+using namespace std;
+
+class Triangle{
+private:
+    float a=0,b=0,c=0;
+    bool TriangleCheck(){
+        if(this->a+this->b>this->c){
+            if(this->a+this->c>this->b){
+                if(this->b+this->c>this->a){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+public:
+    Triangle(){
+        this->a=0;
+        this->b=0;
+        this->c=0;
+    }
+    Triangle(float a,float b,float c){
+        this->a=a;
+        this->b=b;
+        this->c=c;
+    }
+    void SetAll(float a,float b,float c){
+        a=this->a;
+        b=this->b;
+        c=this->c;
+    }
+
+    void GetAll(){
+        cout<<this->a<<" "<<this->b<<" "<<this->c<<endl;
+    }
+
+    float Area(){
+        if(TriangleCheck()==true){
+            float p=(this->a+this->b+this->c)/2;
+         return sqrt(p*(p-this->a)*(p-this->b)*(p-this->c));
+        }else{
+            cout<<"This is not a triangle"<<endl;
+        }
+    }
+
+    float Perimiter(){
+        if(TriangleCheck()==true){
+            return this->a+this->b+this->c;
+        }else{
+            cout<<"This is not a triangle"<<endl;
+        }
+    }
+
+    bool RightTriangle(){
+        if(TriangleCheck()==true){
+            int A=this->a,B=this->b,C=this->c;
+            if(A>B && A>C){
+                if(pow(A,2)==pow(B,2)+pow(C,2)){
+                    cout<<"This is a right triangle"<<endl;
+                    return true;
+                }
+            }else if(B>A && B>C){
+                if(pow(B,2)==pow(A,2)+pow(C,2)){
+                    cout<<"This is a right triangle"<<endl;
+                    return true;
+                }
+            }else if(C>A && C>B){
+                if(pow(C,2)==pow(A,2)+pow(B,2)){
+                    cout<<"This is a right triangle"<<endl;
+                    return true;
+                }
+            }
+            cout<<"This is not a right triangle"<<endl;
+            return false;
+        }else{
+            cout<<"This is not a triangle"<<endl;
+        }  
+    }
+};
+
+int main(){
+    float s1,s2,s3;
+    cout<<"Insert the values of a triangle"<<endl;
+    cin>>s1>>s2>>s3;
+    Triangle a(s1,s2,s3);
+    cout<<a.Area()<<endl;
+    cout<<a.Perimiter()<<endl;
+    a.RightTriangle();
+
+    return 0;
+}//MusteaDan Lab06 Grupa 2013
+#include <iostream>
+
+using namespace std;
+
+class Safe{
+    private:
+        int cipher=0;
+        int money=0;
+		void SetMoney(int money){
+			this->money+=money;
+        }
+		void GetMoney(int money){
+			this->money-=money;
+		}
+		int SafeGetter(){
+			return this->money;
+		}
+    public:
+		Safe(int cipher){
+			this->cipher=cipher;
+		}
+		void PutInSafe(int money,int cipher){
+			if(this->cipher==cipher){
+				SetMoney(money);
+			}else{
+				cout<<"Wrong Chiper";
+			}
+		}
+		void GetFromSage(int money,int cipher){
+			if(this->cipher==cipher){
+				GetMoney(money);
+			}else{
+				cout<<"Wrong Chiper";
+			}
+		}
+		int FundsLeft(int cipher){
+			if(this->cipher==cipher){
+				return SafeGetter();
+			}else{
+				return -1;
+				cout<<"Wrong Chiper";
+			}
+		}
+
+};
+
+int main(){
+	cout<<"Insert a cipher for setting up your bank account: "<<endl;
+	int cip=0;
+	cin>>cip;
+	Safe account1 = Safe(cip);
+	cout<<"Insert an amount of money to deposit: "<<endl;
+	int amount1=0;
+	cin>>amount1;
+	account1.PutInSafe(amount1,cip);
+	cout<<account1.FundsLeft(cip)<<endl;
+	cout<<"Insert another amount of money to deposit: "<<endl;
+	int amount2=0;
+	cin>>amount2;
+	account1.PutInSafe(amount2,cip);
+	cout<<account1.FundsLeft(cip)<<endl;
+	cout<<"Insert an amount of money to withdraw: "<<endl;
+	int amount3=0;
+	cin>>amount3;
+	account1.GetFromSage(amount3,cip);
+	cout<<account1.FundsLeft(cip)<<endl;	
+
+    return 0;
+}#include <iostream>
+#include <cstring>
+#include <time.h>
+
+using namespace std;
+
+class Person
+{
+    // membri private
+    char nume[16];
+    char prenume[24];
+    char cnp[14];
+    // structura CNP: S AN LU ZI 6cifre; total 13 cifre
+public:
+    // membri publici
+    void setNume(char *n);
+    void setPrenume(char *p);
+    int setCnp(char *c); //ret. valori functie tip CNP
+    int setValidCnp(char *C);
+    char *getNume(void)
+    {
+        return nume;
+    }
+    char *getPrenume(void)
+    {
+        return prenume;
+    }
+    char *getCnp(void)
+    {
+        return cnp;
+    }
+    char get_gender(void);
+    int get_an_nast(void);
+    int get_luna_nast(void);
+    int get_zi_nast(void);
+    int get_varsta(void);
+};
+void Person::setNume(char *n)
+{
+    if (n != 0)
+        strncpy(nume, n, 15);
+    else
+        strcpy(nume, "Necunoscut");
+}
+void Person::setPrenume(char *p)
+{
+    if (p != 0)
+        strncpy(prenume, p, 23);
+    else
+        strcpy(prenume, "Necunoscut");
+}
+int Person::setCnp(char *c)
+{
+    char buf[3];
+    int n;
+    if (c != 0)
+    {
+        // validare CNP: numai pentru cifra sex, cifrele pentru AN, LU, ZI
+        cnp[13] = '\0';
+        if (strlen(c) != 13)
+            return 1;
+        if (c[0] != '1' && c[0] != '2')
+            return 2;
+        strncpy(buf, c + 1, 2);
+        buf[2] = '\0';
+        n = atoi(buf);
+        if (n > 99)
+            return 3; //inconsistent
+        strncpy(buf, c + 3, 2);
+        buf[2] = '\0';
+        n = atoi(buf);
+        if (n == 0 || n > 12)
+            return 4;
+        strncpy(buf, c + 5, 2);
+        buf[2] = '\0';
+        n = atoi(buf);
+        if (n == 0 || n > 31)
+            return 5;
+        strcpy(cnp, c);
+        return 0;
+    }
+}
+char Person::get_gender(void)
+{
+    if (cnp[0] == '1')
+        return 'M';
+    if (cnp[0] == '2')
+        return 'F';
+    return 'X';
+}
+int Person::get_an_nast(void)
+{
+    char buf[3];
+    strncpy(buf, cnp + 1, 2);
+    buf[2] = '\0';
+    return (1900 + atoi(buf));
+}
+int Person::get_luna_nast(void)
+{
+    char buf[3];
+    strncpy(buf, cnp + 3, 2);
+    buf[2] = '\0';
+    return (atoi(buf));
+}
+int Person::get_zi_nast(void)
+{
+    return ((cnp[5] - '0') * 10 + (cnp[6] - '0'));
+}
+int Person::get_varsta(void)
+{
+    struct tm *newTime;
+    time_t szClock;
+    time(&szClock);
+    newTime = localtime(&szClock);
+    int an_c = 1900 + newTime->tm_year;
+    int an_n = get_an_nast();
+    int n = an_c - an_n;
+    int lu_c = newTime->tm_mon + 1;
+    int lu_n = get_luna_nast();
+    if (lu_c < lu_n)
+        n--;
+    else
+    {
+        if (lu_c == lu_n)
+        {
+            int zi_c = newTime->tm_mday;
+            int zi_n = get_zi_nast();
+            if (zi_c < zi_n)
+                n--;
+        }
+    }
+    return n;
+}
+
+int Person::setValidCnp(char *C){
+    /* S|AA|LL|ZZ|JJ|NNN|C
+    S-Sex; A-year; L-Month; Z-Day; J-County; N-Person diferentiator; C-control number
+    */
+    if(strlen(C)!=13){
+        return false;
+    }
+    int c[13];
+    for(int i=0;i<13;i++){
+        c[i]=C[i]-48;
+    }
+    
+    time_t theTime = time(NULL);
+    struct tm *aTime = localtime(&theTime);
+    bool flag=true;
+    int day = aTime->tm_mday;
+    int month = aTime->tm_mon + 1;
+    int year = aTime->tm_year + 1900;
+    int cnp=0;
+    
+    if(c[0]>=1 && c[0]<=8){// S | valid sex integers
+        cnp=c[0];
+    }else{
+        return false;
+    }
+    //  valid year (so that the cnp of ppl that will be born in the future are no availabe now)
+    //               (the situation in which is inserted is before 1800 is eliminiated by the sex\centuary digit)
+    if(c[0]==5 || c[0]==6){//A
+        int yr1=c[1]*10+c[2];
+        int yr2=year%100;
+        if(yr1>yr2){
+            return false;
+        }
+        int l1=c[3]*10+c[4];
+        if(l1>=0 && l1<=12){//L
+            if(l1>month){
+                return false;
+            }else{
+                int d1=c[5]*10+c[6];
+                if(d1>=1&&d1<=31){//Z
+                    if(d1>day){
+                        return false;
+                    }
+                }else{
+                    false;
+                }
+            }
+        }else{
+            false;
+        }
+    }
+    int l1=c[3]*10+c[4];
+    if(!(l1>=0 && l1<=12)){//L
+        return false;
+    }
+    int d1=c[5]*10+c[6];//Z
+    if(!(d1>=1&&d1<=31)){
+        return false;
+    }
+    int county=c[7]*10+c[8];
+    if(!(county>=1&&county<=52)){
+        return false;
+    }
+    //N - there's no way to validate this because it's the persons own id
+    //C - control digit
+    int sum=0,d=0;
+    for(int i=0;i<12;i++){
+        sum+=c[i];
+    }
+    d=sum%11;
+    if(d==10){
+        d=0;
+    }
+    if(c[12]!=d){
+        return false;
+    }
+    strcpy(this->cnp, C);
+}
+
+
+int main()
+{
+    Person p1;
+    char aux_string[30];
+    cout << "\nEnter Name: ";
+    cin >> aux_string; //Popescu
+    p1.setNume(aux_string);
+    cout << "\nEnter SurName: ";
+    cin >> aux_string; //Bitanescu
+    p1.setPrenume(aux_string);
+    cout << "\nEnter CNP: ";
+    cin >> aux_string; //1890403120671
+    p1.setValidCnp(aux_string);
+    cout << "Date despre obiect: " << endl;
+    cout << "\tNume: " << p1.getNume() << ", Prenume: " << p1.getPrenume() << ", CNP: " << p1.getCnp() << endl;
+    cout << "\tSex: " << p1.get_gender() << endl;
+    cout << "\tData nasterii: " << p1.get_an_nast() << "/" << p1.get_luna_nast() << "/" << p1.get_zi_nast() << endl;
+    cout << "\tVarsta: " << p1.get_varsta() << endl;
+}

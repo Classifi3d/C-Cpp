@@ -1,0 +1,1 @@
+Applications ranging from basic oop concepts such as inheritance, polymorhpism, encapsulation and abstraction to data streams and operator overloading.

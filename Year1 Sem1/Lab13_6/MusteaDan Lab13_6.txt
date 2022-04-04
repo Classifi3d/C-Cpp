@@ -1,0 +1,93 @@
+/*
+Nume: Mustea Dumitru Dan
+Grupa: 2013
+Seria: ENG
+*/
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+
+#define _CRT_SECURE_NO_WARNINGS 
+
+using namespace std;
+
+#define max 1000
+
+
+void creatFile(char fileName[max]);
+void writeFile(char fileName[max]);
+int arrayLength(char array[max]);
+
+int main() {
+
+	char fileName[max];
+	printf("Insert a filename\n");
+	//scanf_s("%s", fileName);
+	cin >> fileName;
+
+	//adds a ".txt" extension to the file name that was read from the keyboard
+	int i = arrayLength(fileName);
+	fileName[i] = '.';
+	fileName[i + 1] = 't';
+	fileName[i + 2] = 'x';
+	fileName[i + 3] = 't';
+	fileName[i + 4] = '\0';
+
+
+
+
+	creatFile(fileName);
+
+
+}
+
+void creatFile(char fileName[max]) {//creats file if it didn't exist
+	FILE* fPointer = fopen(fileName, "w");
+	fclose(fPointer);
+
+	writeFile(fileName);
+
+}
+
+void writeFile(char fileName[max]) {//writes in the file that was newly created
+	char c='a';
+	int n=0;
+	char array[max];
+
+	printf("Insert the value of n.\n");
+	scanf_s("%d", &n);
+	printf("Insert a character.\n");
+	cin >> c;
+	
+	FILE* fPointer = fopen(fileName, "w");
+	fprintf(fPointer, "");
+	int k = n;
+	while (n > 0) {
+		array[k] = '\0';
+		for (int i = 0; i < k; i++) {
+			array[i] = c;
+		}
+
+		//adding endline to the string that was read
+		int i = arrayLength(array);
+		if (n > 1) {//avoids the program from printing the last line twice
+			array[i] = '\n';
+			array[i + 1] = '\0';
+		}
+
+		fprintf(fPointer, array);
+		n--;
+	}
+
+	fclose(fPointer);
+
+}
+
+int arrayLength(char array[max]) {//returns the length of an array
+	int i = 0;
+	while (array[i] != '\0') {
+		i++;
+	}
+	return i;
+}
+

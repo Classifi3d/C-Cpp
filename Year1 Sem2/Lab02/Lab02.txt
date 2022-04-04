@@ -1,0 +1,471 @@
+ #include  <iostream>
+
+using  namespace  std;
+
+int  ank(int  n,  int  k)  {
+        if(k==1){
+                return  1;
+        }else  return  n  *  ank(n-1,k-1);
+}
+
+
+
+int  main()  {
+        int  n,  k;
+        cin  >>  n  >>  k;
+        cout<<ank(n,  k);
+        return  0;
+} 
+
+
+//Mustea  Dan  Lab02  Grupa  2013
+#include  <iostream>
+
+using  namespace  std;
+
+int  cnk(int  n,  int  k)  {
+        if  (k  ==  n  ||  n==0  ||  k==0)  {
+                return  1;
+        }
+        else  return  n/n-k  *  cnk(n  -  1,  k);
+}
+
+
+
+int  main()  {
+        int  n,  k;
+        cin  >>  n  >>  k;
+        cout  <<  cnk(n,  k);
+        return  0;
+}
+
+
+//Mustea  Dan  Lab02  Grupa  2013
+#include  <iostream>
+
+using  namespace  std;
+
+int  gcd(int  a,  int  b)  {//greatest  common  divider
+        if  (b!=0)  {
+                return  gcd(b,  a  %  b);
+        }
+        else  {
+                return  a;
+        }
+        
+}
+
+int  main()  {
+        int  a,  b;
+        cin  >>  a  >>  b;
+        cout  <<  gcd(a,  b);
+        return  0;
+}
+
+
+//Mustea  Dan  Lab02  Grupa  2013
+#include  <iostream>
+
+using  namespace  std;
+
+double  gauss_geom(double  a,  double  b,  int  n);
+double  gauss_arith(double  a,  double  b,  int  n);
+
+
+int  main()  {
+        double  a0,  b0;
+        int  n;
+        cin  >>  a0  >>  b0  >>  n;
+        cout  <<  gauss_arith(a0,  b0,  n)<<endl;
+        cout  <<  gauss_geom(a0,  b0,  n)<<endl;
+        return  0;
+}
+
+
+double  gauss_geom(double  a,  double  b,  int  n)  {//bn
+        if  (n  ==  0)  {
+                return  sqrt(a  *  b);
+        }
+        return    sqrt(gauss_arith(a,  b,  n  -  1)  *  gauss_geom(a,  b,  n  -  1));
+}
+
+double  gauss_arith(double  a,  double  b,  int  n)  {//an
+        if  (n  ==  0)  {
+                return  (a  +  b)  /  2;
+        }
+        return  gauss_arith(a,  b,  n  -  1)  +  gauss_geom(a,  b,  n  -  1)  /  2;
+}
+
+
+#include  <iostream>
+
+using  namespace  std;
+
+
+char  display(char  c[],int  n)  {
+        cout  <<  c[n];
+        if  (n  ==  0)  {
+                return  '  ';
+        }else  return  display(c,  n-1);
+}
+        
+int  length(char  C[],  int  &n)  {
+        int  i  =  0;
+        while  (C[i]  !=  '\0')  {
+                i++;
+        }
+        n  =  i;
+
+        return  n;
+}
+
+int  main()  {
+        int  n;
+        char  C[2048];
+        cin  >>  C;
+        cout<<C<<endl;
+        length(C,  n);
+        display(C,  n-1);
+        return  0;
+}
+
+
+//Mustea  Dan  Grupa  2013
+#include  <iostream>
+
+using  namespace  std;
+
+
+int  dotProduct(int  a[],int  b[],int  n){
+        if(n==0){
+                return(a[0]*b[0]);
+        }else{
+                return  a[n]*b[n]+dotProduct(a,b,n-1);
+        }
+}
+
+
+int  main(){
+
+        int  n;
+        cin>>n;
+        int  a[10000],b[10000];
+
+        for(int  i=0;i<n;i++){
+                cin>>a[i];
+        }
+        for(int  i=0;i<n;i++){
+                cin>>b[i];
+        }
+
+        cout<<dotProduct(a,b,n)<<endl;
+
+        return  0;
+}
+
+//Mustea  Dan  Grupa  2013
+#include  <iostream>
+#include  <cstring>
+
+using  namespace  std;
+
+#define  MAX  10000
+
+void  atoiArray(char  c[MAX],  int  intArray[MAX]){
+        //cout<<"strlen:  "<<strlen(c)<<endl;
+        int  k=0;
+        for(int  i=0;i<strlen(c);i++){
+                if(c[i]-48>=0  &&  c[i]-48<=9){
+                        intArray[k++]=c[i]-48;
+                        //cout<<"*"<<c[i]<<"  "<<intArray[k-1]<<endl;
+                }
+        }
+}
+
+int  evenRecursive(int  intArray[MAX],int  size){
+        if(size>1){
+                if(intArray[size]%2==0){
+                        return  intArray[size]+evenRecursive(intArray,size-1);
+                }
+                        return  evenRecursive(intArray,size-1);
+        }
+        if(intArray[1]%2==0){
+                return  intArray[1];
+        } 
+        return  0;
+}
+
+void  OpenFile(char  fileName[MAX]){
+        FILE  *  fPointer;
+        fPointer  =  fopen(fileName,"rw");
+
+        char  array[MAX];
+        int  intArray[MAX],size=0;
+
+        while(!feof(fPointer)){
+                fgets(array,MAX,fPointer);
+                atoiArray(array,intArray);
+
+                size=intArray[0];
+                /*
+                for(int  i=0;i<size;i++){
+                        cout<<intArray[i]<<"  ";
+                }cout<<endl;*/
+                cout<<evenRecursive(intArray,size)<<endl;
+        }
+
+        fclose(fPointer);
+
+}
+
+int  main(){
+
+        char  fileName[MAX];
+        cout<<"Insert  file  name:  ";
+        cin>>fileName;
+        OpenFile(fileName);
+
+
+        return  0;
+}
+
+
+//Mustea  Dan  Grupa  2013
+#include  <iostream>
+#include  <cstring>
+
+using  namespace  std;
+
+#define  MAX  10000
+
+void  atoiArray(char  c[MAX],  int  intArray[MAX]){
+        //cout<<"strlen:  "<<strlen(c)<<endl;
+        int  k=0;
+        for(int  i=0;i<strlen(c);i++){
+                if(c[i]-48>=0  &&  c[i]-48<=9){
+                        intArray[k++]=c[i]-48;
+                        //cout<<"*"<<c[i]<<"  "<<intArray[k-1]<<endl;
+                }
+        }
+}
+
+bool  isPrime(int  x){
+        if(x<=1){
+                return  false;
+        }
+
+        for  (int  i  =  2;  i  <  x;  i++){
+                if  (x  %  i  ==  0)  {
+                        return  false; 
+                }
+        }
+        return  true; 
+}
+
+
+
+int  sumPrimeRecursive(int  intArray[MAX],int  size){
+        if(size>1){
+                if(isPrime(intArray[size])==1){
+                        return  intArray[size]+sumPrimeRecursive(intArray,size-1);
+                }
+                        return  sumPrimeRecursive(intArray,size-1);
+        }
+        if(isPrime(intArray[1])==1){
+                return  intArray[1];
+        } 
+        return  0;
+}
+
+void  OpenFile(char  fileName[MAX]){
+        FILE  *  fPointer;
+        fPointer  =  fopen(fileName,"rw");
+
+        char  array[MAX];
+        int  intArray[MAX],size=0;
+
+        while(!feof(fPointer)){
+                fgets(array,MAX,fPointer);
+                atoiArray(array,intArray);
+
+                size=intArray[0];
+                /*
+                for(int  i=0;i<size;i++){
+                        cout<<intArray[i]<<"  ";
+                }cout<<endl;*/
+                cout<<sumPrimeRecursive(intArray,size)<<endl;
+        }
+
+        fclose(fPointer);
+
+}
+
+int  main(){
+
+        char  fileName[MAX];
+        cout<<"Insert  file  name:  ";
+        cin>>fileName;
+        OpenFile(fileName);
+
+
+        return  0;
+}
+
+
+//MusteaDan  Grupa  2013
+#include  <iostream>
+
+using  namespace  std;
+
+int  sum(int  x,  bool  ok)  {
+        cin  >>  x;
+        cout  <<  "Insert  '1'  to  continue  adding  or  '0'  to  stop.";
+        cin  >>  ok;
+        if  (ok  ==  true)  {
+                return  x  +  sum(x,  ok);
+        }
+        return  x;
+}
+
+
+int  main()  {
+
+        int  val=0;
+        bool  ok=true;
+        cout  <<  sum(val,  ok);
+
+        return  0;
+}
+
+
+//MusteaDan  Grupa  2013
+#include  <iostream>
+
+using  namespace  std;
+
+#define  MAX  100000
+
+int  recursiveSearch(int  n,  int  array[MAX],  int  x)  {
+        if  (n  ==  0)  {
+                if  (array[0]  ==  x)  {
+                        return  1;
+                }
+                else  {
+                        return  0;
+                }
+        }
+        else  {
+                if  (array[n]  ==  x)  return  1  +  recursiveSearch(n  -  1,  array,  x);
+                return  recursiveSearch(n  -  1,  array,  x);
+        }
+}
+
+int  normalSearch(int  n,  int  array[MAX],  int  x)  {
+        int  sum  =  0;
+        for  (int  i  =  0;  i  <  n;  i++)  {
+                if  (array[i]  ==  x)  {
+                        sum++;
+                }
+        }
+        return  sum;
+}
+
+
+int  main()  {
+
+        int  n,  x;
+        int  array[MAX];
+        cout  <<  "n:  ";
+        cin  >>  n;
+        cout  <<  "array["  <<  n  <<  "]:  ";
+        for  (int  i  =  0;  i  <  n;  i++)  {
+                cin  >>  array[i];
+        }
+        cout  <<  "x:  ";
+        cin  >>  x;
+        cout  <<  recursiveSearch(n,  array,  x)  <<  endl;
+        cout  <<  normalSearch(n,  array,  x)  <<  endl;
+
+        return  0;
+}
+
+
+//MusteaDan  Grupa  2013
+#include  <iostream>
+
+using  namespace  std;
+
+int  conversion(int  n,  int  b)  {
+        if  (n  ==  0)  {
+                return  n  %  b;
+        }
+        return  n  %  b  +  10  *  conversion(n  /  b,  b);
+}
+
+
+int  main()  {
+        int  n,  b;
+        cin  >>  n  >>  b;
+        cout  <<  conversion(n,  b);
+
+        return  0;
+}
+
+
+//MusteaDan  Grupa  2013
+#include  <iostream>
+
+using  namespace  std;
+
+/*
+x2  �"sx  +p=0.
+Sum(n)  ={  2,      dacă  n=0;
+                        s,      dacă  n=1;
+                        s*Sum(n-1)  �"  p*Sum(n-2),        dacă  n>1;  }
+*/
+
+int  Sum(int  n,  int  s,  int  p)  {
+        if  (n  ==  0)  return  2;
+        if  (n  ==  1)  return  s;
+        if  (n  >  1)  return  s  *  Sum(n  -  1,  s,  p)  -  p  *  (n  -  2,  s,  p);
+}
+
+int  main()  {
+
+        int  n,  s,  p;
+        cin  >>  n  >>  s  >>  p;
+        cout  <<  Sum(n,  s,  p)  <<  endl;
+
+        return  0;
+}
+
+
+//MusteaDan  Grupa  2013
+#include  <iostream>
+
+using  namespace  std;
+
+double  harmonicSeriesRecursive(int  n)  {
+        if  (n  <=  1)  {
+                return  1;
+        }
+        return  ((double)1  /  n)  +  harmonicSeriesRecursive(n  -  1);
+}
+
+double  harmonicSeries(int  n)  {
+        double  harmonicSum  =  0;
+        for  (int  i  =  1;  i  <=  n;  i++)  {
+                harmonicSum  =  harmonicSum  +  ((double)1  /  i);
+        }
+        return  harmonicSum;
+}
+
+
+int  main()  {
+        int  n;
+        cin  >>  n;
+        cout  <<  harmonicSeriesRecursive(n)<<endl;
+        cout  <<  harmonicSeries(n)<<endl;
+
+        return  0;
+}

@@ -1,0 +1,9 @@
+﻿  Lab10_2_1.cpp
+E:\Programming\C - C++\Lab10_2_1\Lab10_2_1.cpp(14,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+E:\Programming\C - C++\Lab10_2_1\Lab10_2_1.cpp(15,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+E:\Programming\C - C++\Lab10_2_1\Lab10_2_1.cpp(16,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+E:\Programming\C - C++\Lab10_2_1\Lab10_2_1.cpp(17,13): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+E:\Programming\C - C++\Lab10_2_1\Lab10_2_1.cpp(7,8): warning C4101: 'sum': unreferenced local variable
+E:\Programming\C - C++\Lab10_2_1\Lab10_2_1.cpp(7,13): warning C4101: 'prod': unreferenced local variable
+E:\Programming\C - C++\Lab10_2_1\Lab10_2_1.cpp(6,6): warning C4101: 'i': unreferenced local variable
+  Lab10_2_1.vcxproj -> E:\Programming\C - C++\Lab10_2_1\Debug\Lab10_2_1.exe

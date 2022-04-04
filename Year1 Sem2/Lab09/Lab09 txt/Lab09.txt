@@ -1,0 +1,689 @@
+#include <cstddef>
+#include <cstring>
+#include <iostream>
+using namespace std;
+
+const int MAX = 30; //nr. caractere
+const int dim = 5;  //nr. obiecte implicit
+
+
+class Analize;
+    class Pers
+    {
+        //date personale
+        char nume[MAX];
+        double greutate;
+        int varsta;
+        friend class Analize;
+        //metoda de afisare
+
+        void SetNume(){
+            //the name variable cannot be incorrect since real names can have numbers and other characters in them as well ex:Elon Musks'son  
+            cin>>this->nume;
+        }
+        void SetGreutate(){ 
+            int weight;
+            cin>>weight;
+            while (weight<0)
+            {
+                cout<<"Invalid weight!\nIntroduce another value:";
+                cin>>weight;
+            }
+            
+            this->greutate=weight;
+        }
+        void SetVarsta(){
+            int age;  
+            cin>>age;
+            while (age<0)
+            {
+                cout<<"Invalid weight!\nIntroduce another value:";
+                cin>>age;
+            }
+            this->varsta=age;
+        }
+        Pers(){
+            this->greutate=0;
+            this->varsta=0;
+            strcpy(this->nume," ");
+        }
+        Pers(const Pers &a){
+            this->greutate=a.greutate;
+            strcpy(this->nume,a.nume);
+            this->varsta=a.varsta;
+        }
+        ~Pers(){
+            delete[] nume;
+            delete &greutate;
+            delete &varsta;
+        }
+        Pers operator=(const Pers &a){
+            this->varsta=a.varsta;
+            this->greutate=a.greutate;
+            strcpy(this->nume,a.nume);
+        }
+    public:
+        void tip();
+    }; // Pers
+void Pers::tip()
+{
+    if (this)
+        cout << "\nPersoana : " << nume << "\tGreutatea : " << greutate << "\tVarsta : " << varsta;
+    else
+        cout << "\nNu exista obiect ";
+}
+class Analize
+{
+    Pers *sir;
+    int n;
+
+public:
+    void GetN(){
+        cout<<n;
+    }
+    //constructori
+    Analize()
+    {
+        n = dim;
+        sir = new Pers[dim];
+    }
+    Analize(int nr)
+    {
+        n = nr;
+        sir = new Pers[n];
+    }
+    Analize(const Analize &a){
+        this->n=a.n;
+        this->sir=a.sir;
+    }
+    ~Analize(){
+        delete sir;
+        delete &n;
+    }
+    //Supraincarcare [ ]
+    Pers *operator[](char *);
+    Pers *operator[](double);
+    Pers *operator[](int);
+    void introdu();
+}; //Analize
+void Analize::introdu()
+{
+    cout << "\nIntrodu date :\n";
+    for (int i = 0; i < n; i++)
+    {
+        cout << "Numele persoanei   " << (i + 1) << " : ";
+        sir[i].SetNume();
+        cout << "Greutatea : ";
+        sir[i].SetGreutate();
+        cout << "Varsta : ";
+        sir[i].SetVarsta();
+
+    }
+} //introdu
+//Indexare dupa nume
+Pers *Analize::operator[](char *nume)
+{
+    for (int i = 0; i < n; i++)
+        if (strcmp(sir[i].nume, nume) == 0)
+            return &sir[i];
+    return NULL;
+} //op[ ]nume
+//Indexare dupa greutate
+Pers *Analize::operator[](double gr)
+{
+    for (int i = 0; i < n; i++)
+        if (sir[i].greutate == gr)
+            return &sir[i];
+    return NULL;
+} //op[ ]greutate
+//Indexare dupa index
+Pers *Analize::operator[](int index)
+{
+    if ((index >= 1) && (index <= n))
+        return &sir[index - 1];
+    else
+    {
+        cout << "\nIndex gresit";
+        return NULL;
+    }
+} //op[ ]index
+
+
+
+//main( )
+int main()
+{
+    char c;
+    int nr;
+    cout << "\nIntrodu nr. obiecte ce vor fi create : ";
+    cin >> nr;
+    Analize t(nr); //creare obiecte-rezervare
+    t.introdu();   //dau datele
+    bool ok=true;
+
+    while (ok==true)
+    {
+        cout << "\nOptiunea (g-greutate, n-nume, i-index, e-exit) ?";
+        cin >> c;
+        switch (toupper(c))
+        {
+        case 'G':
+            double g;
+            cout << "Greutatea: ";
+            cin >> g;
+            t[g]->tip();
+            break;
+        case 'N':
+            char n[MAX];
+            cout << "Numele: ";
+            cin >> n;
+            t[n]->tip();
+            break;
+        case 'I':
+            int i;
+            cout << "Nr index: ";
+            cin >> i;
+            t[i]->tip();
+            break;
+        case 'E':
+            ok=false;
+        default:
+            if(ok==true)   
+            cout<<endl<<"Acesta optiune nu exista, incearca din nou!";
+        } //end switch-case
+    }     //end while
+
+    Analize a(t);
+    a.GetN();
+    return 0;
+    
+} //main
+#include <iostream>
+#include <cstring>
+using namespace std;
+#define MAX 100
+
+
+
+class Departament{
+private:
+    class Employee{
+        private:
+            char name[MAX];
+            float salary;
+        public:
+            void SetEmplyee(char *name,int salary){
+                strcpy(this->name,name);
+                this->salary=salary;
+            }
+            int GetSalary(){
+                return this->salary;
+            }
+            char* GetName(){
+                return this->name;
+            }
+
+    }lista[MAX];
+    int numOfEmplyees=0;
+public:
+    void operator[](int pos){
+        Employee emp;
+        emp=lista[pos-1];
+        cout<<"Employee Nr. "<<pos-1<<" Salary:"<<emp.GetSalary()<<" Name:"<<emp.GetName()<<endl;
+    }
+    void InsertEmployee(){
+        char name[MAX];
+        int salary;
+        cout<<"Insert Name: ";
+        cin>>name;
+        cout<<"Insert Salary: ";
+        cin>>salary;
+        lista[numOfEmplyees].SetEmplyee(name,salary);
+        numOfEmplyees++;
+        //delete[] name;
+    }
+    void InsertMultipleEmpoyees(){
+        int n;
+        cout<<"Insert the number of emplyee you wish to enter: ";
+        cin>>n;
+        while(n>0){
+            InsertEmployee();
+            n--;
+        }
+
+    }
+};
+
+
+
+
+int main(){
+
+Departament a;
+a.InsertMultipleEmpoyees();
+a[1];
+}
+#include <iostream>
+#include <cstring>
+using namespace std;
+#define MAX 50
+
+
+
+class Departament{
+private:
+    class Employee{
+        private:
+            char name[MAX];
+            float salary;
+        public:
+            void SetEmplyee(char *name,int salary){
+                strcpy(this->name,name);
+                this->salary=salary;
+            }
+            int GetSalary(){
+                return this->salary;
+            }
+            char* GetName(){
+                return this->name;
+            }
+
+    }lista[MAX];
+    int numOfEmplyees=0;
+public:
+    Departament(int n){
+        this->numOfEmplyees=n;
+    }
+    Departament(){
+        cout<<"Constructor called!"<<endl;
+    }
+    void operator[](int pos){
+        Employee emp;
+        emp=lista[pos-1];
+        cout<<"Employee Nr. "<<pos-1<<" Salary:"<<emp.GetSalary()<<" Name:"<<emp.GetName()<<endl;
+    }
+    void * operator new(size_t size){
+        cout<<"!Overloading new operator with size: "<<size<<endl;
+        void *a = malloc(size);
+        return a;
+    }
+    void operator delete(void *p){
+        cout<<"!Overloading delete operator"<<endl;
+        free(p);
+    }
+    void InsertEmployee(){
+        char name[MAX];
+        int salary;
+        cout<<"Insert Name: ";
+        cin>>name;
+        cout<<"Insert Salary: ";
+        cin>>salary;
+        lista[numOfEmplyees].SetEmplyee(name,salary);
+        numOfEmplyees++;
+        //delete[] name;
+    }
+    void InsertMultipleEmpoyees(int n){
+        int i=0;
+        while(i<n){
+            InsertEmployee();
+            i++;
+        }
+
+    }
+};
+
+
+
+
+int main(){
+cout<<"Inset the number of employees you wish to enter: ";
+int n;
+cin>>n;
+Departament *a=new Departament();
+a->InsertMultipleEmpoyees(n);
+delete a;
+
+}
+#include <iostream>
+#include <cstring>
+#include<stdarg.h>
+using namespace std;
+
+#define MAX 50
+
+int myFunction(int n_args, ...)
+{
+    va_list arguments;
+    va_start(arguments, n_args);
+    int product=va_arg(arguments, int);
+    for(int i = 1; i < n_args; i++) {
+        product*=va_arg(arguments, int);
+    }
+    va_end(arguments);
+    return product;
+}
+
+int main(){
+//the first paramater is the number of paramaters entered after than one!!!
+cout<<myFunction(5,2,3,4,5,6)<<endl;
+cout<<myFunction(1,2)<<endl;
+
+}
+
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+#define MAX 50
+
+class Calculator{
+    private:
+        int x,y,z;
+    public:
+    static int calcul(int x){
+        return x*x;
+    }
+    int calcul(int x,int y){
+        return x*y;
+    }//yes we can use static and non static methods for the overloaded public methods
+    static double calcul(int x,int y,int z){
+        return ((x*x-x*y-y*z)/2);
+    }
+    void SetX(int x){
+        this->x=x;
+    }
+    void SetY(int y){
+        this->y=y;
+    }
+    void SetZ(int z){
+        this->z=z;
+    }
+};
+
+int main(){
+int x,y,z;
+cin>>x>>y>>z;
+Calculator a;
+a.SetX(x);
+a.SetY(y);
+a.SetZ(z);
+cout<<a.calcul(x,y)<<endl;
+}
+#include <iostream>
+#include <cstring>
+using namespace std;
+#define MAX 100
+
+class Student{
+private:
+    char name[MAX];
+    int* marks;
+    int nr_marks;
+public:
+    Student(char* name,int* marks,int nr_marks){
+        //constructor with paramtesrs
+        strcpy(name,this->name);
+        this->marks=marks;
+        this->nr_marks=nr_marks;
+
+    }
+    Student(Student &a){
+        //copy constructor
+        strcpy(a.name,this->name);
+        this->marks=a.marks;
+        this->nr_marks=a.nr_marks;
+    }
+    /*~Student(){
+        delete marks;
+        delete &nr_marks;
+        delete[] name;
+    }*/
+    void operator=(Student &a){
+        //assign operator overload
+        strcpy(a.name,this->name);
+        this->marks=a.marks;
+        this->nr_marks=a.nr_marks;
+    }
+    void MarkSetting(int* marks){
+        this->marks=marks;
+    }
+    void Display(){
+        cout<<"name:"<<name<<" "
+        <<"number of marks: "<<nr_marks<<" "
+        <<"marks: ";
+        for(int i=0;i<nr_marks;i++){
+            cout<<marks[i]<<" ";
+        }
+        cout<<endl;
+    }
+
+
+
+
+};
+
+void readInfo(char* name,int *marks,int &n){
+
+    cout<<"Insert the number of marks: ";
+    cin>>n;
+    cout<<"Insert the "<<n<<" marks: ";
+    for(int i=0;i<n;i++){
+        cin>>marks[i];
+    }
+    cout<<"Insert your name: ";
+    cin>>name;
+}
+
+int main(){
+    int marks[MAX],n;
+    char name[MAX];
+    readInfo(name,marks,n);
+    cout<<endl;
+    Student a(name,marks,n);
+    a.Display();
+    Student b(a);
+    b.Display();
+    readInfo(name,marks,n);
+    cout<<endl;
+    Student c(name,marks,n);
+    c.Display();
+    c=a;
+    cout<<"AFTER ASSIGN!"<<endl;
+    c.Display();
+    
+    return 0;
+}
+#include <iostream>
+#include<cstring>
+using namespace std;
+
+class Complex{
+    private:
+    double real,imag;
+    public:
+    Complex(){
+        this->real=1.0;
+        this->imag=1.0;
+    }
+    Complex(double real,double imag){
+        this->real=real;
+        this->imag=imag;
+    }
+    Complex(const Complex &num){
+        this->real=num.real;
+        this->imag=num.imag;
+    }
+    void SetImag(int imag){
+        this->imag=imag;
+    }
+    void SetReal(int real){
+        this->real=real;
+    }
+    int GetImag(){
+        return this->imag;
+    }
+    int GetReal(){
+        return this->real;
+    }
+    void Display(){
+        cout<<this->real<<" "<<this->imag<<endl;
+    }
+    Complex operator+(Complex &num){
+        Complex aux;
+        aux.real+=num.real;
+        aux.imag+=num.imag;
+        return aux;
+    }
+    Complex operator-(Complex &num){
+        Complex aux;
+        aux.real-=num.real;
+        aux.imag-=num.imag;
+        return aux;
+    }
+    Complex operator*( Complex &num){
+        Complex aux;
+        double rl,im;
+        rl=(-1)*(this->imag*num.imag + this->real*num.real);
+        im=this->imag*num.real+num.imag*this->real;
+        aux.imag=im;
+        aux.real=rl;
+        return aux;
+    }
+    void operator=(Complex &num){
+        this->real=num.real;
+        this->imag=num.imag;
+    }
+    Complex operator/(const Complex &num){
+        Complex aux;
+        int rl,im;
+        rl=(-1)*(this->imag/num.imag + this->real/num.real);
+        im=this->imag/num.real+this->real/num.imag;
+        aux.imag=im;
+        aux.real=rl;
+        return aux;
+    }
+};
+
+int main(){
+
+Complex a,b;
+int x,y;
+cout<<"Insert the real and imaginary parts of a complex number: ";
+cin>>x>>y;
+a.SetImag(y);
+a.SetReal(x);
+cout<<"Insert the real and imaginary parts of a complex number: ";
+cin>>x>>y;
+b.SetImag(y);
+b.SetReal(x);
+
+Complex c=a+b;
+Complex d=a-b;
+Complex e=a*b;
+Complex f=a/b;
+c.Display();
+d.Display();
+e.Display();
+f.Display();
+
+
+
+}
+
+#include <iostream>
+
+using namespace std;
+
+class Number{
+    private:
+    double var;
+    public:
+    Number(){
+        var=0;
+    }
+    Number(double var){
+        this->var=var;
+    }
+    void Set(double n){
+        var=n;
+    }
+    double Get(){
+        return var;
+    }
+    Number operator+(Number &num){
+        Number aux;
+        aux.var=this->var+num.var;
+        return aux;
+    }
+    Number operator-(Number &num){
+        Number aux;
+        aux.var=this->var-num.var;
+        return aux;
+    }
+    Number operator*(Number &num){
+        Number aux;
+        aux.var=this->var*num.var;
+        return aux;
+    }
+    Number operator/(Number &num){
+        Number aux;
+        aux.var=this->var/num.var;
+        return aux;
+    }
+
+};
+
+class Mathematics{
+    private:
+    Number num;
+    public:
+    Mathematics operator+(Mathematics &num){
+        Mathematics aux;
+        aux.num=this->num+num.num;
+        return aux;
+    }
+    Mathematics operator-(Mathematics &num){
+        Mathematics aux;
+        aux.num=this->num-num.num;
+        return aux;
+    }
+    Mathematics operator*(Mathematics &num){
+        Mathematics aux;
+        aux.num=this->num*num.num;
+        return aux;
+    }
+    Mathematics operator/(Mathematics &num){
+        Mathematics aux;
+        aux.num=this->num/num.num;
+        return aux;
+    }
+    Mathematics(){
+        num.Set(0);
+    }
+    Mathematics(double n){
+        num.Set(n);
+    }
+    void Display(){
+        cout<<num.Get()<<endl;
+    }
+};
+
+
+
+int main(){
+    double x,y;
+    cout<<"Insert the values of 2 real numbers: ";
+    cin>>x>>y;
+    Mathematics a(x),b(y);
+    Mathematics c=a+b;
+    Mathematics d=a-b;
+    Mathematics e=a*b;
+    Mathematics f=a/b;
+    c.Display();
+    d.Display();
+    e.Display();
+    f.Display();
+
+
+    return 0;
+}

@@ -1,0 +1,823 @@
+//Mustea Dan Lab04 Grupa 2013
+#include <iostream>
+
+using namespace std;
+
+#define MAX 100
+
+void read(int array[MAX],int &n);
+void bubble_sort(int array[MAX],int n);
+
+int main(){
+	int n,array[MAX];
+	
+	read(array,n);
+	bubble_sort(array,n);
+	for(int i=0;i<n;i++){
+		cout<<array[i]<<" ";
+	}
+	
+	return 0;
+}
+
+void read(int array[MAX],int &n){
+	cin>>n;
+	for(int i=0;i<n;i++){
+		cin>>array[i];
+	}
+}
+
+void bubble_sort(int array[MAX],int n){
+	n--;
+	bool flag=false;
+	while(flag!=true){
+		flag=true;
+		for(int i=0;i<n;i++){
+			if(array[i]>array[i+1]){
+				int aux=array[i];
+				array[i]=array[i+1];
+				array[i+1]=aux;
+				flag=false;
+			}
+		}
+	}
+
+}//Mustea Dan Lab04 Grupa 2013
+#include <iostream>
+
+using namespace std;
+
+#define MAX 1000
+
+void quick_sort_desc(int array[MAX],int start,int end);
+int partition(int array[MAX],int start,int end);
+
+int main(){	
+	int n,array[MAX];
+	cin>>n;
+	for(int i=0;i<n;i++){
+		cin>>array[i];
+	}
+	quick_sort_desc(array,0,n-1);;
+	for(int i=0;i<n;i++){
+		cout<<array[i]<<" ";
+	}cout<<endl;
+
+	return 0;
+}
+
+void quick_sort_desc(int array[MAX],int start,int end){
+	if(start<end){
+		int index=partition(array,start,end);
+		quick_sort_desc(array,start,index);
+		quick_sort_desc(array,index+1,end);
+	}
+}
+
+int partition(int array[MAX],int start,int end){
+	int index=array[start];
+	int i=start;
+	for(int j=start+1;j<=end;j++){
+		if(array[j]>index){
+			i++;
+			int aux=array[i];
+			array[i]=array[j];
+			array[j]=aux;
+		}
+	}
+	int aux=array[i];
+	array[i]=array[start];
+	array[start]=aux;
+	return i;
+}//Mustea Dan Lab04 Grupa 2013
+#include <iostream>
+#include <fstream>
+#include <cstring>
+#include <stdio.h>
+using namespace std;
+
+#define MAX 1000
+
+ifstream fin ("MusteaDan Lab04_3.txt");
+
+struct record{
+	char firstName[MAX];
+	char lastName[MAX];
+	int idCode;
+	int employmentDate;
+};
+
+int structCmpByFirstName(const void *a, const void *b);
+int structCmpByLastName(const void *a, const void *b);
+int structCmpByIdCode(const void *a, const void *b);
+int structCmpByEmloymentDate(const void *a, const void *b);
+
+int main(){
+	int n;
+	record array[MAX];
+	fin>>n;
+	for(int i=0;i<n;i++){
+		fin>>array[i].firstName;
+		fin>>array[i].lastName;
+		fin>>array[i].idCode;
+		fin>>array[i].employmentDate;
+	}
+	//original list
+	cout<<"====== Original list ======"<<endl;
+	for(int i=0;i<n;i++){
+		cout<<array[i].firstName<<" | ";
+		cout<<array[i].lastName<<" | ";
+		cout<<array[i].idCode<<" |  ";
+		cout<<array[i].employmentDate<<" | "<<endl;
+	}cout<<endl;
+	cout<<"====== Sorted lists ======"<<endl;
+	//first name sort
+	qsort(array,n,sizeof(struct record),structCmpByFirstName);
+	for(int i=0;i<n;i++){
+		cout<<array[i].firstName<<" | ";
+	}cout<<endl;
+
+	//last name sort
+	qsort(array,n,sizeof(struct record),structCmpByLastName);
+	for(int i=0;i<n;i++){
+		cout<<array[i].lastName<<" | ";
+	}cout<<endl;
+
+	//id code sort
+	qsort(array,n,sizeof(struct record),structCmpByIdCode);
+	for(int i=0;i<n;i++){
+		cout<<array[i].idCode<<" | ";
+	}cout<<endl;
+
+	//employment date sort
+	qsort(array,n,sizeof(struct record),structCmpByEmloymentDate);
+	for(int i=0;i<n;i++){
+		cout<<array[i].employmentDate<<" | ";
+	}cout<<endl;
+
+	fin.close();
+	return 0;
+}
+
+int structCmpByIdCode(const void *a, const void *b){ 
+    struct record *ia = (struct record*)a;
+    struct record *ib = (struct record *)b;
+    return (int)(ia->idCode - ib->idCode);
+}
+
+int structCmpByEmloymentDate(const void *a, const void *b){ 
+    struct record *ia = (struct record*)a;
+    struct record *ib = (struct record *)b;
+    return (int)(ia->employmentDate - ib->employmentDate);
+}
+
+int structCmpByFirstName(const void *a, const void *b) { 
+    struct record *ia = (struct record*)a;
+    struct record *ib = (struct record *)b;
+    return strcmp(ia->firstName, ib->firstName);
+}
+int structCmpByLastName(const void *a, const void *b) { 
+    struct record *ia = (struct record*)a;
+    struct record *ib = (struct record *)b;
+    return strcmp(ia->lastName, ib->lastName);
+}
+
+//Compile Data
+/*
+3
+Dan
+Mustea
+36
+20000605
+Cristian
+Bota
+23
+20000203
+Denis
+Zilai
+69
+20000418
+*///Mustea Dan Lab04 Grupa 2013
+#include <iostream>
+
+using namespace std;
+
+#define MAX 1000
+
+void sortTwoInOne(int arrayA[MAX],int n,int arrayB[MAX],int m,int arrayC[MAX],int &p);
+void mergeSorted(int arrayA[MAX],int n,int arrayB[MAX],int m,int arrayC[MAX],int &p);
+int intCompare(const void *a,const void *b);
+
+int main(){
+	int n,m,p,arrayA[MAX],arrayB[MAX],arrayC[2*MAX];
+	cin>>n;
+	for(int i=0;i<n;i++){
+		cin>>arrayA[i];
+	}
+	cin>>m;
+	for(int i=0;i<m;i++){
+		cin>>arrayB[i];
+	}
+	sortTwoInOne(arrayA,n,arrayB,m,arrayC,p);
+	cout<<endl;
+	for(int i=0;i<p;i++){
+		cout<<arrayC[i]<<" ";
+	}cout<<endl;
+
+	return 0;
+}
+
+void sortTwoInOne(int arrayA[MAX],int n,int arrayB[MAX],int m,int arrayC[2*MAX],int &p){
+	qsort(arrayA,n,sizeof(int),intCompare);
+	qsort(arrayB,m,sizeof(int),intCompare);
+	mergeSorted(arrayA,n,arrayB,m,arrayC,p);
+
+}
+
+int intCompare(const void *a,const void *b){
+	int A=*(int *)a;
+	int B=*(int *)b;
+	return A-B;
+}
+
+void mergeSorted(int arrayA[MAX],int n,int arrayB[MAX],int m,int arrayC[2*MAX],int &p){
+	int k=0;
+	int i=0,j=0;
+	while(i<n||j<m){
+		if(i<n&&j<m){
+			if(arrayA[i]<arrayB[j]){
+				if(arrayC[k-1]!=arrayA[i]){
+					arrayC[k++]=arrayA[i++];
+				}
+			}else if(arrayB[j]<arrayA[i]){
+				if(arrayC[k-1]!=arrayB[j]){
+					arrayC[k++]=arrayB[j++];
+				}			
+			}else if(arrayB[j]==arrayA[i]){
+				if(arrayC[k-1]!=arrayA[i]){
+					arrayC[k++]=arrayA[i];
+				}
+				i++;
+				j++;
+			}
+		}else if(i<n){
+			if(arrayC[k-1]!=arrayA[i]){
+				arrayC[k++]=arrayA[i];
+			}
+			i++;
+		}else if(j<m){
+			if(arrayC[k-1]!=arrayB[j]){
+				arrayC[k++]=arrayB[j];
+			}
+			j++;
+		}
+ 
+	}
+	p=k;
+
+}
+#include <time.h>
+#include <iostream>
+
+using namespace std;
+
+void init(int numere[ ], int dim);
+void afis(int numere[ ], int dim);
+void bubble(int numere[ ], int dim);
+void quick(int numere[ ], int dim);
+void shell(int numere[],int dim);
+void slection(int numere[],int dim);
+int comparare(const void *arg1, const void *arg2);
+
+int main( ){
+
+int dim, *numere;
+cout << "\nIntrodu nr. elemente: ";
+cin >> dim;
+numere = new int[dim];
+
+init(numere, dim);
+bubble(numere, dim);
+
+init(numere, dim);
+quick(numere, dim);
+
+init(numere, dim);
+shell(numere, dim);
+
+init(numere, dim);
+slection(numere, dim);
+
+cout<<endl;
+delete[ ]numere;
+
+}
+
+int comparare(const void *arg1, const void *arg2)
+{
+if (*(int *)arg1<*(int *)arg2)
+return -1;
+if (*(int *)arg1 == *(int *)arg2)
+return 0;
+if (*(int *)arg1>*(int *)arg2)
+return 1;
+}
+
+void init(int numere[ ], int dim){
+clock_t start, end;
+double dif;
+start = clock( );
+srand((unsigned)time(NULL));
+for (int i = 0; i<dim; i++) {
+numere[i] = rand();
+}
+end = clock( );
+dif = (double)(end - start);
+cout << "\nGenerarea numerelor a durat (clicks) " << dif << " si (seconds) " << ((float)dif) /
+CLOCKS_PER_SEC << endl;
+}
+
+void afis(int numere[ ], int dim)
+{
+clock_t start, end;
+double dif;
+start = clock( );
+for (int i = 0; i<dim; i++)
+cout << " " << numere[i];
+end = clock( );
+dif = (double)(end - start);
+cout << "\nAfisarea numerelor a durat (clicks) " << dif << " si (seconds) " << ((float)dif) /
+CLOCKS_PER_SEC << endl;
+}
+
+void bubble(int numere[ ], int dim)
+{
+clock_t start, end;
+double dif;
+int aux, ok;
+start = clock( );
+do {
+ok = 1;
+for (int i = 0; i<dim - 1; i++) {
+if (numere[i]>numere[i + 1]) {
+aux = numere[i];
+numere[i] = numere[i + 1];
+numere[i + 1] = aux;
+ok = 0;
+}
+}
+} while (ok == 0);
+end = clock( );
+dif = (double)(end - start);
+cout << "\nOrdonarea cu \"bubble sort\" a numerelor a durat (clicks) " << dif << " si (seconds) " <<
+((float)dif) / CLOCKS_PER_SEC << endl;
+}
+
+void quick(int numere[ ], int dim) {
+clock_t start, end;
+double dif;
+start = clock( );
+qsort((int*)numere, dim, sizeof(int), comparare);
+end = clock( );
+dif = (double)(end - start);
+cout << "\nOrdonarea cu \"quick sort\" a numerelor a durat (clicks) " << dif << " si (seconds) " <<
+((float)dif) / CLOCKS_PER_SEC << endl;
+}
+
+void slection(int numere[],int dim){
+	clock_t start,end;
+	double dif;
+	start=clock();
+	int i,indexMin;
+	for(i=0;i<dim-1;i++){
+		for(int j=i+1;j<dim;j++){
+			if(numere[j]<numere[indexMin]){
+				indexMin=j;
+			}
+			int aux=numere[indexMin];
+			numere[indexMin]=numere[i];
+			numere[i]=aux;
+		}
+	}
+	end=clock();
+	dif=(double)(end-start);
+	cout<<endl<<"Ordonarea cu \"selection sort\" a numerelor a durat (clicks)"<<dif<<"si (secounds) "<<((float)dif)/CLOCKS_PER_SEC;
+}
+
+void shell(int numere[],int dim){
+	clock_t start,end;
+	double dif;
+	start=clock();
+	for(int g=dim/2;g>0;g/=2){
+		for(int i=g;i<dim;i++){
+			int aux=numere[i];
+			int j;
+			for(j=i;j>=g&&numere[j-g];j-=g){
+				numere[j]=numere[j-g];	
+			}
+			numere[j]=aux;
+		}
+	}
+	end=clock();
+	dif=(double)(end-start);
+	cout<<endl<<"Ordonarea cu \"shell\" a numerelor a durat (clicks)"<<dif<<"si (secounds) "<<((float)dif)/CLOCKS_PER_SEC;
+}//Mustea Dan Lab04 Grupa 2013
+#include <iostream>
+
+using namespace std;
+
+#define MAX 1000
+
+void sortTwoInOne(int arrayA[MAX],int n,int arrayB[MAX],int m,int arrayC[MAX],int &p);
+void mergeSorted(int arrayA[MAX],int n,int arrayB[MAX],int m,int arrayC[MAX],int &p);
+int intCompare(const void *a,const void *b);
+
+int main(){
+	int n,m,k,array[MAX],arraySorted[MAX];
+	cin>>m;
+	for(int i=0;i<m;i++){
+		cin>>array[i];
+	}
+	cin>>n;
+	cout<<"===== Sorted ====="<<endl;
+	sortTwoInOne(array,n,&array[n],m-n,arraySorted,k);
+	for(int i=0;i<k;i++){
+		cout<<arraySorted[i]<<" ";
+	}cout<<endl;
+	
+
+	return 0;
+}
+
+
+void sortTwoInOne(int arrayA[MAX],int n,int arrayB[MAX],int m,int arrayC[2*MAX],int &p){
+	qsort(arrayA,n,sizeof(int),intCompare);
+	qsort(arrayB,m,sizeof(int),intCompare);
+	mergeSorted(arrayA,n,arrayB,m,arrayC,p);
+}
+
+int intCompare(const void *a,const void *b){
+	int A=*(int *)a;
+	int B=*(int *)b;
+	return A-B;
+}
+
+void mergeSorted(int arrayA[MAX],int n,int arrayB[MAX],int m,int arrayC[2*MAX],int &p){
+	int k=0;
+	int i=0,j=0;
+	while(i<n||j<m){
+		if(i<n&&j<m){
+			if(arrayA[i]<arrayB[j]){
+					arrayC[k++]=arrayA[i++];
+			}else if(arrayB[j]<=arrayA[i]){
+					arrayC[k++]=arrayB[j++];
+			}
+		}else if(i<n){
+				arrayC[k++]=arrayA[i++];
+		}else if(j<m){
+				arrayC[k++]=arrayB[j++];
+		}
+	}
+	p=k;
+
+}//Mustea Dan Lab04 Grupa 2013
+#include <iostream>
+#include <fstream>
+#include <cstring>
+#include <stdio.h>
+using namespace std;
+
+#define MAX 2000
+
+ifstream fin ("MusteaDan Lab04_7.txt");
+
+struct record{
+	char name[MAX];
+	char processor[MAX];
+	long int frequency;
+	int ram;
+	float price;
+};
+
+int structCmpByName(const void *a, const void *b);
+int structCmpByProcessor(const void *a, const void *b);
+int structCmpByIdFrequency(const void *a, const void *b);
+int structCmpByRam(const void *a, const void *b);
+int structCmpByPrice(const void *a, const void *b);
+
+int main(){
+	int n;
+	record array[MAX];
+	fin>>n;
+	for(int i=0;i<n;i++){
+		fin>>array[i].name;
+		fin>>array[i].processor;
+		fin>>array[i].frequency;
+		fin>>array[i].ram;
+		fin>>array[i].price;
+	}
+	//original list
+	cout<<"====== Original list ======"<<endl;
+	for(int i=0;i<n;i++){
+		cout<<array[i].name<<" | ";
+		cout<<array[i].processor<<" | ";
+		cout<<array[i].frequency<<" |  ";
+		cout<<array[i].ram<<" | ";
+		cout<<array[i].price<<" | "<<endl;
+	}cout<<endl;
+	cout<<"====== Sorted lists ======"<<endl;
+	//name sort
+	qsort(array,n,sizeof(struct record),structCmpByName);
+	for(int i=0;i<n;i++){
+		cout<<array[i].name<<" | ";
+	}cout<<endl;
+
+	//processor sort
+	qsort(array,n,sizeof(struct record),structCmpByProcessor);
+	for(int i=0;i<n;i++){
+		cout<<array[i].processor<<" | ";
+	}cout<<endl;
+
+	//frequency sort
+	qsort(array,n,sizeof(struct record),structCmpByIdFrequency);
+	for(int i=0;i<n;i++){
+		cout<<array[i].frequency<<" | ";
+	}cout<<endl;
+
+	//ram sort
+	qsort(array,n,sizeof(struct record),structCmpByRam);
+	for(int i=0;i<n;i++){
+		cout<<array[i].ram<<" | ";
+	}cout<<endl;
+
+	//price sort
+	qsort(array,n,sizeof(struct record),structCmpByPrice);
+	for(int i=0;i<n;i++){
+		cout<<array[i].price<<" | ";
+	}cout<<endl;
+
+	fin.close();
+	return 0;
+}
+
+int structCmpByName(const void *a, const void *b) { 
+    struct record *ia = (struct record*)a;
+    struct record *ib = (struct record *)b;
+    return strcmp(ia->name, ib->name);
+}
+
+int structCmpByProcessor(const void *a, const void *b) { 
+    struct record *ia = (struct record*)a;
+    struct record *ib = (struct record *)b;
+    return strcmp(ia->processor, ib->processor);
+}
+
+int structCmpByIdFrequency(const void *a, const void *b){ 
+    struct record *ia = (struct record*)a;
+    struct record *ib = (struct record *)b;
+    return (int)(ia->frequency - ib->frequency);
+}
+
+int structCmpByRam(const void *a, const void *b){ 
+    struct record *ia = (struct record*)a;
+    struct record *ib = (struct record *)b;
+    return (int)(ia->ram - ib->ram);
+}
+int structCmpByPrice(const void *a, const void *b){ 
+    struct record *ia = (struct record*)a;
+    struct record *ib = (struct record *)b;
+    return (float)(ia->price - ib->price);
+}
+//Compile Data
+/*
+3
+PC-1
+AMD-Ryzen
+350000
+16
+1499.99
+PC-2
+Intel-I9
+420000
+64
+7000.00
+PC-3
+Intel-Pentium
+210000
+8
+499.99
+*///Mustea Dan Lab04 Grupa 2013
+#include <iostream>
+#include<fstream>
+
+using namespace std;
+
+ifstream fin1 ("MusteaDan Lab04_8-1.txt");
+ifstream fin2 ("MusteaDan Lab04_8-2.txt");
+
+#define MAX 100000
+
+int floatCmp(const void *a, const void *b);
+
+int main(){
+	int k=0;
+	float array[MAX]={0};
+	float x,y;
+
+	//read from file
+	while(fin1>>x){
+		array[k++]=x;
+	}
+	int counter=0;
+	while(fin2>>y){
+		array[k++]=y;
+		array[k]=(float)((array[k-1]+array[counter++])/2);
+		k++;
+	}
+
+	//sort
+	qsort(array,k,sizeof(float),floatCmp);
+
+	//num of non unique
+	int unique=0;
+	for(int i=0;i<k;i++){
+		for(int j=0;j<k;j++){
+			if(array[i]==array[j] && i!=j){
+				j=k;//exit inner loop
+				unique++;
+			}	
+		}
+	}
+
+	cout<<k<<endl;
+	for(int i=0;i<k;i++){
+		cout<<array[i]<<" ";
+	}cout<<endl;
+
+	cout<<"number of non unique elements is: "<<k-unique<<endl;
+
+	fin1.close();
+	fin2.close();
+
+	return 0;
+}
+
+int floatCmp(const void* a, const void* b){
+  float fa = *(const float*) a;
+  float fb = *(const float*) b;
+  return (fa > fb) - (fa < fb);
+}//Mustea Dan Lab04 Grupa 2013
+#include <iostream>
+#include <time.h>
+
+using namespace std;
+
+#define MAX 200
+
+int main(){
+	int n,array[MAX];
+	n=200;
+	srand(NULL);
+	cout<<"The generated array: ";
+	for(int i=0;i<n;i++){
+		array[i]=rand()%100;
+		cout<<array[i]<<" ";
+	}cout<<endl;
+	int min=101,maxi=-1,sum=0,avg;
+	for(int i=0;i<n;i++){
+		sum+=array[i];
+		if(array[i]>maxi){
+			maxi=array[i];
+		}
+		if(array[i]<min){
+			min=array[i];
+		}
+	}
+
+	bool avgFound=false;
+	avg=(int)(sum/n);
+	for(int i=0;i<n;i++){
+		if(array[i]==avg){
+			avgFound=true;
+		}
+	}
+	cout<<"======================================================================="<<endl;
+	cout<<"The min: "<<min<<" The max: "<<maxi<<" and The Average: "<<avg<<" which was ";
+	if(avgFound=true){
+		cout<<"found in the array"<<endl;
+	}else{
+		cout<<"NOT found in the array"<<endl;
+	}
+
+	return 0;
+}//Mustea Dan Lab04 Grupa 2013
+#include <iostream>
+#include <time.h>
+
+using namespace std;
+
+#define MAX 200
+
+int floatCmp(const void *a, const void *b);
+int intCmp(const void *a,const void *b);
+
+int main(){
+	int n,arrayInt[MAX],arrayFractional[MAX];
+	float arrayReal[MAX];
+	n=200;
+	srand(NULL);
+	cout<<"The generated array of integer parts: "<<endl;
+	for(int i=0;i<n;i++){
+		arrayInt[i]=rand()%100;
+		cout<<arrayInt[i]<<" ";
+	}cout<<endl;
+	cout<<"The generated array of fractional parts: "<<endl;
+	for(int i=0;i<n;i++){
+		arrayFractional[i]=rand()%20+1;
+		cout<<arrayFractional[i]<<" ";
+	}cout<<endl;
+	cout<<"The resulting array of real numbers: "<<endl;
+	for(int i=0;i<n;i++){
+		arrayReal[i]=((float)arrayInt[i]/(float)arrayFractional[i]);
+		cout<<arrayReal[i]<<" ";
+	}cout<<endl;
+	cout<<"=========== Sorted Arrays ==========="<<endl;
+	qsort(arrayInt,n,sizeof(int),intCmp);
+	cout<<"The sorted array of integer parts: "<<endl;
+	for(int i=0;i<n;i++){
+		cout<<arrayInt[i]<<" ";
+	}cout<<endl;
+	qsort(arrayFractional,n,sizeof(int),intCmp);
+	cout<<"The sorted array of fractional parts: "<<endl;
+	for(int i=0;i<n;i++){
+		cout<<arrayFractional[i]<<" ";
+	}cout<<endl;
+	qsort(arrayReal,n,sizeof(float),floatCmp);
+	cout<<"The sorted array of real numbers: "<<endl;
+	for(int i=0;i<n;i++){
+		cout<<arrayReal[i]<<" ";
+	}cout<<endl;
+
+	return 0;
+}
+
+int intCmp(const void *a,const void *b){
+	int A=*(int *)a;
+	int B=*(int *)b;
+	return A-B;
+}
+
+int floatCmp(const void* a, const void* b){
+  float fa = *(const float*) a;
+  float fb = *(const float*) b;
+  return (fa > fb) - (fa < fb);
+}//Mustea Dan Lab04 Grupa 2013
+#include <iostream>
+#include <search.h>
+
+using namespace std;
+
+int intCmp(const void *a,const void *b);
+
+#define MAX 100
+
+int main(){
+	int array[MAX];
+	int target;
+	size_t n=12;
+	cin>>n;
+	for(int i=0;i<n;i++){
+		cin>>array[i];
+	}
+	cin>>target;
+	
+	int *item = (int*) lfind(&target, array, &n, sizeof (int),(int(*) (const void *, const void *))  intCmp);
+	bool flagFound;
+	if( item != NULL ) {
+    	cout<<"Found target "<<*item<<endl;
+    	flagFound=true;
+	}else{
+		cout<<"Target could not be found"<<endl;
+		flagFound=false;
+	}
+	qsort(array,n,sizeof(int),intCmp);
+	if(flagFound==true){
+		cout<<"The number was found in these locations: ";
+		int count=0;
+		for(int i=0;i<n;i++){
+			if(array[i]==target){
+				cout<<i<<" ";
+			}
+		}
+		cout<<endl;
+	}
+
+	return 0;
+}
+
+
+int intCmp(const void *a,const void *b){
+	int A=*(int *)a;
+	int B=*(int *)b;
+	return A-B;
+}

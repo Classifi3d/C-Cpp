@@ -1,0 +1,4 @@
+﻿  Lab10_15.cpp
+E:\Programming\C - C++\Lab10_15\Lab10_15.cpp(17,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+E:\Programming\C - C++\Lab10_15\Lab10_15.cpp(22,21): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  Lab10_15.vcxproj -> E:\Programming\C - C++\Lab10_15\Debug\Lab10_15.exe

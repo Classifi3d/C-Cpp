@@ -1,0 +1,718 @@
+
+//MusteaDan Lab10 Grupa 2013
+#include <iostream>
+#include <cstring>
+#include <fstream>
+
+using namespace std;
+
+#define MAX 1000
+
+class base{
+private:
+    char array[MAX];
+protected:
+    char encrypt[MAX];
+public:
+    void Encrypt(){
+        char key;
+        int length;
+        cout<<"Insert a charcter key to encrypt the message: ";
+        cin>>key;
+        length=strlen(this->array);
+        for(int i=0;i<length;i++){
+            encrypt[i]=(char)(key^array[i]);
+        }
+    }
+    void Display(){
+        cout<<"Original: "<<array<<endl
+        <<"Encrypted: "<<encrypt<<" | numeral form: ";
+        int length=strlen(encrypt);
+        for(int i=0;i<length;i++){
+            cout<<(int)encrypt[i]<<" ";
+        }
+        cout<<endl;
+    }
+    void SetArray(char *array){
+        strcpy(this->array,array);
+        Encrypt();
+    }
+};
+
+class derived : public base{
+private:
+public:
+    void Append(){
+        ofstream fout ("date.out");
+        fout<<encrypt;
+        fout.close();
+    }
+};
+
+
+int main(){
+    char array[MAX];
+    derived a;
+    cout<<"Insert an array of characters: ";
+    cin.get(array,MAX);
+    cin.get();
+    a.SetArray(array);
+    cout<<"Choose an option for displaying the result (1-console display,2-file append display,0-exit)"<<endl;
+    int option=0;
+    cin>>option;
+        
+    switch(option){
+        case 1:
+            a.Display();
+        break;
+        case 2:
+            a.Append();
+        break;
+        case 0:
+            return 0;
+        break;
+        default:
+            cout<<"Try again!"<<endl;
+
+    }
+
+
+
+    return 0;
+}
+
+//MusteaDan Lab10 Grupa 2013
+#include <iostream>
+#include <math.h>
+using namespace std;
+
+class dad{
+protected: 
+    int x,y;
+public:
+    void SetX(int x){
+        this->x=x;
+    }
+    void SetY(int y){
+        this->y=y;
+    }
+    int GetX(){
+        return this->x;
+    }
+    int GetY(){
+        return this->y;
+    }
+};
+
+class son : public dad{
+public:
+    son(){
+        this->x=0;
+        this->y=0;
+    }
+    son(son &a){
+        this->x=a.x;
+        this->y=a.y;
+    }
+
+    son operator+(son &a){
+        son aux;
+        aux.SetX(x+a.GetX());
+        aux.SetY(y+a.GetY());
+        return aux;
+    }
+    son operator-(son &a){
+        son aux;
+        aux.SetX(x-a.GetX());
+        aux.SetY(y-a.GetY());
+        return aux;
+    }
+    son operator*(son &a){
+        son aux;
+        aux.SetX(x*a.GetX());
+        aux.SetY(y*a.GetY());
+        return aux;
+    }
+    son operator/(son &a){
+        son aux;
+        aux.SetX(x/a.GetX());
+        aux.SetY(y/a.GetY());
+        return aux;
+    }
+    int sum(){
+        return x+y;
+    }
+    int sub(){
+        return x-y;
+    }
+    int mul(){
+        return x*y;
+    }
+    double dif(){
+        return x/y;
+    }
+    void Display(){
+        cout<<x<<" "<<y<<endl;
+    }
+};
+
+class grandson : public son{
+    private:
+    public:
+    double SquareRoot(){
+        return sqrt(mul());
+    }
+    double Power(){
+        int base=sum();
+        int power=sub();
+        return pow(base,power);
+    }
+};
+
+
+
+
+int main(){
+    son a,b,c,d,e,f;
+    int x,y;
+    cin>>x>>y;
+    a.SetX(x);
+    a.SetY(y);
+    cin>>x>>y;
+    b.SetX(x);
+    b.SetY(y);
+    cout<<"==== Basic Operations ====="<<endl;
+    c=a+b;
+    c.Display();
+    d=a-b;
+    d.Display();
+    e=a*b;
+    e.Display();
+    f=a/b;
+    f.Display();
+    cout<<"==== Advanced Operations ===="<<endl;
+    grandson j;
+    j.SetX(x);
+    j.SetY(y);
+    cout<<j.SquareRoot()<<endl;
+    cout<<j.Power()<<endl;
+
+
+    return 0;
+}
+
+//MusteaDan Lab10 Grupa 2013
+#include <iostream>
+#include <math.h>
+using namespace std;
+
+class dad{
+protected: 
+    int x,y;
+public:
+    void SetX(int x){
+        this->x=x;
+    }
+    void SetY(int y){
+        this->y=y;
+    }
+    int GetX(){
+        return this->x;
+    }
+    int GetY(){
+        return this->y;
+    }
+};
+
+class son : public dad{
+public:
+    son(){
+        this->x=0;
+        this->y=0;
+    }
+    son(son &a){
+        this->x=a.x;
+        this->y=a.y;
+    }
+
+    son operator+(son &a){
+        son aux;
+        aux.SetX(x+a.GetX());
+        aux.SetY(y+a.GetY());
+        return aux;
+    }
+    son operator-(son &a){
+        son aux;
+        aux.SetX(x-a.GetX());
+        aux.SetY(y-a.GetY());
+        return aux;
+    }
+    son operator*(son &a){
+        son aux;
+        aux.SetX(x*a.GetX());
+        aux.SetY(y*a.GetY());
+        return aux;
+    }
+    son operator/(son &a){
+        son aux;
+        aux.SetX(x/a.GetX());
+        aux.SetY(y/a.GetY());
+        return aux;
+    }
+    int sum(){
+        return x+y;
+    }
+    int sub(){
+        return x-y;
+    }
+    int mul(){
+        return x*y;
+    }
+    double dif(){
+        return x/y;
+    }
+    void Display(){
+        cout<<x<<" "<<y<<endl;
+    }
+};
+
+class grandson : public son{
+    private:
+    public:
+    double SquareRoot(){
+        return sqrt(mul());
+    }
+    double Power(){
+        int base=sum();
+        int power=sub();
+        return pow(base,power);
+    }
+};
+
+
+
+
+int main(){
+    son a,b,c,d,e,f;
+    int x,y;
+    cin>>x>>y;
+    a.SetX(x);
+    a.SetY(y);
+    cin>>x>>y;
+    b.SetX(x);
+    b.SetY(y);
+    cout<<"==== Basic Operations ====="<<endl;
+    c=a+b;
+    c.Display();
+    d=a-b;
+    d.Display();
+    e=a*b;
+    e.Display();
+    f=a/b;
+    f.Display();
+    cout<<"==== Advanced Operations ===="<<endl;
+    grandson j;
+    j.SetX(x);
+    j.SetY(y);
+    cout<<j.SquareRoot()<<endl;
+    cout<<j.Power()<<endl;
+
+
+    return 0;
+}
+//MusteaDan Lab10 Grupa 2013
+#include <iostream>
+#include <math.h>
+
+using namespace std;
+
+class Triangle{
+    protected:
+    double s1,s2,s3;//sides
+    public:
+    double Perimeter(){
+        return s1+s2+s3;
+    }
+    void SetSides(double s1,double s2,double s3){
+        this->s1=s1;
+        this->s2=s2;
+        this->s3=s3;
+    }
+};
+
+class Triangle_extended : public Triangle{
+    public:
+    double Area(){
+        double s;
+        s=(s1+s2+s3)/2;
+        return sqrt(s*(s-s1)*(s-s2)*(s-s3));
+    }
+};
+
+
+int main(){
+    Triangle a;
+    cout<<"Insert the 3 sides of the triangle: ";
+    double x,y,z;
+    cin>>x>>y>>z;
+    a.SetSides(x,y,z);
+    cout<<"Triangle Class Perimeter: "<<a.Perimeter()<<endl;
+    Triangle_extended b;
+    b.SetSides(x,y,z);
+    cout<<"Triangle_extened Class Perimeter and area respectivley: "<<b.Perimeter()<<" "<<b.Area()<<endl;
+
+
+    return 0;
+}
+
+//MusteaDan Lab10 Grupa 2013
+#include <iostream>
+#include <math.h>
+
+using namespace std;
+
+class Triangle{
+    protected:
+    double s1,s2,s3;//sides
+    public:
+    double Perimeter(){
+        return s1+s2+s3;
+    }
+    void SetSides(double s1,double s2,double s3){
+        this->s1=s1;
+        this->s2=s2;
+        this->s3=s3;
+    }
+};
+
+class Triangle_extended : public Triangle{
+    public:
+    double Area(){
+        double s;
+        s=(s1+s2+s3)/2;
+        return sqrt(s*(s-s1)*(s-s2)*(s-s3));
+    }
+    double Height(){
+        if(s1>s2&&s1>s3){//s1 is base
+            return 2*Area()/s1;
+        }
+        if(s2>s3&&s2>s1){//s1 is base
+            return 2*Area()/s2;
+        }
+        if(s3>s2&&s3>s1){//s1 is base
+            return 2*Area()/s3;
+        }
+    }
+};
+
+int main(){
+    Triangle a;
+    cout<<"Insert the 3 sides of the triangle: ";
+    double x,y,z;
+    cin>>x>>y>>z;
+    a.SetSides(x,y,z);
+    cout<<"Triangle Class Perimeter: "<<a.Perimeter()<<endl;
+    Triangle_extended b;
+    b.SetSides(x,y,z);
+    cout<<"Triangle_extened Class Perimeter, Area and triangle's height respectivley: "<<b.Perimeter()<<" "<<b.Area()<<" "<<b.Height()<<endl;
+
+
+    return 0;
+}
+//MusteaDan Lab10 Grupa 2013
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+#define MAX 1000
+#define PI 3.14159
+
+class shape{
+    public:
+        char *name;
+    public:
+    void setname(char* name){
+        strcpy(this->name,name);
+    }
+};
+
+class circle : public shape{
+    private:
+        double radius;
+    public:
+    circle(){
+    }
+    circle(char* name,double radius){
+        this->name=name;
+        this->radius=radius;
+    }
+    double perimeter(){
+        return PI*2*radius;
+    }
+    double area(){
+        return PI*radius*radius;
+    }
+};
+class square : public shape{
+    private:
+        double side;
+    public:
+    square(){
+    }
+    square(char* name,double side){
+        this->name=name;
+        this->side=side;
+    }
+    double perimeter(){
+        return 4*side;
+    }
+    double area(){
+        return side*side;
+    }
+};
+class rectangle : public shape{
+    private:
+        double side1,side2;
+    public:
+    rectangle(){
+    }
+    rectangle(char* name,double side1,double side2){
+        this->name=name;
+        this->side1=side1;
+        this->side2=side2;
+    }
+    double perimeter(){
+        return side1*2+side2*2;
+    }
+    double area(){
+        return side1*side2;
+    }
+};
+
+int main(){
+    char name1[MAX],name2[MAX],name3[MAX];
+    double radius1,side1,side2,side3;
+    cout<<"Insert the name and radius of the cricle: "<<endl;
+    cin>>name1>>radius1;
+    circle a(name1,radius1);
+    cout<<"The perimeter and area of "<<a.name<<" the are: "<<a.perimeter()<<" "<<a.area()<<endl;
+    cout<<"Insert the name and side of the square: "<<endl;
+    cin>>name2>>side1;
+    square b(name2,side1);
+    cout<<"The perimeter and area of "<<b.name<<" the are: "<<b.perimeter()<<" "<<b.area()<<endl;
+    cout<<"Insert the name and both sides of the rectangle: "<<endl;
+    cin>>name3>>side2>>side3;
+    rectangle c(name3,side2,side3);
+    cout<<"The perimeter and area of "<<c.name<<" the are: "<<c.perimeter()<<" "<<c.area()<<endl;
+
+
+
+    return 0;
+}
+//MusteaDan Lab10 Grupa 2013
+#include <iostream>
+
+using namespace std;
+
+#define PI 3.14159
+#define SQRT2 1.4142
+
+class circle{
+private:
+protected:
+    double radius;
+public:
+    circle(double radius){
+        cout<<"1";
+        this->radius=radius;
+    }
+    circle(){}
+    double area(){
+        return PI*radius*radius;
+    }
+};
+
+class square{
+private:
+protected: 
+    double length;
+public:
+    square(double length){
+        this->length=length;
+    }
+    square(){}
+};
+
+class roundsquare : public circle, public square{
+public:
+    roundsquare(double radius, double length){
+        circle(radius);
+        square(length);
+    }
+    void canitfit(){
+        bool a=0;
+        if(length*SQRT2<=radius){
+            a=1;
+        }
+        if(a==1){
+            cout<<"The square can fit"<<endl;
+        }else{
+            cout<<"The square cannot fit"<<endl;
+        }
+    }
+    void perimeters(){
+        cout<<"The perimeters of the cricle and square respectively are: "<<2*PI*radius<<" "<<4*length<<endl;
+    }
+
+};
+
+int main(){
+    double radius,length;
+    cout<<"Insert the length of the radius of a cricle and the side of a square: ";
+    cin>>radius>>length;
+    roundsquare a(radius,length);
+    a.canitfit();
+    a.perimeters();
+
+
+
+
+    return 0;
+}
+
+//MusteaDan Lab10 Grupa 2013
+#include <iostream>
+#include <math.h>  
+using namespace std;
+
+class fraction{
+    private:
+    int gcd(int a, int b) { 
+        if (a == 0)
+        return b; 
+        if (b == 0) 
+        return a; 
+        if (a == b) 
+            return a; 
+        if (a > b) 
+            return gcd(a-b, b); 
+        return gcd(a, b-a); 
+    } 
+    protected:
+        int a,b;
+    public:
+        void SetFraction(int a, int b){
+            this->a=a;
+            this->b=b;
+        }
+        double GetA(){
+            return a;
+        }
+        double GetB(){
+            return b;
+        }
+        void Display(){
+            cout<<a<<'/'<<b<<endl;
+        }
+        void Simplify(){
+            int div=gcd(a,b);
+            a/=div;
+            b/=div;
+        }
+        fraction(){
+            a=0;
+            b=1;
+        }
+        fraction(int a,int b){
+            if(b!=0){
+                this->a=a;
+                this->b=b;
+            }else{
+                cout<<"Invalid input!"<<endl;
+            }
+        }
+        fraction operator+(const fraction &x){
+            fraction aux;
+            aux.a=this->a+x.a;
+            aux.b=this->b+x.b;
+            return aux;
+        }
+        fraction operator-(const fraction &x){
+            fraction aux;
+            aux.a=this->a-x.a;
+            aux.b=this->b-x.b;
+            return aux;
+        }
+        fraction operator*(const fraction &x){
+            fraction aux;
+            aux.a=this->a*x.a;
+            aux.b=this->b*x.b;
+            return aux;
+        }
+        fraction operator/(const fraction &x){
+            fraction aux;
+            aux.a=this->a*x.b;
+            aux.b=this->b*x.a;
+            return aux;
+        }
+};
+
+class fraction_ext: public fraction{
+    public:
+    fraction_ext(int a,int b){
+        fraction(a,b);
+    }
+    fraction_ext(){
+        fraction();
+    }
+    fraction_ext operator++(){
+        this->a+=this->b;
+        this->b+=this->b;
+    }
+    fraction_ext operator--(){
+        this->a-=this->b;
+        this->b-=this->b;
+    }
+
+};
+
+
+int main(){
+    int a,b;
+    cout<<"Insert the values of a fraction: ";
+    cin>>a>>b;
+    fraction x;
+    x.SetFraction(a,b);
+    x.Simplify();
+    x.Display();
+    cin>>a>>b;
+    fraction y;
+    cout<<"Insert the values of a fraction: ";
+    y.SetFraction(a,b);
+    y.Simplify();
+    y.Display();
+    cout<<"==== Operations ===="<<endl;
+    fraction z;
+    z=x+y;
+    z.Display();
+    z=x-y;
+    z.Display();
+    z=x*y;
+    z.Display();
+    z=x/y;
+    z.Display();
+    cout<<"Insert the values of a fraction: ";
+    cin>>a>>b;
+    fraction_ext n(a,b);
+    cout<<"Insert the values of a fraction: ";
+    cin>>a>>b;
+    fraction_ext m(a,b);
+    cout<<"==== Operations Extended ===="<<endl;
+    ++n;
+    n.Display();
+    --m;
+    m.Display();
+
+    return 0;
+}

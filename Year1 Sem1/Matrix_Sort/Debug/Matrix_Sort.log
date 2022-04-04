@@ -1,0 +1,7 @@
+﻿  Source.cpp
+E:\Programming\C - C++\Matrix_Sort\Source.cpp(11,12): warning C4473: 'scanf_s' : not enough arguments passed for format string
+E:\Programming\C - C++\Matrix_Sort\Source.cpp(11,12): message : placeholders and their parameters expect 2 variadic arguments, but 1 were provided
+E:\Programming\C - C++\Matrix_Sort\Source.cpp(11,12): message : the missing variadic argument 2 is required by format string '%c'
+E:\Programming\C - C++\Matrix_Sort\Source.cpp(11,12): message : this argument is used as a buffer size
+E:\Programming\C - C++\Matrix_Sort\Source.cpp(28,15): warning C4101: 'e': unreferenced local variable
+  Matrix_Sort.vcxproj -> E:\Programming\C - C++\Matrix_Sort\Debug\Matrix_Sort.exe

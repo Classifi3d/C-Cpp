@@ -1,0 +1,321 @@
+//Mustea Dan Lab12 Group: 2013
+#include <iostream>
+using namespace std;
+
+int main(){
+
+cout<<"Insert two values which will be displayed in different base systems: ";
+int val1,val2;
+cin>>val1>>val2;
+cout.width(15);
+cout.fill('=');
+cout.precision(10);
+cout.setf(ios::right);
+cout<<"dec:"<<val1<<" "<<val2<<endl;
+cout.unsetf(ios::dec);
+cout.setf(ios_base::hex);
+cout.width(15);
+cout.fill('=');
+cout.unsetf(ios::right);
+cout.setf(ios::left);
+cout<<"hex:"<<val1<<" "<<val2<<endl;
+cout.unsetf(ios::hex);
+cout.setf(ios::oct);
+cout.width(15);
+cout.fill('=');
+cout.unsetf(ios::left);
+cout.setf(ios::right);
+cout<<"oct:"<<val1<<" "<<val2<<endl;
+cout.unsetf(ios::oct);
+
+return 0;
+}
+
+//Mustea Dan Lab12 Group: 2013
+#include <iostream>
+
+using namespace std;
+
+int main(){
+
+    int i;
+    float f;
+    char c;
+    cout<<"Insert a int,float and char variable respectively: ";
+    cin>>i>>f>>c;
+    cout.setf(ios::dec);
+    cout.width(5);
+    cout.fill('i');
+    cout<<i<<endl;
+    cout.width(5);
+    cout.fill('f');
+    cout<<f<<endl;
+    cout.width(5);
+    cout.fill('c');
+    cout<<c<<endl;
+
+    return 0;
+}
+//Mustea Dan Lab12 Group: 2013
+#include <iostream>
+
+using namespace std;
+
+int main(){
+    srand(2);
+    
+    float avg=0,treshold,mem[10];
+    treshold=(float)rand()/1000000;//the treshold previously defined
+    for(int i=0;i<10;i++){
+        mem[i]=(float)rand();//data from the hardware device
+        mem[i]/=1000000;
+        avg+=mem[i];
+    }
+    avg/=10;
+    if(avg>treshold){//data being displayed in detalied fromat (float with 8 digit precision)
+        for(int i=0;i<10;i++){
+            cout.precision(8);
+            cout<<mem[i]<<endl;
+        }
+    }
+
+    return 0;
+}
+//Mustea Dan Lab12 Group: 2013
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+class AcceleratedMovement{
+private:
+    double dc,vc,a;
+public:
+    AcceleratedMovement(){
+        //static
+        dc=0;
+        vc=0;
+        a=0;
+    }
+    AcceleratedMovement(double dc,double vc,double a){
+        this->dc=dc;
+        this->vc=vc;
+        this->a=a;
+    }
+    friend ostream &operator<<(ostream &output,AcceleratedMovement &aux){
+        output << "DC: "<<aux.dc<<" VC: "<<aux.vc<<" A: "<<aux.a;
+        return output;
+    }
+    friend istream &operator>>(istream &input,AcceleratedMovement &aux){
+        input >>aux.dc>>aux.vc>>aux.a;
+        return input;
+    }
+};
+
+
+int main(){
+    AcceleratedMovement a;
+    cout<<a<<endl;
+    cin>>a;
+    cout<<a<<endl;
+    
+    return 0;
+}
+
+//Mustea Dan Lab12 Group: 2013
+#include <iostream>
+
+using namespace std;
+
+class Complex{
+protected:
+    int real,imag;
+public:
+    friend ostream &operator<<(ostream &output, Complex&aux){
+        output <<"Real: "<<aux.real<<" Imag: "<<aux.imag;
+        return output;
+    }
+    friend istream &operator>>(istream &input, Complex&aux){
+        input >> aux.real >> aux.imag;
+        return input;
+    }
+
+};
+
+class Point : public Complex{
+protected:
+    char color;
+public: 
+    friend ostream &operator<<(ostream &output, Point&aux){
+        output <<"X: "<<aux.real<<" Y: "<<aux.imag<<" Color: "<<aux.color;
+        return output;
+    }
+    friend istream &operator>>(istream &input, Point&aux){
+        input >>aux.real>>aux.imag>>aux.color;
+        return input;
+    }
+
+}; 
+
+
+int main(){
+
+    Complex a;
+    cout<<"Insert the real and imag parts of a complex number: ";
+    cin>>a;
+    cout<<a<<endl;
+    Point b;
+    cout<<"Insert the coordinates (X,Y) and the color (r-RED / g-GREEN / b-BLUE) of a point: ";
+    cin>>b;
+    cout<<b<<endl;
+    a=b;
+    cout<<a<<endl;
+
+    return 0;
+}
+
+//MusteaDan Lab12 Grupa 2013
+#include <iostream>
+#include <math.h>  
+using namespace std;
+
+class fraction{
+    private:
+        int gcd(int a, int b) { 
+            if (a == 0)
+            return b; 
+            if (b == 0) 
+            return a; 
+            if (a == b) 
+                return a; 
+            if (a > b) 
+                return gcd(a-b, b); 
+            return gcd(a, b-a); 
+        } 
+    protected:
+        int a,b;
+    public:
+        static int icount;
+        /*void Simplify(){
+                int div=gcd(a,b);
+                a/=div;
+                b/=div;
+                cout<<"== Simplified =="<<endl;
+        }*/
+        void SetFraction(int a, int b){
+            this->a=a;
+            this->b=b;
+        }
+        double GetA(){
+            return a;
+        }
+        double GetB(){
+            return b;
+        }
+        void Display(){
+				cout.unsetf(ios::right);
+				cout.setf(ios::left);
+				cout.width(10);
+				cout.fill('*');
+				cout<<this->a<<"/";
+				cout.unsetf(ios::left);
+				cout.setf(ios::right);
+				cout.width(10);
+				cout.fill('*');
+				cout<<this->b<<endl;
+				cout.unsetf(ios::right);
+        }
+        void DisplayIcount(){
+			cout.unsetf(ios::right);
+			cout.setf(ios::left);
+			cout.width(15);
+			cout.precision(15);
+			cout.fill('$');
+			cout<<icount<<endl;
+			cout.unsetf(ios::left);
+        }
+        virtual void Simplify(){};
+        fraction(){
+            a=0;
+            b=1;
+			icount++;
+        }
+        fraction(int a,int b){
+			icount++;
+            if(b!=0){
+                this->a=a;
+                this->b=b;
+            }else{
+                cout<<"Invalid input!"<<endl;
+            }
+        }
+        friend fraction operator+(fraction,fraction);
+        friend fraction operator-(fraction,fraction);
+        friend fraction operator*(fraction,fraction);
+        friend fraction operator/(fraction,fraction);
+	    friend ostream &operator<<(ostream &output, fraction &aux){
+        	output <<"X: "<<aux.a<<" Y: "<<aux.b;
+        	return output;
+    	}
+    	friend istream &operator>>(istream &input, fraction &aux){
+        	input >>aux.a>>aux.b;
+        	return input;
+   		}
+
+};
+fraction operator +(fraction x,fraction y){
+    fraction aux;
+    aux.a=x.a*y.b+y.a*x.b;
+    aux.b=y.b*x.b;
+    return aux;
+}
+
+fraction operator -(fraction x,fraction y){
+    fraction aux;
+    aux.a=x.a*y.b-y.a*x.b;
+    aux.b=y.b*x.b;
+    return aux;
+}
+
+fraction operator *(fraction x,fraction y){
+    fraction aux;
+    aux.a=y.a*x.a;
+    aux.b=y.b*x.b;
+    return aux;
+}
+
+fraction operator /(fraction x,fraction y){
+    fraction aux;
+    aux.a=x.a*y.b;
+    aux.b=x.b*y.a;
+    return aux;
+}
+
+int fraction::icount=0;
+
+int main(){
+    int a,b;
+	fraction x;
+    cout<<"Insert the values of a fraction: ";
+	cin>>x;
+	x.SetFraction(a,b);
+	x.DisplayIcount();
+	fraction y;
+    cout<<"Insert the values of a fraction: ";
+	cin>>y;
+	y.SetFraction(a,b);	
+	y.DisplayIcount();
+	fraction z;
+	z=x+y;
+	z.Display();
+	z=x-y;
+	z.Display();
+	z=x*y;
+	z.Display();
+	z=x/y;
+	z.Display();
+	cout<<z<<endl;
+	z.DisplayIcount();
+
+    return 0;
+}

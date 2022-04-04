@@ -1,0 +1,5 @@
+﻿  Lab09_4.cpp
+E:\Programming\C - C++\Lab09_4\Lab09_4.cpp(13,9): warning C4473: 'printf' : not enough arguments passed for format string
+E:\Programming\C - C++\Lab09_4\Lab09_4.cpp(13,9): message : placeholders and their parameters expect 1 variadic arguments, but 0 were provided
+E:\Programming\C - C++\Lab09_4\Lab09_4.cpp(13,9): message : the missing variadic argument 1 is required by format string '% o'
+  Lab09_4.vcxproj -> E:\Programming\C - C++\Lab09_4\Debug\Lab09_4.exe

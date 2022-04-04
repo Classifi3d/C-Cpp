@@ -1,0 +1,4 @@
+﻿  Lab13_7.cpp
+E:\Programming\C - C++\Lab13_7\Lab13_7.cpp(5,1): warning C4005: '_CRT_SECURE_NO_WARNINGS': macro redefinition
+E:\Programming\C - C++\Lab13_7\Lab13_7.cpp : message : see previous definition of '_CRT_SECURE_NO_WARNINGS'
+  Lab13_7.vcxproj -> E:\Programming\C - C++\Lab13_7\Debug\Lab13_7.exe

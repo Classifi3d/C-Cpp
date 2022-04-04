@@ -1,0 +1,3 @@
+﻿  Lab11_8.cpp
+E:\Programming\C - C++\Lab11_8\Lab11_8.cpp(23,20): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  Lab11_8.vcxproj -> E:\Programming\C - C++\Lab11_8\Debug\Lab11_8.exe
